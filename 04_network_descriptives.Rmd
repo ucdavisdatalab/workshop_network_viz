@@ -1,0 +1,18 @@
+## Network descriptives
+
+Some on network/graph features
+* Node/vertex
+  * Multi-mode
+* Edge/connection
+  * Multi-plex
+* Multi-level
+
+Network statistics
+* Network-level
+  * Size
+  * Density
+  * Centralization
+  * Transitivity
+  * Degree distribution
+* Actor-level
+  * Centrality (degree, betweenness, eigenvector, etc.)

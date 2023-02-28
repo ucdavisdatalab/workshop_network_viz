@@ -1,0 +1,39 @@
+# Data
+
+### About Delta Science Tracker  
+
+We are using publicly available data from the Delta Stewardship Council's (DSC) [Delta Science Tracker](https://sciencetracker.deltacouncil.ca.gov/). This database is a library of Delta-related research over the last 50 years. As the DSC's website explains:
+
+| "The Delta Science Tracker is a tool to improve coordination and collaboration of science activities in a way that is valuable to scientists, decision-makers, and managers in the Delta. The Delta Science Tracker allows users to explore and visualize recent research and monitoring efforts through the lenses of science activities, organizations, and people. It is intended to promote communication, create opportunities for collaboration, and enhance transparency for science funding opportunities and decisions."
+
+The data we'll use was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](scraping_data.R).
+
+### Data descriptions  
+
+Before we get into visualizations, we want to take a look at the data we have available. What relationships do we have? And what node or edge attributes are available?  
+
+The relational data we will begin with is a two-mode edge list. 
+
+```{r}
+edges <- read.csv('data/edgelist_twomode.csv')
+head(edges)
+```
+
+```{r}
+nodes <- read.csv('data/nodelist_twomode.csv')
+head(nodes)
+tail(nodes)
+```
+
+
+### What story do we want to tell?
+
+These data have some interesting features: longitudinal data, attributes of projects but not of research organizations, project themes,
+
+communities
+
+
+```{r}
+
+```
+

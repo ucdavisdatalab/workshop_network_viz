@@ -1,0 +1,14 @@
+### Creating network objects in R
+
+igraph
+
+graph_from_edgelist()
+syntax for manipulating igraphs
+V(g)$nodeattribute
+E(g)$edgeattribute
+
+network
+
+syntax for manipulating networks
+net %v% 'nodeattribute'
+net %e% 'edgeattribute'

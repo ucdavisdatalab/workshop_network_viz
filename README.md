@@ -1,75 +1,32 @@
-# Template: Workshop Reader
-
-This repository is a template for workshop readers for the UC Davis DataLab.
-This template uses **bookdown** to knit the reader. You can also optionally use
-**renv** to manage packages and Git Large File Storage to manage large files
-(instructions included).
-
-To get started, create a new repo on GitHub from this template
-([instructions][gh]), then `git clone` your new repo.
-
-[gh]: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template
-
-Once you've cloned the repo, here's a checklist of things to do to prepare the
-repo:
-
-1. **renv** (optional): To set up **renv**, open R at the top level of the repo
-   and run:
-
-    ```r
-    renv::init()
-    ```
-
-    Restart R. Then, to install the **bookdown** toolchain to the project
-    package library, run:
-
-    ```r
-    install.packages("bookdown")
-    renv::snapshot()
-    ```
-
-    You can skip this step if you're not going to use **renv**.
-
-2. `index.Rmd`: Replace the all-caps text with your workshop details.
-    + Title (in 2 places, 1 of them in the `output:` HTML block)
-    + Author's name
-    + Repo name (in 4 places, 2 of them in the `output:` HTML block)
-    + Description, learning goals, & prerequisites
-
-3. `README.md`: Replace the all-caps text with your workshop details.
-    + Title
-    + Quarter & year
-    + Author's name & email
-    + Reader URL
-    + Event URL
-    + Description, learning goals, & prerequisites
-
-4. If this workshop does not have an assessment, delete `99_assessment.Rmd`.
-
-5. GitHub: In the repo's About section, add the reader URL and appropriate
-   tags.
-
-6. GitHub: In the repo's Settings page, enable GitHub pages. Set the branch to
-   `main` and the directory to `docs/`.
-
-7. `README.md`: Remove these template instructions, which end at the `#
-   Workshop:` header below
-
-8. `git add` all changed files, then `git commit` and `git push`.
-
-
-# Workshop: YOUR WORKSHOP TITLE
+# Workshop: Network Visualization
 
 _[UC Davis DataLab](https://datalab.ucdavis.edu/)_  
-_QUARTER YEAR_  
-_Instructor: YOUR NAME <<YOUR_EMAIL@ucdavis.edu>>_  
-_Maintainer: MAINTAINER'S NAME <<MAINTAINER_EMAIL@ucdavis.edu>>_
+_Spring 2023_  
+_Instructor: Liza Wood <<belwood@ucdavis.edu>>_  
+_Maintainer: Liza Wood <<belwood@ucdavis.edu>>_
 
-* [Reader](https://ucdavisdatalab.github.io/YOUR_REPOSITORY/)
-* [Event Page](https://datalab.ucdavis.edu/eventscalendar/YOUR_EVENT/)
+* [Reader](https://ucdavisdatalab.github.io/workshop_network_viz/)
+* [Event Page](https://datalab.ucdavis.edu/eventscalendar/)
 
-YOUR DESCRIPTION, LEARNING GOALS, PREREQUISITES, ETC
+## Workhop description  
 
+Network science approaches are being increasingly used to explore complex interactions and the general connectivity among entities, from friends in a social network to the spread of a disease in a population. Due its complexity, network data is often explored and communicated using data visualizations. In this intermediate R workshop we will cover how to tell useful stories with network data using two popular network objects - igraph and network - and the associated plotting packages that are compatible with much of the ggplot2 framework. In this interactive and hands-on workshop we'll use the GGally and ggbipart packages in R to plot one-mode and two-mode networks. As we introduce functions unique to these packages we will discuss what visualization features best suit different types of network data and research communication goals. Along the way we will cover basic data preparation steps and how to calculate (or assign) key network descriptives including centrality measures, edge attributes, and community clusters for your plots.
+
+The target audience for this workshop is intermediate to advanced R users. This workshop will provide only a cursory introduction to network data and therefore is best suited for learners who have some familiarity working with networks. While workshop examples will be based primarily on social scientific examples (e.g., social connections and co-occurrence networks), network visualizations can be applied to a wide variety of research questions and learners from all domains at UC Davis are welcome.
+
+### Learning goals  
+
+After completing this workshop, learners should be able to:
+- Distinguish between igraph and network objects in R
+- Identify the necessary components for visualizing networks in GGally's ggnet2 and ggbipart
+- Calculate network and node-level descriptives
+- Select among various visualization strategies for diverse communication goals
+- Create well-designed network figures.   
+- Identify where to go to learn more!
+
+### Prerequisites  
+
+Participants must have taken DataLab’s "R Basics"" workshop series and/or have prior experience using R, be comfortable with basic R syntax, and have it pre-installed and running on their laptops. We also strongly encourage to have either taken DataLab's Intermediate R Data Visualization workshop, or have general familiarity with how to make plots in R using the ggplot2 package.
 
 ## Contributing
 
