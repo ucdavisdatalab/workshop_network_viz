@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-us" xml:lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Data | Network Visualization</title>
+  <meta name="description" content="2 Data | Network Visualization" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Data | Network Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="ucdavisdatalab/workshop_network_viz" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Data | Network Visualization" />
+  
+  
+  
+
+<meta name="author" content="Liza Wood" />
+
+
+<meta name="date" content="2023-02-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction.html"/>
+<link rel="next" href="one-mode-visualization.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://datalab.ucdavis.edu/">
+  <img src="https://datalab.ucdavis.edu/wp-content/uploads/2019/07/datalab-logo-full-color-rgb-1.png" style="height: 100%; width: 100%; object-fit: contain" />
+</a></li>
+<li><a href="./" style="font-size: 18px"Network visualization</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.0.1</b> What are network data?</a></li>
+<li class="chapter" data-level="1.0.2" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.0.2</b> Features of a network</a></li>
+<li class="chapter" data-level="1.0.3" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.0.3</b> Network statistics</a></li>
+<li class="chapter" data-level="1.0.4" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.0.4</b> Storing network data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="data.html"><a href="data.html#about-delta-science-tracker"><i class="fa fa-check"></i><b>2.0.1</b> About Delta Science Tracker</a></li>
+<li class="chapter" data-level="2.0.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.0.2</b> Data descriptions</a></li>
+<li class="chapter" data-level="2.0.3" data-path="data.html"><a href="data.html#what-story-do-we-want-to-tell"><i class="fa fa-check"></i><b>2.0.3</b> What story do we want to tell?</a></li>
+<li class="chapter" data-level="2.0.4" data-path="data.html"><a href="data.html#creating-network-objects-in-r"><i class="fa fa-check"></i><b>2.0.4</b> Creating network objects in R</a></li>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#network-descriptives"><i class="fa fa-check"></i><b>2.1</b> Network descriptives</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>3</b> One mode visualization</a></li>
+<li class="chapter" data-level="4" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>4</b> Basics</a></li>
+<li class="chapter" data-level="5" data-path="community.html"><a href="community.html"><i class="fa fa-check"></i><b>5</b> Community</a></li>
+<li class="chapter" data-level="6" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>6</b> Additional resources</a></li>
+<li class="chapter" data-level="7" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>7</b> igraph visualiation</a></li>
+<li class="chapter" data-level="8" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>8</b> ggnet2</a></li>
+<li class="chapter" data-level="9" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>9</b> interactive</a></li>
+<li class="divider"></li>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+  <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
+</a>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="about-delta-science-tracker" class="section level3 hasAnchor" number="2.0.1">
+<h3><span class="header-section-number">2.0.1</span> About Delta Science Tracker<a href="data.html#about-delta-science-tracker" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We are using publicly available data from the Delta Stewardship Council’s (DSC) <a href="https://sciencetracker.deltacouncil.ca.gov/">Delta Science Tracker</a>. This database is a library of Delta-related research over the last 50 years. As the DSC’s website explains:</p>
+<div class="line-block">“The Delta Science Tracker is a tool to improve coordination and collaboration of science activities in a way that is valuable to scientists, decision-makers, and managers in the Delta. The Delta Science Tracker allows users to explore and visualize recent research and monitoring efforts through the lenses of science activities, organizations, and people. It is intended to promote communication, create opportunities for collaboration, and enhance transparency for science funding opportunities and decisions.”</div>
+<p>The data we’ll use was downloaded from the DSC’s <a href="https://sciencetracker.deltacouncil.ca.gov/visualizations">visualizations page</a>, with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found <a href="scraping_data.R">here</a>.</p>
+</div>
+<div id="data-descriptions" class="section level3 hasAnchor" number="2.0.2">
+<h3><span class="header-section-number">2.0.2</span> Data descriptions<a href="data.html#data-descriptions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Before we get into visualizations, we want to take a look at the data we have available. What relationships do we have? And what node or edge attributes are available?</p>
+<p>The relational data we will begin with is a two-mode edge list.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_twomode.csv&#39;</span>)</span>
+<span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges)</span></code></pre></div>
+<pre><code>##   project_id                    org_name
+## 1      50122 Agricultural Coalitions:...
+## 2      50122                     SJCDWQC
+## 3      49780                  Anchor QEA
+## 4      49780                        SFSU
+## 5      49780                       USFWS
+## 6      49780                         DWR</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_twomode.csv&#39;</span>)</span>
+<span id="cb3-2"><a href="data.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes)</span></code></pre></div>
+<pre><code>##    name                                    proj_name mode startdate enddate
+## 1 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+## 2 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+## 3 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+## 4 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+## 5 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+## 6 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
+##   funds n_years                     sci_theme              mgmt_theme
+## 1    $0      12      Environmental conditions           Water quality
+## 2    $0      12      Environmental conditions Water supply management
+## 3    $0      12               Habitat changes           Water quality
+## 4    $0      12               Habitat changes Water supply management
+## 5    $0      12 Land use and human activities           Water quality
+## 6    $0      12 Land use and human activities Water supply management
+##                                                     url
+## 1 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 2 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 3 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 4 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 5 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 6 https://sciencetracker.deltacouncil.ca.gov/node/50122</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(nodes)</span></code></pre></div>
+<pre><code>##                            name proj_name mode startdate enddate funds n_years
+## 627                         NPS      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+## 628      Pacific Flyway Council      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+## 629                         UBC      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+## 630     Oregon State University      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+## 631 Woodland-Davis Clean Wat...      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+## 632        University of Kansas      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
+##     sci_theme mgmt_theme  url
+## 627      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
+## 628      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
+## 629      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
+## 630      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
+## 631      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
+## 632      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;</code></pre>
+</div>
+<div id="what-story-do-we-want-to-tell" class="section level3 hasAnchor" number="2.0.3">
+<h3><span class="header-section-number">2.0.3</span> What story do we want to tell?<a href="data.html#what-story-do-we-want-to-tell" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>These data have some interesting features: longitudinal data, attributes of projects but not of research organizations, project themes,</p>
+<p>communities</p>
+
+</div>
+<div id="creating-network-objects-in-r" class="section level3 hasAnchor" number="2.0.4">
+<h3><span class="header-section-number">2.0.4</span> Creating network objects in R<a href="data.html#creating-network-objects-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>igraph</p>
+<p>graph_from_edgelist()
+syntax for manipulating igraphs
+V(g)<span class="math inline">\(nodeattribute E(g)\)</span>edgeattribute</p>
+<p>network</p>
+<p>syntax for manipulating networks
+net %v% ‘nodeattribute’
+net %e% ‘edgeattribute’</p>
+
+</div>
+<div id="network-descriptives" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Network descriptives<a href="data.html#network-descriptives" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Some on network/graph features
+* Node/vertex
+* Multi-mode
+* Edge/connection
+* Multi-plex
+* Multi-level</p>
+<p>Network statistics
+* Network-level
+* Size
+* Density
+* Centralization
+* Transitivity
+* Degree distribution
+* Actor-level
+* Centrality (degree, betweenness, eigenvector, etc.)</p>
+
+<p>#Two-mode visualization</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="one-mode-visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/edit/master/02_data.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/blob/master/02_data.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
