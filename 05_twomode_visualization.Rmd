@@ -1,1 +1,6 @@
-#Two-mode visualization
+# Two-mode visualization
+
+Two-mode: 
+What actors have been most active across projects? 
+* In total
+* For climate-related projects?

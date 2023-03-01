@@ -1,14 +1,53 @@
-### Creating network objects in R
+# Creating network objects in R
 
 igraph
 
-graph_from_edgelist()
+```{r, echo = F}
+edges <- read.csv('data/edgelist_twomode.csv')
+edges_p <- read.csv('data/edgelist_projected.csv') %>% select(-project_id) %>% unique()
+nodes <- read.csv('data/nodelist_twomode.csv')
+```
+
+
+```{r}
+library(igraph)
+# graph_from_data_frame lets us include our nodelist right away, whereas
+# graph_from_edgelist does not
+g <- graph_from_data_frame(edges_p, vertices = nodes, directed = F)
+g_bip <- make_bipartite_graph(nodes$mode, leads, directed = FALSE)
+is_bipartite(g)
+```
+
 syntax for manipulating igraphs
-V(g)$nodeattribute
-E(g)$edgeattribute
+```{r}
+V(g)$n_years
+E(g)$X1995.2009
+```
 
 network
 
+```{r}
+library(network)
+net <- network(x = edges_p, 
+               vertex.attr = nodes,
+               bipartite = F,  
+               directed = F)
+
+net_bip <- network(x = edges, 
+               vertex.attr = nodes,
+               bipartite = T,  
+               directed = F)
+net
+```
+
 syntax for manipulating networks
-net %v% 'nodeattribute'
-net %e% 'edgeattribute'
+```{r}
+head(net %v% 'n_years')
+head(net_bip %e% 'leadership')
+```
+
+```{r}
+leads <- net %e% 'leadership'
+conts <- net %e% 'contribution'
+```
+

@@ -1,5 +1,9 @@
 # One mode visualization
 
+One-mode:
+Can we see certain collaborative research communities in the Delta?
+How have collaborative structures changes over time?
+
 Projecting network data
 
 # Basics

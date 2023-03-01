@@ -15,15 +15,17 @@ Network data are relational... humans to humans. Animals to plants.
   * Attributes
 * Levels
 
-### Network statistics
-**Network-level statistics**  
-  * Size
-  * Density
-  * Centralization
-  * Transitivity
-  * Degree distribution
+### Network statistics 
+
+**Network-level statistics**   
+* Size  
+* Density  
+* Centralization  
+* Transitivity  
+* Degree distribution  
+
 **Actor-level**
-  * Centrality (degree, betweenness, eigenvector, etc.)
+* Centrality (degree, betweenness, eigenvector, etc.)
   
 
 ### Storing network data

@@ -1,4 +1,4 @@
-## Network descriptives
+# Network descriptives
 
 Some on network/graph features
 * Node/vertex

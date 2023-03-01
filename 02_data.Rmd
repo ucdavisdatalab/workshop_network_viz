@@ -6,34 +6,82 @@ We are using publicly available data from the Delta Stewardship Council's (DSC) 
 
 | "The Delta Science Tracker is a tool to improve coordination and collaboration of science activities in a way that is valuable to scientists, decision-makers, and managers in the Delta. The Delta Science Tracker allows users to explore and visualize recent research and monitoring efforts through the lenses of science activities, organizations, and people. It is intended to promote communication, create opportunities for collaboration, and enhance transparency for science funding opportunities and decisions."
 
-The data we'll use was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](scraping_data.R).
+The data we'll use was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R).
 
 ### Data descriptions  
 
 Before we get into visualizations, we want to take a look at the data we have available. What relationships do we have? And what node or edge attributes are available?  
 
-The relational data we will begin with is a two-mode edge list. 
+**Two-mode edge list:** Our first mode, `project_id` are the id numbers representing different Delta science projects. And our second mode, `org_id`, is the organization(s) that are working on that project. Our edge list had 680 rows, meaning that we have that many connections between our two modes. We also have edge attributes, which are what kind of involvement an organization had in the project: contributor or leader.  
 
 ```{r}
 edges <- read.csv('data/edgelist_twomode.csv')
 head(edges)
 ```
 
+**One-mode edge list:** We project our two-mode network to a one-mode so that we can understand collaboration. We've added in an edge attribute to our collaboration tie based on the years that different actors collaborated together.
+
+```{r}
+edges_p <- read.csv('data/edgelist_projected.csv') 
+head(edges_p)
+```
+
+```{r, echo = F}
+# We got out projected data directly from the DST webpage, but generally,
+# you can project any bipartite network into a one-mode network using the
+# following steps:
+
+# create count table where organizations are columns (make y)
+tbl <- table(edges[c(2,1)])
+# pull out column names -- these are mode 1 (orgs)
+orgids <- colnames(tbl)
+# take the cross-product to get a co-occur matrix
+comat <- crossprod(tbl)
+# assign self-co-occurrences 0
+diag(comat) <- 0
+# This should be symmetrical
+isSymmetric(comat)
+# make a df and add ids as the column names
+comat <- data.frame(comat)
+colnames(comat) <- orgids
+dim(comat)
+# Remove those with no co-occurrence at all
+comat2 <- comat[rowSums(comat, na.rm = T) != 0, 
+                colSums(comat, na.rm = T) != 0]
+dim(comat2)
+# make co-occur df into matrix object
+comat3 <- as.matrix(comat2)
+
+# create a graph so that it can be converted into a weighted edgelist
+g <- igraph::graph_from_adjacency_matrix(comat3, weighted = T, mode = 'undirected')
+el_proj <- igraph::get.data.frame(g)
+
+# rename columns and sort
+colnames(el_proj) <- c("V1", "V2", "weight")
+```
+
+**Nodelist**
+
 ```{r}
 nodes <- read.csv('data/nodelist_twomode.csv')
 head(nodes)
-tail(nodes)
 ```
 
+Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes.
+
+Note: Formatting network data is half the battle. See our script if you want to see how we 
 
 ### What story do we want to tell?
 
-These data have some interesting features: longitudinal data, attributes of projects but not of research organizations, project themes,
+Two-mode: 
+What actors have been most active across projects? 
+* As leaders vs. contributors? (Edge attribute)
+* For climate-related projects? (Node attribute of project node)
 
-communities
+One-mode:
+How have different organizations collaborated across projects?
+* Over time? (Edge attribute)
+* Within different communities? (Network-derived node attribute)
 
 
-```{r}
-
-```
 
