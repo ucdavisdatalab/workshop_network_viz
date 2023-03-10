@@ -1,52 +1,83 @@
 # Creating network objects in R
 
-igraph
+Now that we have our edge lists and node lists, we want to create our network objects. There are two popular network packages (and consequently, network object types) in R `igraph` generates a list object of class "igraph" and `network` generates an list object of class "network". We are going to be working primarily with `network` objects, but I'd like to make both because you are likely to run into both of them along the way. 
 
 ```{r, echo = F}
 edges <- read.csv('data/edgelist_twomode.csv')
-edges_p <- read.csv('data/edgelist_projected.csv') %>% select(-project_id) %>% unique()
+edges_p <- read.csv('data/edgelist_projected.csv')
 nodes <- read.csv('data/nodelist_twomode.csv')
+nodes_mode1 <- nodes[nodes$mode == 1,]
 ```
 
+## `igraph` 
+
+First, let's make an `igraph` object. `igraph` seems to have more documentation/Stack Overflow resources, so it might be tempting to start here. We can load in the `igraph` package and use the `graph_from_data_frame()` function. Note that there are dozens of `graph_from...` functions. Many of them sound intuitive, but I prefer `graph_from_data_frame()` over `graph_from_edgelist()` because the former allows us to include the node list as an argument, whereas the latter does not.
+
+We want to start with creating both our one and two-mode networks. For our one-mode networks we want to use the `edges_p` object (short for edges_projected because projections are one-mode) and our nodes. For our two-mode network we can use our edges (STILL WORKING ON THIS FUNCTION).
 
 ```{r}
 library(igraph)
-# graph_from_data_frame lets us include our nodelist right away, whereas
-# graph_from_edgelist does not
-g <- graph_from_data_frame(edges_p, vertices = nodes, directed = F)
-g_bip <- make_bipartite_graph(nodes$mode, leads, directed = FALSE)
+g <- graph_from_data_frame(edges_p, vertices = nodes_mode1, directed = F)
+# need edges to be a vector but I am not sure how to get that_bip
+g_bip <- make_bipartite_graph(nodes$mode, edges, directed = FALSE)
 is_bipartite(g)
 ```
 
-syntax for manipulating igraphs
+We can take a look at a summary of the igraph object by just printing it. We see the number of nodes and edges summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).
+
 ```{r}
-V(g)$n_years
-E(g)$X1995.2009
+g
 ```
 
-network
+The syntax for manipulating igraphs is below. We use the `V()` and `E()` functions to call on either vertices or edges of our igraph, and then can use the `$` symbol to subset from those elements of the network.  
+
+```{r}
+# Subset the vertex attribute: n_years
+head(V(g)$n_years)
+# Subset the edge attribute: a logical value for whether a collaboration
+# happened between 1995-2009
+E(g)$Y1995_2009
+```
+
+## `network`
+
+Personally, I think the `igraph` has more limited statistical functionality than `network`, so I prefer `network` objects. We initialize a network object with the `network` function (`network` really needs to get more creative in its naming approaches). Just like with `igraph`, for our one-mode network we will use our projected edges and mode 1 nodes. For our two-mode network we can use our full edge and node lists.
+
+```{r}
+library(intergraph)
+```
+
+
 
 ```{r}
 library(network)
+net_convert <- asNetwork(g)
+
 net <- network(x = edges_p, 
-               vertex.attr = nodes,
+               vertices = nodes_mode1,
                bipartite = F,  
                directed = F)
 
 net_bip <- network(x = edges, 
-               vertex.attr = nodes,
+               vertices = nodes,
                bipartite = T,  
                directed = F)
+```
+
+When we print out a network object we get a different-looking summary, but it generally carries the same information: 
+```{r}
 net
 ```
 
-syntax for manipulating networks
+The syntax for manipulating `network` objects is below. We use the `%v%` and `%e%` WHT ARE THESE CALLED to call on either vertices or edges of our network, and then name the attribute in quotation marks 
+
 ```{r}
 head(net %v% 'n_years')
 head(net_bip %e% 'leadership')
 ```
 
-```{r}
+```{r, echo = F}
+# Doing this to see if I can use these to create the bipartite igraph
 leads <- net %e% 'leadership'
 conts <- net %e% 'contribution'
 ```

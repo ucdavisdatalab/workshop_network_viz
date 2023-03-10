@@ -1,0 +1,7 @@
+# Two-mode visualization
+
+* What actors have been most active across projects? 
+* Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+* What actors have been most active on climate-related projects? (Node attribute of project node)
+
+We can use the same approaches as with one mode... but we shouldn't because mode one and two are just not comparable.

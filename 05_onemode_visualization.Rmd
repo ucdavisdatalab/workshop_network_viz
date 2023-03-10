@@ -1,0 +1,503 @@
+# One-mode visualization
+
+## Visualization goals:
+
+1. What does the collaborative network of Delta science research look like? 
+2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
+3. How have research collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+
+### Preparing to work with `network`
+
+We are going to stick to only working with the `network` package, even though the functions we will use for visualization are compatible with both objects. However, there are commonly-used network functions in each package, `igraph` and `network`, that mask one another. For instance:
+
+```{r}
+sna::degree()
+igraph::degree()
+```
+
+To avoid confusion and masking in R, we are going to detach the igraph package.
+
+```{r}
+detach("package:igraph", unload = TRUE)
+```
+
+```{r, echo = F}
+edges <- read.csv('data/edgelist_twomode.csv')
+edges_p <- read.csv('data/edgelist_projected.csv')
+nodes <- read.csv('data/nodelist_twomode.csv')
+nodes_mode1 <- nodes[nodes$mode == 1 & 
+                       (nodes$id %in% edges_p$from_org_id | 
+                          nodes$id %in% edges_p$to_org_id),]
+net <- network(x = edges_p, 
+               vertices = nodes_mode1,
+               bipartite = F,  
+               directed = F)
+```
+
+
+```{r}
+net %v% 'degree' <- sna::degree(net)
+```
+
+## Getting started with `ggraph`
+
+To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What does the collaborative network of Delta science research look like?_ 
+
+`ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings
+
+```{r}
+ggraph(net) +
+    geom_edge_link() +
+    geom_node_point()
+```
+
+These are some defaults at play here:
+* layout = 'auto', which is the 'stress' layout  
+* default aesthetic mapping for geom_edges: x, y, xend, yend
+* default aesthetic mapping for geom_node_point: x, y
+
+First, let's talk about layouts.
+```{r}
+?ggnet2
+# Not helpful
+# link to the website
+```
+
+```{r}
+ggraph(net, layout = 'stress', bbox = 5) +
+    geom_edge_link() +
+    geom_node_point()
+
+ggraph(net, layout = 'kk') +
+    geom_edge_link() +
+    geom_node_point()
+
+ggraph(net, layout = 'fr') +
+    geom_edge_link() +
+    geom_node_point()
+
+ggraph(net, layout = 'tree') +
+    geom_edge_link() +
+    geom_node_point()
+
+ggraph(net, layout = 'circle') +
+    geom_edge_link() +
+    geom_node_point()
+```
+### Aesthetics
+
+Now let's start adding some aesthetics, much like we would with a ggplot to improve overall appeal
+
+Reminder about colors. I liek to set a colors object and call upon it
+```{r}
+viridis::viridis(8)
+```
+```{r}
+clrs <- c("#440154FF", "#46337EFF", "#365C8DFF", "#277F8EFF",
+          "#1FA187FF", "#4AC16DFF", "#9FDA3AFF", "#FDE725FF")
+```
+
+We can change colors and assign additional aestehtics to the figure.
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree'), color = clrs[4]) 
+```
+
+We can also add themes and labels, just like with ggplot2. 
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree'), color = clrs[4]) +
+  theme_void() +
+  theme(legend.position = "none") +
+  labs(title = "Delta Science Collaborative Research Network")
+```
+
+Notice it changes every time, a little bit. You can set your seed (every time before you plot to keep it consistent.)
+
+We might want to remove our legend
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree'), color = clrs[4]) +
+  theme_void() +
+  theme(legend.position = "none")
+```
+
+### Label particular nodes
+
+We have a variable that is our names, but it might be a bit overwhelming
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree'), color = clrs[4]) +
+  theme_void() +
+  theme(legend.position = "none") +
+  geom_node_text(aes(label = net %v% 'name'),
+                family = "Times",
+                size = 3, 
+                color="black")
+```
+
+Let's be selective based on degree. Let's say we want to take the top 5-degree nodes and label them.
+```{r}
+topdeg <- data.frame("deg" = net %v% 'degree') %>% 
+  top_n(5)
+net %v% 'labels' <- ifelse((net %v% 'degree') %in% topdeg$deg, 
+                           net %v% 'name', '')
+```
+
+Now we have a sparse label attribute
+
+```{r}
+net %v% 'labels'
+```
+
+And so it can make our plotting a bit better
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree'), color = clrs[6]) +
+  theme_void() +
+  theme(legend.position = "none") +
+  geom_node_text(aes(label = net %v% 'labels'),
+                   family = "Times",
+                   size = 3, 
+                   color="black")
+```
+
+Now that we've got that down as a base, I want to set this as a function so that we can move through other material a little more smoothly
+```{r}
+netplot_function <- function(netname){
+  p <- ggraph(netname, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = netname %v% 'degree'), 
+                  color = clrs[6]) +
+  theme_void() +
+  theme(legend.position = "none") +
+  geom_node_text(aes(label = netname %v% 'labels'),
+                   family = "Times",
+                   size = 3, 
+                   color="black") 
+  return(p)
+}
+```
+
+## Community detection
+
+Often we're curious about whether or not there is some pattern within that giant plate of spaghetti. Are some organizations linking with certain others on a more regular basis? We might want to do some community detection approaches.
+
+Broadly, community detection is...
+
+# Communities
+
+Have there been certain communities of research over time?
+
+The one thing I think igraph has going for it is community detection.
+
+```{r}
+?igraph::cluster_walktrap() # need to specify steps
+```
+
+```{r}
+wt <- igraph::cluster_walktrap(g)
+table(wt$membership) # 47 communities, where most are 
+```
+
+In network there is the equivalent cluster function
+
+```{r}
+?sna::equiv.clust()
+```
+
+```{r}
+ec <- equiv.clust(net)
+plot(ec)
+length(unique(ec$cluster$height))
+nblocks = 30
+sbm <- blockmodel(net, ec, k = nblocks)
+sbm
+membership <- data.frame("block" = sbm$block.membership,
+                         "id" = ec$cluster$order)
+membership <- membership[order(membership$id),]
+net %v% 'membership' <- membership$block
+table(net %v% 'membership')
+```
+We could assign color to that membership... but some of those memberships are really not significant
+
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree',
+                      color = factor(net %v% 'membership', levels = 1:30))) +
+  theme_void() +
+  geom_node_text(aes(label = net %v% 'labels'),
+                   family = "Times",
+                   size = 3, 
+                   color="black")  +
+  scale_color_viridis_d() +
+  labs(color = "Community", size = "Degree")
+```
+
+```{r}
+table(net %v% 'membership')
+sig_blocks <- data.frame('corr' = diag(sbm$block.model),
+           'b' = 1:30) %>% 
+  filter(!(is.nan(corr)) & corr > .5)
+
+net %v% 'member_grp' <- ifelse(net %v% 'membership' == sig_blocks$b[1], 1, 
+                          ifelse(net %v% 'membership' == sig_blocks$b[2], 2, 
+                          ifelse(net %v% 'membership' == sig_blocks$b[3], 3,
+                          ifelse(net %v% 'membership' == sig_blocks$b[4], 4,
+                          ifelse(net %v% 'membership' == sig_blocks$b[5], 5,
+                          ifelse(net %v% 'membership' == sig_blocks$b[6], 6,
+                          ifelse(net %v% 'membership' == sig_blocks$b[7], 7,
+                          ifelse(net %v% 'membership' == sig_blocks$b[8], 8,
+                                 9))))))))
+```
+
+```{r}
+ggraph(net, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net %v% 'degree',
+                      color = factor(net %v% 'member_grp'))) +
+  theme_void() +
+  geom_node_text(aes(label = net %v% 'labels'),
+                   family = "Times",
+                   size = 3, 
+                   color="black")  +
+  theme(legend.position = "none") +
+  scale_color_manual(values = c(clrs, "grey")) 
+```
+
+# Across time?
+
+Often you will want to induce subnetworks -- based on edge attribute
+```{r}
+# Get the edges for each time period
+t1 <- which(net %e% 'before_1980' == T)
+t2 <- which(net %e% 'Y1980_1994' == T)
+t3 <- which(net %e% 'Y1995_2009' == T)
+t4 <- which(net %e% 'Y2010_2024' == T)
+
+# Induce subgraphs based on those edges
+net_t1 <- network::get.inducedSubgraph(net, eid = t1)
+net_t2 <- network::get.inducedSubgraph(net, eid = t2)
+net_t3 <- network::get.inducedSubgraph(net, eid = t3)
+net_t4 <- network::get.inducedSubgraph(net, eid = t4)
+```
+
+```{r}
+# Get the edges for each time period
+t1_edges <- filter(edges_p, before_1980 == T)
+t2_edges <- filter(edges_p, Y1980_1994 == T)
+t3_edges <- filter(edges_p, Y1995_2009 == T)
+t4_edges <- filter(edges_p, Y2010_2024 == T)
+```
+
+
+Now we have subgraphs
+```{r}
+net_t4
+```
+
+But note that our attributes remain from the whole network
+```{r}
+(net_t1 %v% 'degree')[(net_t1 %v% 'name' == "SFEI")]
+(net_t2 %v% 'degree')[(net_t2 %v% 'name' == "SFEI")]
+```
+
+But this is uncorrect, so we want to reassign those values
+```{r}
+net_t1 %v% 'degree' <- sna::degree(net_t1)
+net_t2 %v% 'degree' <- sna::degree(net_t2)
+net_t3 %v% 'degree' <- sna::degree(net_t3)
+net_t4 %v% 'degree' <- sna::degree(net_t4)
+df <- data.frame('degree' = net_t4 %v% 'degree', name = net_t4 %v% 'name')
+```
+
+Since our degree value has changed, we also wanted to change our labels. We can write a function to do that
+
+```{r}
+get_top_degree <- function(netname, n){
+  topdeg <- data.frame("deg" = netname %v% 'degree') %>% 
+    top_n(n)
+  labels <- ifelse((netname %v% 'degree') %in% topdeg$deg, 
+                             netname %v% 'name', '')
+  return(labels)
+}
+
+net_t1 %v% 'labels' <- get_top_degree(net_t1, 5)
+net_t2 %v% 'labels' <- get_top_degree(net_t2, 5)
+net_t3 %v% 'labels' <- get_top_degree(net_t3, 5)
+net_t4 %v% 'labels' <- get_top_degree(net_t4, 5)
+```
+
+Now let's plot one of our subgraphs. We can use the same netplot function
+```{r}
+netplot_function(net_t1)
+netplot_function(net_t2)
+netplot_function(net_t3)
+netplot_function(net_t4)
+```
+The issue here is that it is hard to really visualize change because the layout changes every time to make the visualize look more like a network... So let's fixing our coordinates. We want nodes to be in the same position in the plotting of every subgraph.
+
+
+# Fixing coordinates
+
+With ggraph/network, we can fix coordinates by creating a layout table from our initial network. First let's make sure we have unique identifiers as that table. These layout tables give x and y coordinates to each 
+```{r}
+net %v% 'id' <- net %v% 'vertex.names'
+fixed_coord <- create_layout(net, layout = 'kk')
+```
+
+# Then we can create those same layout tables for each subgraph
+```{r}
+fixed_coord_t4 <- create_layout(net_t4, layout = 'kk')
+# joins don't seem to wrok
+#fixed_coord_t4 <- fixed_coord_t4[,-c(1:2)]
+#fixed_coord_t4 <- right_join(fixed_coord[,c(1,2,6)], fixed_coord_t4)
+coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t4$id, c(1,2,6)]
+fixed_coord_t4$x <- coords_we_need$x
+fixed_coord_t4$y <- coords_we_need$y
+
+fixed_coord_t4  %>% 
+  ggraph() + 
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = degree), 
+                  color = clrs[6]) +
+  theme_void() +
+  theme(legend.position = "none") +
+  geom_node_text(aes(label = labels),
+                   family = "Times",
+                   size = 3, 
+                   color="black") +
+  xlim(c(-9, 7)) +
+  ylim(c(-7, 8))
+```
+
+```{r}
+subplot_viz_fixed <- function(fixed_coords, netname){
+
+  fixed_coord_t <- create_layout(netname, layout = 'kk')
+  coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t$id, c(1,2,6)]
+  fixed_coord_t$x <- coords_we_need$x
+  fixed_coord_t$y <- coords_we_need$y
+  
+  fixed_coord_t  %>% 
+    ggraph() + 
+    geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+    geom_node_point(aes(size = degree), 
+                    color = clrs[6]) +
+    theme_void() +
+    theme(legend.position = "none") +
+    geom_node_text(aes(label = labels),
+                     family = "Times",
+                     size = 3, 
+                     color="black") +
+    xlim(c(-9, 7)) +
+    ylim(c(-7, 8))
+}
+```
+
+```{r}
+subplot_viz_fixed(fixed_coord, net)
+subplot_viz_fixed(fixed_coord, net_t1)
+subplot_viz_fixed(fixed_coord, net_t2)
+subplot_viz_fixed(fixed_coord, net_t3)
+subplot_viz_fixed(fixed_coord, net_t4)
+```
+
+```{r}
+subplot_viz_fixed(fixed_coord, net) + 
+  labs(title = "Collaborative network: 1950-2022") +
+  theme(text= element_text(size=10, family="Times")) 
+subplot_viz_fixed(fixed_coord, net_t1) + 
+  labs(title = "Collaborative network: 1950-1979") +
+  theme(text= element_text(size=10, family="Times")) 
+subplot_viz_fixed(fixed_coord, net_t2) + 
+  labs(title = "Collaborative network: 1980-1994") +
+  theme(text= element_text(size=10, family="Times")) 
+subplot_viz_fixed(fixed_coord, net_t3) + 
+  labs(title = "Collaborative network: 1995-2009") +
+  theme(text= element_text(size=10, family="Times")) 
+subplot_viz_fixed(fixed_coord, net_t4) + 
+  labs(title = "Collaborative network: 2010-2022") +
+  theme(text= element_text(size=10, family="Times")) 
+```
+
+
+
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree",
+               label = 'labels',
+               color = 'membership',
+               label.size = 2,
+               legend.position = "none")
+```
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree",
+               label = 'labels',
+               color = 'membership',
+               palette = viridisLite::cividis(n=12),
+               label.size = 2,
+               legend.position = "none")
+```
+
+```{r}
+colors <- viridis::viridis(nblocks)
+net %v% 'member_color' <- ifelse(net %v% 'membership' %in% c(4,7,9,10,12), colors[7],
+                          ifelse(net %v% 'membership' == 1, colors[2], 
+                          ifelse(net %v% 'membership' == 2, colors[3], 
+                          ifelse(net %v% 'membership' == 3, colors[4], 
+                          ifelse(net %v% 'membership' == 5, colors[5], 
+                          ifelse(net %v% 'membership' == 6, colors[6], 
+                          ifelse(net %v% 'membership' == 8, colors[8], 
+                          ifelse(net %v% 'membership' == 11, colors[11], 
+                                 colors[12]))))))))
+```
+
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree",
+               label = 'labels',
+               color = 'member_color',
+               label.size = 2,
+               legend.position = "none")
+```
+
+## Interactive plots
+```{r}
+plotly::ggplotly(p1)
+```
+
+# D3
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree")
+```
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree",
+               color = clrs[6],
+               alpha = .5,
+               legend.position = "none")
+```
+
+```{r}
+GGally::ggnet2(net,
+               size = "degree",
+               label = 'labels',
+               color = clrs[6],
+               alpha = .9,
+               label.size = 2,
+               legend.position = "none")
+```

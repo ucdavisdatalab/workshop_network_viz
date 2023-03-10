@@ -96,7 +96,7 @@ orgs <- select(roles_df, org_name, org_id) %>% unique()
 orgs$trunc_name <- NA
 for(i in 1:length(trunc_names)){
   for(j in 1:nrow(orgs)){
-    orgs$trunc_name[j] <- ifelse(str_detect(orgs$name[j], trunc_names[i]),
+    orgs$trunc_name[j] <- ifelse(str_detect(orgs$org_name[j], trunc_names[i]),
                                  trunc_names[i], next)
   }
 }
@@ -106,10 +106,10 @@ for(i in 1:nrow(orgs_trunc)){
   for(j in 1:nrow(el_projected)){
     el_projected$to[j] <- ifelse(str_detect(el_projected$to[j],
                                             orgs_trunc$trunc_name[i]),
-                                 orgs_trunc$name[i], el_projected$to[j])
+                                 orgs_trunc$org_name[i], el_projected$to[j])
     el_projected$from[j] <- ifelse(str_detect(el_projected$from[j],
                                             orgs_trunc$trunc_name[i]),
-                                 orgs_trunc$name[i], el_projected$from[j])
+                                 orgs_trunc$org_name[i], el_projected$from[j])
   }
 }
 
@@ -230,7 +230,7 @@ colnames(projs)[31:ncol(projs)] <- paste0('mgmt_', str_remove_all(colnames(projs
 
 # 6. Create full node list ----
 
-colnames(orgs) <- c("name", "id")
+colnames(orgs) <- c("name", "id", "trunc_name")
 orgs$mode = 1
 colnames(projs)[c(1,3)] <- c("id", "name")
 projs$mode = 0
@@ -262,15 +262,15 @@ for(i in 1:nrow(el_projected)){
   el_projected$daterange[i] <- ifelse(is.na(el_projected$startdate[i]), NA,
                                 ifelse(unique(is.na(el_projected$enddate[i]) & 
                                       el_projected$startdate[i] %in% 2010:2024)[1] == T,
-                                "2010-2024",
+                                "Y2010_2024",
                                 ifelse(unique(el_projected$startdate[i]:el_projected$enddate[i] %in% 1950:1979)[1] == T,
-                                       "before 1980",
+                                       "before_1980",
                                 ifelse(unique(el_projected$startdate[i]:el_projected$enddate[i] %in% 1980:1994)[1] == T,
-                                       "1980-1994",
+                                       "Y1980_1994",
                                 ifelse(unique(el_projected$startdate[i]:el_projected$enddate[i]  %in% 1995:2009)[1] == T,
-                                       "1995-2009",
+                                       "Y1995_2009",
                                 ifelse(unique(el_projected$startdate[i]:el_projected$enddate[i]  %in% 2010:2024)[1] == T,
-                                       "2010-2024", NA))))))
+                                       "Y2010_2024", NA))))))
 }
 
 table(el_projected$daterange)
