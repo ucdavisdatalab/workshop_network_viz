@@ -1,6 +1,8 @@
 # One-mode visualization
 
-## Visualization goals:
+## Introduction
+
+### Visualization goals:
 
 1. What does the collaborative network of Delta science research look like? 
 2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
@@ -22,7 +24,6 @@ detach("package:igraph", unload = TRUE)
 ```
 
 ```{r, echo = F}
-edges <- read.csv('data/edgelist_twomode.csv')
 edges_p <- read.csv('data/edgelist_projected.csv')
 nodes <- read.csv('data/nodelist_twomode.csv')
 nodes_mode1 <- nodes[nodes$mode == 1 & 
@@ -56,6 +57,8 @@ These are some defaults at play here:
 * default aesthetic mapping for geom_edges: x, y, xend, yend
 * default aesthetic mapping for geom_node_point: x, y
 
+### Layouts
+
 First, let's talk about layouts.
 ```{r}
 ?ggnet2
@@ -84,7 +87,7 @@ ggraph(net, layout = 'circle') +
     geom_edge_link() +
     geom_node_point()
 ```
-### Aesthetics
+### Aesthetics, themes  
 
 Now let's start adding some aesthetics, much like we would with a ggplot to improve overall appeal
 
@@ -125,7 +128,7 @@ ggraph(net, layout = 'fr') +
   theme(legend.position = "none")
 ```
 
-### Label particular nodes
+### Node labels 
 
 We have a variable that is our names, but it might be a bit overwhelming
 ```{r}
@@ -190,8 +193,7 @@ Often we're curious about whether or not there is some pattern within that giant
 
 Broadly, community detection is...
 
-# Communities
-
+### Community is broadly defined 
 Have there been certain communities of research over time?
 
 The one thing I think igraph has going for it is community detection.
@@ -211,6 +213,7 @@ In network there is the equivalent cluster function
 ?sna::equiv.clust()
 ```
 
+### Equivalence clusters  
 ```{r}
 ec <- equiv.clust(net)
 plot(ec)
@@ -224,6 +227,7 @@ membership <- membership[order(membership$id),]
 net %v% 'membership' <- membership$block
 table(net %v% 'membership')
 ```
+
 We could assign color to that membership... but some of those memberships are really not significant
 
 ```{r}
@@ -240,6 +244,7 @@ ggraph(net, layout = 'fr') +
   labs(color = "Community", size = "Degree")
 ```
 
+Manually create your own grouping  
 ```{r}
 table(net %v% 'membership')
 sig_blocks <- data.frame('corr' = diag(sbm$block.model),
@@ -271,9 +276,11 @@ ggraph(net, layout = 'fr') +
   scale_color_manual(values = c(clrs, "grey")) 
 ```
 
-# Across time?
+## Longitudinal networks  
 
 Often you will want to induce subnetworks -- based on edge attribute
+
+### Induce subgraphs by edge  
 ```{r}
 # Get the edges for each time period
 t1 <- which(net %e% 'before_1980' == T)
@@ -288,14 +295,13 @@ net_t3 <- network::get.inducedSubgraph(net, eid = t3)
 net_t4 <- network::get.inducedSubgraph(net, eid = t4)
 ```
 
-```{r}
-# Get the edges for each time period
+```{r, echo = F}
+# Get the edges for each time period -- this is just a check
 t1_edges <- filter(edges_p, before_1980 == T)
 t2_edges <- filter(edges_p, Y1980_1994 == T)
 t3_edges <- filter(edges_p, Y1995_2009 == T)
 t4_edges <- filter(edges_p, Y2010_2024 == T)
 ```
-
 
 Now we have subgraphs
 ```{r}
@@ -314,7 +320,6 @@ net_t1 %v% 'degree' <- sna::degree(net_t1)
 net_t2 %v% 'degree' <- sna::degree(net_t2)
 net_t3 %v% 'degree' <- sna::degree(net_t3)
 net_t4 %v% 'degree' <- sna::degree(net_t4)
-df <- data.frame('degree' = net_t4 %v% 'degree', name = net_t4 %v% 'name')
 ```
 
 Since our degree value has changed, we also wanted to change our labels. We can write a function to do that
@@ -344,7 +349,7 @@ netplot_function(net_t4)
 The issue here is that it is hard to really visualize change because the layout changes every time to make the visualize look more like a network... So let's fixing our coordinates. We want nodes to be in the same position in the plotting of every subgraph.
 
 
-# Fixing coordinates
+### Fixing coordinates
 
 With ggraph/network, we can fix coordinates by creating a layout table from our initial network. First let's make sure we have unique identifiers as that table. These layout tables give x and y coordinates to each 
 ```{r}
@@ -354,15 +359,15 @@ fixed_coord <- create_layout(net, layout = 'kk')
 
 # Then we can create those same layout tables for each subgraph
 ```{r}
-fixed_coord_t4 <- create_layout(net_t4, layout = 'kk')
+fixed_coord_t1 <- create_layout(net_t1, layout = 'kk')
 # joins don't seem to wrok
-#fixed_coord_t4 <- fixed_coord_t4[,-c(1:2)]
-#fixed_coord_t4 <- right_join(fixed_coord[,c(1,2,6)], fixed_coord_t4)
-coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t4$id, c(1,2,6)]
-fixed_coord_t4$x <- coords_we_need$x
-fixed_coord_t4$y <- coords_we_need$y
+#fixed_coord_t1 <- fixed_coord_t1[,-c(1:2)]
+#fixed_coord_t1 <- right_join(fixed_coord[,c(1,2,6)], fixed_coord_t1)
+coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t1$id, c(1,2,6)]
+fixed_coord_t1$x <- coords_we_need$x
+fixed_coord_t1$y <- coords_we_need$y
 
-fixed_coord_t4  %>% 
+fixed_coord_t1  %>% 
   ggraph() + 
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
   geom_node_point(aes(size = degree), 
@@ -389,7 +394,7 @@ subplot_viz_fixed <- function(fixed_coords, netname){
     ggraph() + 
     geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
     geom_node_point(aes(size = degree), 
-                    color = clrs[6]) +
+                    color = clrs[4]) +
     theme_void() +
     theme(legend.position = "none") +
     geom_node_text(aes(label = labels),
@@ -427,7 +432,15 @@ subplot_viz_fixed(fixed_coord, net_t4) +
   theme(text= element_text(size=10, family="Times")) 
 ```
 
+## Interactive plots
+```{r}
+p1 <- subplot_viz_fixed(fixed_coord, net) + 
+  labs(title = "Collaborative network: 1950-2022") +
+  theme(text= element_text(size=10, family="Times")) 
+plotly::ggplotly(p1)
+```
 
+# D3
 
 
 ```{r}
@@ -472,12 +485,6 @@ GGally::ggnet2(net,
                legend.position = "none")
 ```
 
-## Interactive plots
-```{r}
-plotly::ggplotly(p1)
-```
-
-# D3
 
 ```{r}
 GGally::ggnet2(net,

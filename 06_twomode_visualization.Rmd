@@ -5,3 +5,43 @@
 * What actors have been most active on climate-related projects? (Node attribute of project node)
 
 We can use the same approaches as with one mode... but we shouldn't because mode one and two are just not comparable.
+
+```{r, echo = F}
+edges <- read.csv('data/edgelist_twomode.csv')
+nodes <- read.csv('data/nodelist_twomode.csv')
+net_b <- network(x = edges, 
+               vertices = nodes[nodes$id %in% edges$org_id |
+                                nodes$id %in% edges$project_id,],
+               bipartite = T,  
+               directed = F)
+```
+
+```{r}
+net_b %v% 'degree' <- sna::degree(net_b)
+topdeg <- data.frame("deg" = net_b %v% 'degree') %>% 
+  top_n(5)
+net_b %v% 'labels' <- ifelse((net_b %v% 'degree') %in% topdeg$deg, 
+                           net_b %v% 'name', '')
+netplot_function(net_b)
+```
+
+```{r}
+net_b %v% 'mode'
+```
+
+```{r}
+ggraph(net_b, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net_b %v% 'degree',
+                      shape = factor(net_b %v% 'mode')), 
+                  color = clrs[6]) +
+  theme_void() +
+  geom_node_text(aes(label = net_b %v% 'labels'),
+                   family = "Times",
+                   size = 3, 
+                   color="black")
+```
+
+# Normalized degree for both modes... (see Ebba)
+
+# Introductio to `ggbipart`
