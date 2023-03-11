@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="introduction.html"/>
-<link rel="next" href="one-mode-visualization.html"/>
+<link rel="next" href="creating-network-objects-in-r.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -151,16 +158,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.0.1" data-path="data.html"><a href="data.html#about-delta-science-tracker"><i class="fa fa-check"></i><b>2.0.1</b> About Delta Science Tracker</a></li>
 <li class="chapter" data-level="2.0.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.0.2</b> Data descriptions</a></li>
 <li class="chapter" data-level="2.0.3" data-path="data.html"><a href="data.html#what-story-do-we-want-to-tell"><i class="fa fa-check"></i><b>2.0.3</b> What story do we want to tell?</a></li>
-<li class="chapter" data-level="2.0.4" data-path="data.html"><a href="data.html#creating-network-objects-in-r"><i class="fa fa-check"></i><b>2.0.4</b> Creating network objects in R</a></li>
-<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#network-descriptives"><i class="fa fa-check"></i><b>2.1</b> Network descriptives</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>3</b> One mode visualization</a></li>
-<li class="chapter" data-level="4" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>4</b> Basics</a></li>
-<li class="chapter" data-level="5" data-path="community.html"><a href="community.html"><i class="fa fa-check"></i><b>5</b> Community</a></li>
-<li class="chapter" data-level="6" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>6</b> Additional resources</a></li>
-<li class="chapter" data-level="7" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>7</b> igraph visualiation</a></li>
-<li class="chapter" data-level="8" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>8</b> ggnet2</a></li>
-<li class="chapter" data-level="9" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>9</b> interactive</a></li>
+<li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#igraph"><i class="fa fa-check"></i><b>3.1</b> <code>igraph</code></a></li>
+<li class="chapter" data-level="3.2" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#network"><i class="fa fa-check"></i><b>3.2</b> <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="network-descriptives.html"><a href="network-descriptives.html"><i class="fa fa-check"></i><b>4</b> Network descriptives</a></li>
+<li class="chapter" data-level="5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-themes"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics, themes</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
+<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><i class="fa fa-check"></i><b>6</b> Then we can create those same layout tables for each subgraph</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>6.1</b> Interactive plots DRAFTING</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>7</b> Two-mode visualization</a></li>
+<li class="chapter" data-level="8" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>8</b> Normalized degree for both modes… (see Ebba)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>8.1</b> Leaders versus contributors?</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#induce-subgraphs-by-edge-1"><i class="fa fa-check"></i><b>8.1.1</b> Induce subgraphs by edge</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#climate-projects"><i class="fa fa-check"></i><b>8.2</b> Climate projects</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>9</b> Additional resources</a></li>
+<li class="chapter" data-level="10" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>10</b> igraph visualiation</a></li>
+<li class="chapter" data-level="11" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>11</b> ggnet2</a></li>
+<li class="chapter" data-level="12" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>12</b> interactive</a></li>
 <li class="divider"></li>
 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
   <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
@@ -187,99 +232,150 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">2</span> Data<a href="data.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="about-delta-science-tracker" class="section level3 hasAnchor" number="2.0.1">
 <h3><span class="header-section-number">2.0.1</span> About Delta Science Tracker<a href="data.html#about-delta-science-tracker" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We are using publicly available data from the Delta Stewardship Council’s (DSC) <a href="https://sciencetracker.deltacouncil.ca.gov/">Delta Science Tracker</a>. This database is a library of Delta-related research over the last 50 years. As the DSC’s website explains:</p>
+<p>We are using publicly available data from the Delta Stewardship Council’s (DSC) <a href="https://sciencetracker.deltacouncil.ca.gov/">Delta Science Tracker</a>. This database is a library of Sacramento and SJ Delta-related research over the last 50 years. As the DSC’s website explains:</p>
 <div class="line-block">“The Delta Science Tracker is a tool to improve coordination and collaboration of science activities in a way that is valuable to scientists, decision-makers, and managers in the Delta. The Delta Science Tracker allows users to explore and visualize recent research and monitoring efforts through the lenses of science activities, organizations, and people. It is intended to promote communication, create opportunities for collaboration, and enhance transparency for science funding opportunities and decisions.”</div>
-<p>The data we’ll use was downloaded from the DSC’s <a href="https://sciencetracker.deltacouncil.ca.gov/visualizations">visualizations page</a>, with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found <a href="scraping_data.R">here</a>.</p>
+<p>The data we’ll use was downloaded from the DSC’s <a href="https://sciencetracker.deltacouncil.ca.gov/visualizations">visualizations page</a>, with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found <a href="https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R">here</a>.</p>
 </div>
 <div id="data-descriptions" class="section level3 hasAnchor" number="2.0.2">
 <h3><span class="header-section-number">2.0.2</span> Data descriptions<a href="data.html#data-descriptions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Before we get into visualizations, we want to take a look at the data we have available. What relationships do we have? And what node or edge attributes are available?</p>
-<p>The relational data we will begin with is a two-mode edge list.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_twomode.csv&#39;</span>)</span>
-<span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges)</span></code></pre></div>
-<pre><code>##   project_id                    org_name
-## 1      50122 Agricultural Coalitions:...
-## 2      50122                     SJCDWQC
-## 3      49780                  Anchor QEA
-## 4      49780                        SFSU
-## 5      49780                       USFWS
-## 6      49780                         DWR</code></pre>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_twomode.csv&#39;</span>)</span>
-<span id="cb3-2"><a href="data.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes)</span></code></pre></div>
-<pre><code>##    name                                    proj_name mode startdate enddate
-## 1 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-## 2 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-## 3 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-## 4 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-## 5 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-## 6 50122 SJCDWQC Groundwater Quality Trend Monitoring    1      2008    2019
-##   funds n_years                     sci_theme              mgmt_theme
-## 1    $0      12      Environmental conditions           Water quality
-## 2    $0      12      Environmental conditions Water supply management
-## 3    $0      12               Habitat changes           Water quality
-## 4    $0      12               Habitat changes Water supply management
-## 5    $0      12 Land use and human activities           Water quality
-## 6    $0      12 Land use and human activities Water supply management
-##                                                     url
-## 1 https://sciencetracker.deltacouncil.ca.gov/node/50122
-## 2 https://sciencetracker.deltacouncil.ca.gov/node/50122
-## 3 https://sciencetracker.deltacouncil.ca.gov/node/50122
-## 4 https://sciencetracker.deltacouncil.ca.gov/node/50122
-## 5 https://sciencetracker.deltacouncil.ca.gov/node/50122
-## 6 https://sciencetracker.deltacouncil.ca.gov/node/50122</code></pre>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(nodes)</span></code></pre></div>
-<pre><code>##                            name proj_name mode startdate enddate funds n_years
-## 627                         NPS      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-## 628      Pacific Flyway Council      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-## 629                         UBC      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-## 630     Oregon State University      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-## 631 Woodland-Davis Clean Wat...      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-## 632        University of Kansas      &lt;NA&gt;    2        NA      NA  &lt;NA&gt;      NA
-##     sci_theme mgmt_theme  url
-## 627      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
-## 628      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
-## 629      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
-## 630      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
-## 631      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;
-## 632      &lt;NA&gt;       &lt;NA&gt; &lt;NA&gt;</code></pre>
+<p><strong>Two-mode edge list:</strong> The data was originally compiled as two-mode network data: how are organizations/researchers connected to research projects? Our first mode, <code>project_id</code> are the id numbers representing different Delta science research projects. And our second mode, <code>org_id</code>, is the organization(s) (agencies, universities, etc) that are working on that project. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_twomode.csv&#39;</span>)</span>
+<span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges_2mode)</span></code></pre></div>
+<pre><code>##   org_id project_id contribution leadership
+## 1  49590      50122         TRUE      FALSE
+## 2  49592      49780         TRUE      FALSE
+## 3  49592      49865         TRUE      FALSE
+## 4  49594      49860         TRUE      FALSE
+## 5  49598      50091         TRUE      FALSE
+## 6  49600      50170         TRUE      FALSE</code></pre>
+<p><strong>One-mode edge list:</strong> We projected our two-mode network to a one-mode network to take a deeper look at research collaborations: What organizations are working together? We’ve also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>edges_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_projected.csv&#39;</span>) </span>
+<span id="cb3-2"><a href="data.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges_1mode)</span></code></pre></div>
+<pre><code>##   from_org_id to_org_id Y1995_2009 Y2010_2024 before_1980 Y1980_1994
+## 1       49590     49709       TRUE      FALSE       FALSE      FALSE
+## 2       49592     49708      FALSE       TRUE       FALSE      FALSE
+## 3       49592     49741      FALSE       TRUE       FALSE      FALSE
+## 4       49592     49609      FALSE       TRUE       FALSE      FALSE
+## 5       49708     49741      FALSE       TRUE       FALSE      FALSE
+## 6       49609     49708      FALSE       TRUE       FALSE      FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre><code>## [1] 138 138</code></pre>
+<pre><code>## [1] 123 123</code></pre>
+<p><strong>Nodelist</strong>: We have a two-mode list of all the nodes (organizations and projects), and some attribute information. We have more node attributes for projects than we do for organizations. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. For organizations, we have very few attributes, but for the sake of this presentation we projected the scientific and management theme attributes from projects onto organizations that worked on those projects.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>nodes_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_onemode.csv&#39;</span>)</span>
+<span id="cb8-2"><a href="data.html#cb8-2" aria-hidden="true" tabindex="-1"></a>nodes_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_twomode.csv&#39;</span>)</span>
+<span id="cb8-3"><a href="data.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes_2mode)</span></code></pre></div>
+<pre><code>##      id                                                   url
+## 1 50122 https://sciencetracker.deltacouncil.ca.gov/node/50122
+## 2 49780 https://sciencetracker.deltacouncil.ca.gov/node/49780
+## 3 49865 https://sciencetracker.deltacouncil.ca.gov/node/49865
+## 4 49860 https://sciencetracker.deltacouncil.ca.gov/node/49860
+## 5 50091 https://sciencetracker.deltacouncil.ca.gov/node/50091
+## 6 50170 https://sciencetracker.deltacouncil.ca.gov/node/50170
+##                                                                                                               name
+## 1                                                                     SJCDWQC Groundwater Quality Trend Monitoring
+## 2                         Monitoring and Evaluation of the North Delta Food Subsidies and Colusa Basin Drain Study
+## 3 Evaluating Juvenile Salmonid Behavioral Responses to Hydrodynamic Conditions in the Sacramento-San Joaquin Delta
+## 4                                                               Next Generation Multi-Hazard Levee Risk Assessment
+## 5                                                       Waterborne Commerce of the United States [WCUS] Monitoring
+## 6                                                          Vegetation Classification and Mapping Program [VegCAMP]
+##      funds startdate enddate n_years sci_Environmentalconditions
+## 1       $0      2008    2019      12                        TRUE
+## 2       $0      2020    2021       2                       FALSE
+## 3 $445,921      2019    2022       4                       FALSE
+## 4 $931,104      2019    2022       4                       FALSE
+## 5       $0        NA      NA      NA                       FALSE
+## 6       $0        NA      NA      NA                        TRUE
+##   sci_Habitatchanges sci_Landuseandhumanactivities sci_Fish sci_Waterquality
+## 1               TRUE                          TRUE    FALSE            FALSE
+## 2              FALSE                         FALSE     TRUE            FALSE
+## 3              FALSE                         FALSE     TRUE            FALSE
+## 4              FALSE                          TRUE    FALSE            FALSE
+## 5              FALSE                          TRUE    FALSE            FALSE
+## 6               TRUE                          TRUE    FALSE            FALSE
+##   sci_Riparianhabitats sci_Tidalwetlands sci_Channelizedhabitats sci_Floodplain
+## 1                FALSE             FALSE                   FALSE          FALSE
+## 2                FALSE             FALSE                   FALSE          FALSE
+## 3                FALSE             FALSE                   FALSE          FALSE
+## 4                FALSE             FALSE                   FALSE          FALSE
+## 5                FALSE             FALSE                   FALSE          FALSE
+## 6                FALSE             FALSE                   FALSE          FALSE
+##   sci_Terrestrialhabitats sci_Mammals sci_Weatherandclimate
+## 1                   FALSE       FALSE                 FALSE
+## 2                   FALSE       FALSE                 FALSE
+## 3                   FALSE       FALSE                 FALSE
+## 4                   FALSE       FALSE                 FALSE
+## 5                   FALSE       FALSE                 FALSE
+## 6                   FALSE       FALSE                 FALSE
+##   sci_Hydrologyandhydrodynamics sci_Species sci_Foodwebs
+## 1                         FALSE       FALSE        FALSE
+## 2                         FALSE       FALSE        FALSE
+## 3                         FALSE       FALSE        FALSE
+## 4                         FALSE       FALSE        FALSE
+## 5                         FALSE       FALSE        FALSE
+## 6                         FALSE       FALSE        FALSE
+##   sci_Invasivenonnativespecies sci_Biologicalresourceuse
+## 1                        FALSE                     FALSE
+## 2                        FALSE                     FALSE
+## 3                        FALSE                     FALSE
+## 4                        FALSE                     FALSE
+## 5                        FALSE                     FALSE
+## 6                        FALSE                     FALSE
+##   sci_Nutrientsenergyandfoodweb sci_Hydrologicchanges sci_Sediment
+## 1                         FALSE                 FALSE        FALSE
+## 2                         FALSE                 FALSE        FALSE
+## 3                         FALSE                 FALSE        FALSE
+## 4                         FALSE                 FALSE        FALSE
+## 5                         FALSE                 FALSE        FALSE
+## 6                         FALSE                 FALSE        FALSE
+##   sci_Aquaticvegetation sci_Invertebrates sci_Amphibiansandreptiles
+## 1                 FALSE             FALSE                     FALSE
+## 2                 FALSE             FALSE                     FALSE
+## 3                 FALSE             FALSE                     FALSE
+## 4                 FALSE             FALSE                     FALSE
+## 5                 FALSE             FALSE                     FALSE
+## 6                 FALSE             FALSE                     FALSE
+##   mgmt_Waterquality mgmt_Watersupplymanagement mgmt_Environmentalconditions
+## 1              TRUE                       TRUE                        FALSE
+## 2             FALSE                      FALSE                         TRUE
+## 3             FALSE                      FALSE                        FALSE
+## 4             FALSE                      FALSE                         TRUE
+## 5             FALSE                      FALSE                        FALSE
+## 6             FALSE                      FALSE                        FALSE
+##   mgmt_Nativespeciesmanagement mgmt_Floodriskandlandusemanagement
+## 1                        FALSE                              FALSE
+## 2                         TRUE                              FALSE
+## 3                         TRUE                              FALSE
+## 4                        FALSE                               TRUE
+## 5                        FALSE                              FALSE
+## 6                        FALSE                               TRUE
+##   mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement
+## 1                  FALSE                                   FALSE
+## 2                  FALSE                                   FALSE
+## 3                  FALSE                                   FALSE
+## 4                  FALSE                                   FALSE
+## 5                  FALSE                                   FALSE
+## 6                   TRUE                                    TRUE
+##   mgmt_Governance mode trunc_name
+## 1           FALSE    0       &lt;NA&gt;
+## 2           FALSE    0       &lt;NA&gt;
+## 3           FALSE    0       &lt;NA&gt;
+## 4           FALSE    0       &lt;NA&gt;
+## 5           FALSE    0       &lt;NA&gt;
+## 6           FALSE    0       &lt;NA&gt;</code></pre>
+<p>Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be ‘long’ with repeated project observations. With node lists, we want to only have unique observations. If your data are ‘long’ (with repeating observations), widen them out as we did with the scientific and management themes. Further note: Formatting network data is half the battle. See our script if you want to see how we</p>
 </div>
 <div id="what-story-do-we-want-to-tell" class="section level3 hasAnchor" number="2.0.3">
 <h3><span class="header-section-number">2.0.3</span> What story do we want to tell?<a href="data.html#what-story-do-we-want-to-tell" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>These data have some interesting features: longitudinal data, attributes of projects but not of research organizations, project themes,</p>
-<p>communities</p>
-
-</div>
-<div id="creating-network-objects-in-r" class="section level3 hasAnchor" number="2.0.4">
-<h3><span class="header-section-number">2.0.4</span> Creating network objects in R<a href="data.html#creating-network-objects-in-r" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>igraph</p>
-<p>graph_from_edgelist()
-syntax for manipulating igraphs
-V(g)<span class="math inline">\(nodeattribute E(g)\)</span>edgeattribute</p>
-<p>network</p>
-<p>syntax for manipulating networks
-net %v% ‘nodeattribute’
-net %e% ‘edgeattribute’</p>
-
-</div>
-<div id="network-descriptives" class="section level2 hasAnchor" number="2.1">
-<h2><span class="header-section-number">2.1</span> Network descriptives<a href="data.html#network-descriptives" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Some on network/graph features
-* Node/vertex
-* Multi-mode
-* Edge/connection
-* Multi-plex
-* Multi-level</p>
-<p>Network statistics
-* Network-level
-* Size
-* Density
-* Centralization
-* Transitivity
-* Degree distribution
-* Actor-level
-* Centrality (degree, betweenness, eigenvector, etc.)</p>
-
-<p>#Two-mode visualization</p>
+<p>One-mode:
+* How have different organizations collaborated across projects?
+* Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
+* How have those collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)</p>
+<p>Two-mode:
+* What actors have been most active across projects?
+* Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+* What actors have been most active on climate-related projects? (Node attribute of project node)</p>
 
 </div>
 </div>
@@ -289,7 +385,7 @@ net %e% ‘edgeattribute’</p>
         </div>
       </div>
 <a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="one-mode-visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="creating-network-objects-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -333,20 +429,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

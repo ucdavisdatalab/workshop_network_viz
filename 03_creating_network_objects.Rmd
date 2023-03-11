@@ -2,11 +2,15 @@
 
 Now that we have our edge lists and node lists, we want to create our network objects. There are two popular network packages (and consequently, network object types) in R `igraph` generates a list object of class "igraph" and `network` generates an list object of class "network". We are going to be working primarily with `network` objects, but I'd like to make both because you are likely to run into both of them along the way. 
 
+```{r, setup, include=FALSE}
+knitr::opts_knit$set(warning = F, message = F)
+```
+
 ```{r, echo = F}
-edges <- read.csv('data/edgelist_twomode.csv')
-edges_p <- read.csv('data/edgelist_projected.csv')
-nodes <- read.csv('data/nodelist_twomode.csv')
-nodes_mode1 <- nodes[nodes$mode == 1,]
+edges_2mode <- read.csv('data/edgelist_twomode.csv')
+edges_1mode <- read.csv('data/edgelist_projected.csv')
+nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 ```
 
 ## `igraph` 
@@ -17,68 +21,111 @@ We want to start with creating both our one and two-mode networks. For our one-m
 
 ```{r}
 library(igraph)
-g <- graph_from_data_frame(edges_p, vertices = nodes_mode1, directed = F)
-# need edges to be a vector but I am not sure how to get that_bip
-g_bip <- make_bipartite_graph(nodes$mode, edges, directed = FALSE)
-is_bipartite(g)
+g1 <- graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
+```
+
+```{r, echo = F}
+library(dplyr)
+# edges need to be a as a vector where each pair is a connection, 
+# so we an vectorize to make from: 49590, to: 50122 be just paired together
+# as our first two values in the vector, and so on
+edges_2mode_v <- as.vector(matrix(rbind(edges_2mode$org_id,
+                                        edges_2mode$project_id),ncol=1))
+# But edges ALSO need to be numbered in a way that is compatible with the nodelist
+nodes_2mode$id_numeric <- 1:nrow(nodes_2mode)
+# so reassign
+edges_2mode <- left_join(edges_2mode, select(nodes_2mode, id, id_numeric), 
+                         by = c('org_id' = 'id')) %>% 
+  rename('org_id_numeric' = 'id_numeric') %>% 
+  left_join(select(nodes_2mode, id, id_numeric), 
+                         by = c('project_id' = 'id')) %>% 
+  rename('project_id_numeric' = 'id_numeric')
+
+# So we re-make this vector
+edges_2mode_v <- as.vector(matrix(rbind(edges_2mode$org_id_numeric,
+                                        edges_2mode$project_id_numeric),ncol=1))
+
+g2 <- make_bipartite_graph(nodes_2mode$mode, edges_2mode_v, directed = FALSE)
+# then we have to manually assign attributes
+g2 <- set_vertex_attr(g2, "id", value = nodes_2mode$id)
+g2 <- set_vertex_attr(g2, "n_years", value = nodes_2mode$n_years)
+g2 <- set_edge_attr(g2, 'leadership', value = edges_2mode$leadership)
+g2 <- set_edge_attr(g2, 'contribution', value = edges_2mode$contribution)
 ```
 
 We can take a look at a summary of the igraph object by just printing it. We see the number of nodes and edges summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).
 
 ```{r}
-g
+g1
+```
+
+```{r}
+g2
 ```
 
 The syntax for manipulating igraphs is below. We use the `V()` and `E()` functions to call on either vertices or edges of our igraph, and then can use the `$` symbol to subset from those elements of the network.  
 
 ```{r}
-# Subset the vertex attribute: n_years
-head(V(g)$n_years)
+# Subset the vertex attribute: the website of these projects
+head(V(g2)$n_years)
+```
+
+```{r}
 # Subset the edge attribute: a logical value for whether a collaboration
 # happened between 1995-2009
-E(g)$Y1995_2009
+head(E(g1)$Y1995_2009)
 ```
 
 ## `network`
 
 Personally, I think the `igraph` has more limited statistical functionality than `network`, so I prefer `network` objects. We initialize a network object with the `network` function (`network` really needs to get more creative in its naming approaches). Just like with `igraph`, for our one-mode network we will use our projected edges and mode 1 nodes. For our two-mode network we can use our full edge and node lists.
 
+You'll often see folks converting igraphs to network objects using the `intergraph` package. 
+
 ```{r}
 library(intergraph)
+net1_convert <- asNetwork(g1)
+net1_convert
 ```
 
 
+```{r}
+net2_convert <- asNetwork(g2)
+net2_convert
+```
+But personally I like to make it on my own to be sure. There are some features that don't always carry over (weighted edges)
 
 ```{r}
 library(network)
-net_convert <- asNetwork(g)
 
-net <- network(x = edges_p, 
-               vertices = nodes_mode1,
+net1 <- network(x = edges_1mode, 
+               vertices = nodes_1mode,
                bipartite = F,  
                directed = F)
 
-net_bip <- network(x = edges, 
-               vertices = nodes,
+net2 <- network(x = edges_2mode, 
+               vertices = nodes_2mode,
                bipartite = T,  
                directed = F)
 ```
 
 When we print out a network object we get a different-looking summary, but it generally carries the same information: 
 ```{r}
-net
+net1
+```
+
+```{r}
+net2
 ```
 
 The syntax for manipulating `network` objects is below. We use the `%v%` and `%e%` WHT ARE THESE CALLED to call on either vertices or edges of our network, and then name the attribute in quotation marks 
 
 ```{r}
-head(net %v% 'n_years')
-head(net_bip %e% 'leadership')
+tail(net2 %v% 'n_years')
 ```
 
-```{r, echo = F}
-# Doing this to see if I can use these to create the bipartite igraph
-leads <- net %e% 'leadership'
-conts <- net %e% 'contribution'
+```{r}
+head(net1 %e% 'Y1995_2009')
 ```
+
 

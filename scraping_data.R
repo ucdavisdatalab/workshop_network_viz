@@ -23,6 +23,8 @@ el_projected <- df %>%
 
 colnames(el_projected)[1:2] <- c('from', 'to')
 
+# There is an issue of truncated names from the downloaded form
+# Identify those
 trunc_names <- c(unique(el_projected$from[which(str_detect(el_projected$from, 
                                                            "\\.{3}$"))]),
                  unique(el_projected$to[which(str_detect(el_projected$to, 
@@ -136,7 +138,7 @@ el_twomode$contribution <- ifelse(is.na(el_twomode$contribution), F,
 el_twomode$leadership <- ifelse(is.na(el_twomode$leadership), F,
                                 el_twomode$leadership)
 
-# 4. Make two-mode from online data ----
+# 4. Check: Make two-mode from online data ----
 # Unsure why this is different than what I scraped from the internet 
 # but I will use the other because it feels more comprehensive
 el_twomode2 <- el_projected %>% 
@@ -155,12 +157,12 @@ projs <- el_twomode %>%
   unique() %>% 
   mutate(url = paste0(url_base, project_id))
 
+# Make these blank to fill in
 projs$proj_name = NA
 projs$funds = NA
 projs$startdate = NA
 projs$enddate = NA
 projs$n_years = NA
-
 # Removing this sequence for which there is no page: these came from errors
 # in the loop: 203, 286
 projs <- projs[-c(203,286),]
@@ -191,7 +193,8 @@ for(i in 1:nrow(projs)){
   projs$n_years[i] <- (projs$enddate[i] - projs$startdate[i]) + 1
 }
 
-# I want to scrape again but not for attributes of different lengths
+# I want to scrape again but now for attributes of different lengths (themes),
+# so I am using a list approach
 
 themes <- vector("list", nrow(projs))
 for(i in 1:nrow(projs)){
@@ -247,7 +250,8 @@ el_twomode <- el_twomode[-which(!(el_twomode$project_id %in% nl$id)),]
 
 # 7. Projecting edge attributes ----
 # This gets a bit funny, but we want to project a project attribute onto 
-# an organization. So here it goes: 
+# an organization so that we can have some node attributes for
+# organizatons. So here it goes: 
 
 el_projected <- nl %>% 
   # Use project node features to join with the projected network, which
@@ -298,7 +302,20 @@ el_projected <- left_join(el_projected, select(nl, id, name),
 # 8. Final cleaning ----
 nl$url <- paste0(url_base, nl$id)
 
+# made a one-mode (organization) nodelist
+nl_onemode <- filter(nl, mode == 1)
+
+# remove the columns that don't matter
+nl_onemode <- select(nl_onemode, id, name, url, mode)
+
+#nl_onemode <- filter(nl, id %in% el_projected$from_org_id |
+#                         id %in% el_projected$to_org_id)
+
+nl_twomode <- filter(nl, id %in% el_twomode$org_id |
+                         id %in% el_twomode$project_id)
+
 # Write data ----
-write.csv(nl, "data/nodelist_twomode.csv", row.names = F)
+write.csv(nl_twomode, "data/nodelist_twomode.csv", row.names = F)
+write.csv(nl_onemode, "data/nodelist_onemode.csv", row.names = F)
 write.csv(el_twomode, "data/edgelist_twomode.csv", row.names = F)
 write.csv(el_projected, "data/edgelist_projected.csv", row.names = F)

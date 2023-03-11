@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-02-28" />
+<meta name="date" content="2023-03-11" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,13 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -151,16 +158,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.0.1" data-path="data.html"><a href="data.html#about-delta-science-tracker"><i class="fa fa-check"></i><b>2.0.1</b> About Delta Science Tracker</a></li>
 <li class="chapter" data-level="2.0.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.0.2</b> Data descriptions</a></li>
 <li class="chapter" data-level="2.0.3" data-path="data.html"><a href="data.html#what-story-do-we-want-to-tell"><i class="fa fa-check"></i><b>2.0.3</b> What story do we want to tell?</a></li>
-<li class="chapter" data-level="2.0.4" data-path="data.html"><a href="data.html#creating-network-objects-in-r"><i class="fa fa-check"></i><b>2.0.4</b> Creating network objects in R</a></li>
-<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#network-descriptives"><i class="fa fa-check"></i><b>2.1</b> Network descriptives</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>3</b> One mode visualization</a></li>
-<li class="chapter" data-level="4" data-path="basics.html"><a href="basics.html"><i class="fa fa-check"></i><b>4</b> Basics</a></li>
-<li class="chapter" data-level="5" data-path="community.html"><a href="community.html"><i class="fa fa-check"></i><b>5</b> Community</a></li>
-<li class="chapter" data-level="6" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>6</b> Additional resources</a></li>
-<li class="chapter" data-level="7" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>7</b> igraph visualiation</a></li>
-<li class="chapter" data-level="8" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>8</b> ggnet2</a></li>
-<li class="chapter" data-level="9" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>9</b> interactive</a></li>
+<li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#igraph"><i class="fa fa-check"></i><b>3.1</b> <code>igraph</code></a></li>
+<li class="chapter" data-level="3.2" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#network"><i class="fa fa-check"></i><b>3.2</b> <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="network-descriptives.html"><a href="network-descriptives.html"><i class="fa fa-check"></i><b>4</b> Network descriptives</a></li>
+<li class="chapter" data-level="5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-themes"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics, themes</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
+<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><i class="fa fa-check"></i><b>6</b> Then we can create those same layout tables for each subgraph</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>6.1</b> Interactive plots DRAFTING</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>7</b> Two-mode visualization</a></li>
+<li class="chapter" data-level="8" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>8</b> Normalized degree for both modes… (see Ebba)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>8.1</b> Leaders versus contributors?</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#induce-subgraphs-by-edge-1"><i class="fa fa-check"></i><b>8.1.1</b> Induce subgraphs by edge</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#climate-projects"><i class="fa fa-check"></i><b>8.2</b> Climate projects</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>9</b> Additional resources</a></li>
+<li class="chapter" data-level="10" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>10</b> igraph visualiation</a></li>
+<li class="chapter" data-level="11" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>11</b> ggnet2</a></li>
+<li class="chapter" data-level="12" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>12</b> interactive</a></li>
 <li class="divider"></li>
 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
   <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
@@ -186,7 +231,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Network Visualization</h1>
 <p class="author"><em>Liza Wood</em></p>
-<p class="date"><em>2023-02-28</em></p>
+<p class="date"><em>2023-03-11</em></p>
 </div>
 <div id="overview" class="section level1 unnumbered hasAnchor">
 <h1>Overview<a href="index.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -243,20 +288,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>

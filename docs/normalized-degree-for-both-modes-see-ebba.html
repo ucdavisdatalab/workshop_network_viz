@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en-us" xml:lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>8 Normalized degree for both modes… (see Ebba) | Network Visualization</title>
+  <meta name="description" content="8 Normalized degree for both modes… (see Ebba) | Network Visualization" />
+  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="8 Normalized degree for both modes… (see Ebba) | Network Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="ucdavisdatalab/workshop_network_viz" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="8 Normalized degree for both modes… (see Ebba) | Network Visualization" />
+  
+  
+  
+
+<meta name="author" content="Liza Wood" />
+
+
+<meta name="date" content="2023-03-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="two-mode-visualization.html"/>
+<link rel="next" href="additional-resources.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://datalab.ucdavis.edu/">
+  <img src="https://datalab.ucdavis.edu/wp-content/uploads/2019/07/datalab-logo-full-color-rgb-1.png" style="height: 100%; width: 100%; object-fit: contain" />
+</a></li>
+<li><a href="./" style="font-size: 18px"Network visualization</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.0.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.0.1</b> What are network data?</a></li>
+<li class="chapter" data-level="1.0.2" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.0.2</b> Features of a network</a></li>
+<li class="chapter" data-level="1.0.3" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.0.3</b> Network statistics</a></li>
+<li class="chapter" data-level="1.0.4" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.0.4</b> Storing network data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="data.html"><a href="data.html#about-delta-science-tracker"><i class="fa fa-check"></i><b>2.0.1</b> About Delta Science Tracker</a></li>
+<li class="chapter" data-level="2.0.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.0.2</b> Data descriptions</a></li>
+<li class="chapter" data-level="2.0.3" data-path="data.html"><a href="data.html#what-story-do-we-want-to-tell"><i class="fa fa-check"></i><b>2.0.3</b> What story do we want to tell?</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#igraph"><i class="fa fa-check"></i><b>3.1</b> <code>igraph</code></a></li>
+<li class="chapter" data-level="3.2" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#network"><i class="fa fa-check"></i><b>3.2</b> <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="network-descriptives.html"><a href="network-descriptives.html"><i class="fa fa-check"></i><b>4</b> Network descriptives</a></li>
+<li class="chapter" data-level="5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-themes"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics, themes</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
+<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><i class="fa fa-check"></i><b>6</b> Then we can create those same layout tables for each subgraph</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="then-we-can-create-those-same-layout-tables-for-each-subgraph.html"><a href="then-we-can-create-those-same-layout-tables-for-each-subgraph.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>6.1</b> Interactive plots DRAFTING</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>7</b> Two-mode visualization</a></li>
+<li class="chapter" data-level="8" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>8</b> Normalized degree for both modes… (see Ebba)</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>8.1</b> Leaders versus contributors?</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#induce-subgraphs-by-edge-1"><i class="fa fa-check"></i><b>8.1.1</b> Induce subgraphs by edge</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#climate-projects"><i class="fa fa-check"></i><b>8.2</b> Climate projects</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>9</b> Additional resources</a></li>
+<li class="chapter" data-level="10" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>10</b> igraph visualiation</a></li>
+<li class="chapter" data-level="11" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>11</b> ggnet2</a></li>
+<li class="chapter" data-level="12" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>12</b> interactive</a></li>
+<li class="divider"></li>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+  <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
+</a>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="normalized-degree-for-both-modes-see-ebba" class="section level1 hasAnchor" number="8">
+<h1><span class="header-section-number">8</span> Normalized degree for both modes… (see Ebba)<a href="normalized-degree-for-both-modes-see-ebba.html#normalized-degree-for-both-modes-see-ebba" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NORMALIZED degrees and label</span></span>
+<span id="cb171-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-2" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm&#39;</span> <span class="ot">&lt;-</span> sna<span class="sc">::</span><span class="fu">degree</span>(net2, <span class="at">rescale =</span> T)</span>
+<span id="cb171-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb171-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-4" aria-hidden="true" tabindex="-1"></a><span class="co"># make a table, project id as rows and org id as columns</span></span>
+<span id="cb171-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-5" aria-hidden="true" tabindex="-1"></a><span class="co">#inc_mat &lt;- table(edges_2mode[c(&#39;project_id&#39;, &#39;org_id&#39;)])</span></span>
+<span id="cb171-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-6" aria-hidden="true" tabindex="-1"></a>degree_norm_bip <span class="ot">&lt;-</span> bipartite<span class="sc">::</span><span class="fu">ND</span>(<span class="fu">as.matrix</span>(net2))</span>
+<span id="cb171-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-7" aria-hidden="true" tabindex="-1"></a><span class="co"># output has two measures of degree: one for &#39;lower&#39; and one for &#39;higher&#39;</span></span>
+<span id="cb171-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-8" aria-hidden="true" tabindex="-1"></a><span class="co"># &#39;lower&#39; is for for the rows, so in our case, projects</span></span>
+<span id="cb171-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb171-9" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(degree_norm_bip<span class="sc">$</span>lower) <span class="sc">==</span> <span class="fu">length</span>(<span class="fu">unique</span>(edges_2mode<span class="sc">$</span>project_id))</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb173-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this is compatible with mode 0, which are the second half of the nodes</span></span>
+<span id="cb173-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb173-2" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span></span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+## [149] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [186] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [223] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [260] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [297] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [334] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [408] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb175-1" aria-hidden="true" tabindex="-1"></a><span class="co"># So we want to assign this bipartite degree in accordance with that order</span></span>
+<span id="cb175-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb175-2" aria-hidden="true" tabindex="-1"></a><span class="co"># BUT, note that this function orders degree based on numeric order of id,</span></span>
+<span id="cb175-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb175-3" aria-hidden="true" tabindex="-1"></a><span class="co"># which may not align with the node order</span></span>
+<span id="cb175-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb175-4" aria-hidden="true" tabindex="-1"></a>nd_output <span class="ot">&lt;-</span> <span class="fu">c</span>(degree_norm_bip<span class="sc">$</span>higher, degree_norm_bip<span class="sc">$</span>lower)</span>
+<span id="cb175-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb175-5" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">==</span> <span class="fu">names</span>(nd_output)</span></code></pre></div>
+<pre><code>##   [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [37] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [49] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [61] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [73] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [85] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+##  [97] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [109] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [121] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [133] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [145] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [157] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [169] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [181] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [193] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [205] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [217] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [229] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [241] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [253] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [265] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [277] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [289] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [301] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [313] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [325] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [337] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [349] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [361] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [373] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [385] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [397] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [409] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [421] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [433] FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-1" aria-hidden="true" tabindex="-1"></a>nd_output_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&#39;degreeN&#39;</span> <span class="ot">=</span> nd_output,</span>
+<span id="cb177-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-2" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&#39;id&#39;</span> <span class="ot">=</span> <span class="fu">names</span>(nd_output))</span>
+<span id="cb177-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-3" aria-hidden="true" tabindex="-1"></a>nd_output_sorted <span class="ot">&lt;-</span> nd_output_df[<span class="fu">match</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>), </span>
+<span id="cb177-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-4" aria-hidden="true" tabindex="-1"></a>                                        nd_output_df <span class="sc">$</span>id),]</span>
+<span id="cb177-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb177-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb177-6" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">==</span> nd_output_sorted<span class="sc">$</span>id</span></code></pre></div>
+<pre><code>##   [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [16] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [31] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [46] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [61] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [76] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+##  [91] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [106] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [121] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [136] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [151] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [166] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [181] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [196] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [211] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [226] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [241] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [256] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [271] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [286] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [301] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [316] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [331] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [346] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [361] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [376] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [391] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [406] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+## [421] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb179-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span> <span class="ot">&lt;-</span> nd_output_sorted<span class="sc">$</span>degreeN</span>
+<span id="cb179-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb179-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb179-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb179-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: normalizing the degree for the whole network vs. normalizing degree for</span></span>
+<span id="cb179-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb179-4" aria-hidden="true" tabindex="-1"></a><span class="co"># each mode is a different process</span></span>
+<span id="cb179-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb179-5" aria-hidden="true" tabindex="-1"></a>(net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm&#39;</span>)[net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">==</span> <span class="dv">49590</span>]</span></code></pre></div>
+<pre><code>## [1] 0.0007352941</code></pre>
+<div class="sourceCode" id="cb181"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb181-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb181-1" aria-hidden="true" tabindex="-1"></a>(net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>)[net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">==</span> <span class="dv">49590</span>]</span></code></pre></div>
+<pre><code>## [1] 0.003367003</code></pre>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb183-1" aria-hidden="true" tabindex="-1"></a>topdeg_mode0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> (net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>)[net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb183-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb183-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb185-1" aria-hidden="true" tabindex="-1"></a>topdeg_mode1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> (net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>)[net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">1</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb185-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb185-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb187-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>) <span class="sc">%in%</span> topdeg_mode0<span class="sc">$</span>deg <span class="sc">&amp;</span> net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>, net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, </span>
+<span id="cb187-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb187-2" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>) <span class="sc">%in%</span> topdeg_mode1<span class="sc">$</span>deg <span class="sc">&amp;</span> net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">1</span>, net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="st">&#39;&#39;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
+<span id="cb188-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb188-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>,</span>
+<span id="cb188-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
+<span id="cb188-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>))) <span class="sc">+</span></span>
+<span id="cb188-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb188-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb188-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>),</span>
+<span id="cb188-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb188-10"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb188-11"><a href="normalized-degree-for-both-modes-see-ebba.html#cb188-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>But I want to demonstrate that there can be no connections between projects or between collaborators, in this network, so let’s pick a layout that demonstrates that</p>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;type&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>, T, F)</span>
+<span id="cb189-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;bipartite&#39;</span>) <span class="sc">+</span></span>
+<span id="cb189-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb189-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>,</span>
+<span id="cb189-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
+<span id="cb189-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>)),</span>
+<span id="cb189-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">75</span>) <span class="sc">+</span></span>
+<span id="cb189-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb189-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb189-10"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>),</span>
+<span id="cb189-11"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb189-12"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb189-13"><a href="normalized-degree-for-both-modes-see-ebba.html#cb189-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Add a guide: I only want one legend</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;bipartite&#39;</span>) <span class="sc">+</span></span>
+<span id="cb190-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb190-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>,</span>
+<span id="cb190-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
+<span id="cb190-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>)),</span>
+<span id="cb190-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">75</span>) <span class="sc">+</span></span>
+<span id="cb190-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb190-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb190-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>),</span>
+<span id="cb190-10"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb190-11"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb190-12"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb190-13"><a href="normalized-degree-for-both-modes-see-ebba.html#cb190-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="st">&quot;legend&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;legend&quot;</span>, <span class="at">size =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<div id="leaders-versus-contributors" class="section level2 hasAnchor" number="8.1">
+<h2><span class="header-section-number">8.1</span> Leaders versus contributors?<a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can return to the idea of subnetworks.</p>
+<div id="induce-subgraphs-by-edge-1" class="section level3 hasAnchor" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> Induce subgraphs by edge<a href="normalized-degree-for-both-modes-see-ebba.html#induce-subgraphs-by-edge-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb191-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Induce subgraphs based on those edges</span></span>
+<span id="cb191-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb191-2" aria-hidden="true" tabindex="-1"></a>net2_l <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb191-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb191-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">eid =</span> <span class="fu">which</span>(net2 <span class="sc">%e%</span> <span class="st">&#39;leadership&#39;</span> <span class="sc">==</span> T))</span>
+<span id="cb191-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb191-4" aria-hidden="true" tabindex="-1"></a>net2_c <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb191-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb191-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">eid =</span> <span class="fu">which</span>(net2 <span class="sc">%e%</span> <span class="st">&#39;contribution&#39;</span> <span class="sc">==</span> T))</span></code></pre></div>
+<p>Now we have subgraphs</p>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb192-1" aria-hidden="true" tabindex="-1"></a>net2_l</span></code></pre></div>
+<pre><code>##  Network attributes:
+##   vertices = 368 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 71 
+##   total edges= 297 
+##     missing edges= 0 
+##     non-missing edges= 297 
+## 
+##  Vertex attribute names: 
+##     degree degree_norm degree_norm_bip enddate funds labels labels_bip mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name type url vertex.names 
+## 
+##  Edge attribute names: 
+##     contribution leadership</code></pre>
+</div>
+</div>
+<div id="climate-projects" class="section level2 hasAnchor" number="8.2">
+<h2><span class="header-section-number">8.2</span> Climate projects<a href="normalized-degree-for-both-modes-see-ebba.html#climate-projects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-1" aria-hidden="true" tabindex="-1"></a>climate <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;sci_Weatherandclimate&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb194-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-2" aria-hidden="true" tabindex="-1"></a>landuse <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;sci_Landuseandhumanactivities&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb194-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-3" aria-hidden="true" tabindex="-1"></a>govnc <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mgmt_Governance&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb194-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-4" aria-hidden="true" tabindex="-1"></a>flood <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mgmt_Floodriskandlandusemanagement&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb194-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-6" aria-hidden="true" tabindex="-1"></a><span class="co"># this is harder for bipartite</span></span>
+<span id="cb194-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-7" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb194-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb194-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> climate)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb195-1" aria-hidden="true" tabindex="-1"></a>net2_cli</span></code></pre></div>
+<pre><code>##  Network attributes:
+##   vertices = 9 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 0 
+##   total edges= 0 
+##     missing edges= 0 
+##     non-missing edges= 0 
+## 
+##  Vertex attribute names: 
+##     degree degree_norm degree_norm_bip enddate funds labels labels_bip mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name type url vertex.names 
+## 
+## No edge attributes</code></pre>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-1" aria-hidden="true" tabindex="-1"></a>climate_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb197-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-2" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[climate]]</span>
+<span id="cb197-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-3" aria-hidden="true" tabindex="-1"></a>landuse_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb197-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-4" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[landuse]]</span>
+<span id="cb197-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-5" aria-hidden="true" tabindex="-1"></a>govnc_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb197-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-6" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[govnc]]</span>
+<span id="cb197-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-7" aria-hidden="true" tabindex="-1"></a>flood_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb197-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb197-8" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[flood]]</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-1" aria-hidden="true" tabindex="-1"></a>climate_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> climate_alter_ids)</span>
+<span id="cb198-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-2" aria-hidden="true" tabindex="-1"></a>landuse_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> landuse_alter_ids)</span>
+<span id="cb198-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-3" aria-hidden="true" tabindex="-1"></a>govnc_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> govnc_alter_ids)</span>
+<span id="cb198-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-4" aria-hidden="true" tabindex="-1"></a>flood_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> flood_alter_ids)</span>
+<span id="cb198-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-6" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb198-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-7" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> climate,</span>
+<span id="cb198-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb198-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> climate_alters)</span></code></pre></div>
+<pre><code>## Warning in permute.vertexIDs(newNet, c(newv, newalt)): Performing a cross-mode
+## permutation in permute.vertexIDs.  I hope you know what you&#39;re doing....</code></pre>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb200-1" aria-hidden="true" tabindex="-1"></a>net2_landuse <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb200-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb200-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> landuse,</span>
+<span id="cb200-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb200-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> landuse_alters)</span></code></pre></div>
+<pre><code>## Warning in permute.vertexIDs(newNet, c(newv, newalt)): Performing a cross-mode
+## permutation in permute.vertexIDs.  I hope you know what you&#39;re doing....</code></pre>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb202-1" aria-hidden="true" tabindex="-1"></a>net2_govnc <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb202-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb202-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> govnc,</span>
+<span id="cb202-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb202-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> govnc_alters)</span></code></pre></div>
+<pre><code>## Warning in permute.vertexIDs(newNet, c(newv, newalt)): Performing a cross-mode
+## permutation in permute.vertexIDs.  I hope you know what you&#39;re doing....</code></pre>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb204-1" aria-hidden="true" tabindex="-1"></a>net2_flood <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb204-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb204-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> flood,</span>
+<span id="cb204-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb204-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> flood_alters)</span></code></pre></div>
+<pre><code>## Warning in permute.vertexIDs(newNet, c(newv, newalt)): Performing a cross-mode
+## permutation in permute.vertexIDs.  I hope you know what you&#39;re doing....</code></pre>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-1" aria-hidden="true" tabindex="-1"></a>assign_bipartite_deg_labels <span class="ot">&lt;-</span> <span class="cf">function</span>(netname, n){</span>
+<span id="cb206-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-2" aria-hidden="true" tabindex="-1"></a>  degree_norm_bip <span class="ot">&lt;-</span> bipartite<span class="sc">::</span><span class="fu">ND</span>(<span class="fu">as.matrix</span>(netname))</span>
+<span id="cb206-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-3" aria-hidden="true" tabindex="-1"></a>  nd_output <span class="ot">&lt;-</span> <span class="fu">c</span>(degree_norm_bip<span class="sc">$</span>higher, degree_norm_bip<span class="sc">$</span>lower)</span>
+<span id="cb206-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-4" aria-hidden="true" tabindex="-1"></a>  nd_output_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&#39;degreeN&#39;</span> <span class="ot">=</span> nd_output,</span>
+<span id="cb206-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-5" aria-hidden="true" tabindex="-1"></a>                             <span class="st">&#39;id&#39;</span> <span class="ot">=</span> <span class="fu">names</span>(nd_output))</span>
+<span id="cb206-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-6" aria-hidden="true" tabindex="-1"></a>  nd_output_sorted <span class="ot">&lt;-</span> nd_output_df[<span class="fu">match</span>((netname <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>), </span>
+<span id="cb206-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-7" aria-hidden="true" tabindex="-1"></a>                                          nd_output_df <span class="sc">$</span>id),]</span>
+<span id="cb206-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb206-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-9" aria-hidden="true" tabindex="-1"></a>  netname <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span> <span class="ot">&lt;-</span> nd_output_sorted<span class="sc">$</span>degreeN</span>
+<span id="cb206-10"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb206-11"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-11" aria-hidden="true" tabindex="-1"></a>  topdeg_mode0 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> </span>
+<span id="cb206-12"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-12" aria-hidden="true" tabindex="-1"></a>              (netname <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>)[netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb206-13"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">top_n</span>(n)</span>
+<span id="cb206-14"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-14" aria-hidden="true" tabindex="-1"></a>  topdeg_mode1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> </span>
+<span id="cb206-15"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-15" aria-hidden="true" tabindex="-1"></a>              (netname <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>)[netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span>   <span class="dv">1</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb206-16"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">top_n</span>(n)</span>
+<span id="cb206-17"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-18"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-18" aria-hidden="true" tabindex="-1"></a>  netname <span class="sc">%v%</span> <span class="st">&#39;labels_org&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((netname <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>) <span class="sc">%in%</span></span>
+<span id="cb206-19"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-19" aria-hidden="true" tabindex="-1"></a>                                       topdeg_mode1<span class="sc">$</span>deg <span class="sc">&amp;</span> </span>
+<span id="cb206-20"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-20" aria-hidden="true" tabindex="-1"></a>                                       netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">1</span>, </span>
+<span id="cb206-21"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-21" aria-hidden="true" tabindex="-1"></a>                                     netname <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="st">&#39;&#39;</span>)</span>
+<span id="cb206-22"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(netname)</span>
+<span id="cb206-23"><a href="normalized-degree-for-both-modes-see-ebba.html#cb206-23" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb207-1" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_deg_labels</span>(net2_cli, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg
+## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb209-1" aria-hidden="true" tabindex="-1"></a>net2_landuse <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_deg_labels</span>(net2_landuse, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg
+## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb211-1" aria-hidden="true" tabindex="-1"></a>net2_govnc <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_deg_labels</span>(net2_govnc, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg
+## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb213-1" aria-hidden="true" tabindex="-1"></a>net2_flood <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_deg_labels</span>(net2_flood, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## Selecting by deg
+## Selecting by deg</code></pre>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-1" aria-hidden="true" tabindex="-1"></a>plot_bipartite_fx <span class="ot">&lt;-</span> <span class="cf">function</span>(netname){</span>
+<span id="cb215-2"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-2" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggraph</span>(netname, <span class="at">layout =</span> <span class="st">&#39;bipartite&#39;</span>) <span class="sc">+</span></span>
+<span id="cb215-3"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb215-4"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> netname <span class="sc">%v%</span> <span class="st">&#39;degree_norm_bip&#39;</span>,</span>
+<span id="cb215-5"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
+<span id="cb215-6"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>)),</span>
+<span id="cb215-7"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-7" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">75</span>) <span class="sc">+</span></span>
+<span id="cb215-8"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb215-9"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb215-10"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> netname <span class="sc">%v%</span> <span class="st">&#39;labels_org&#39;</span>),</span>
+<span id="cb215-11"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">2</span>, </span>
+<span id="cb215-12"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb215-13"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb215-14"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="st">&quot;legend&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;legend&quot;</span>, <span class="at">size =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb215-15"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(p)</span>
+<span id="cb215-16"><a href="normalized-degree-for-both-modes-see-ebba.html#cb215-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb216-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_cli)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb217-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_landuse)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-21-2.png" width="672" /></p>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb218-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_govnc)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-21-3.png" width="672" /></p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="normalized-degree-for-both-modes-see-ebba.html#cb219-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_flood)</span></code></pre></div>
+<p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-21-4.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="two-mode-visualization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="additional-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/edit/master/06_twomode_visualization.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/blob/master/06_twomode_visualization.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

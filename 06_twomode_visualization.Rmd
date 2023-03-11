@@ -7,41 +7,288 @@
 We can use the same approaches as with one mode... but we shouldn't because mode one and two are just not comparable.
 
 ```{r, echo = F}
-edges <- read.csv('data/edgelist_twomode.csv')
-nodes <- read.csv('data/nodelist_twomode.csv')
-net_b <- network(x = edges, 
-               vertices = nodes[nodes$id %in% edges$org_id |
-                                nodes$id %in% edges$project_id,],
+library(sna)
+library(network)
+library(magrittr)
+library(ggraph)
+library(dplyr)
+edges_2mode <- read.csv('data/edgelist_twomode.csv')
+nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+net2 <- network(x = edges_2mode, 
+               vertices = nodes_2mode[nodes_2mode$id %in% edges_2mode$org_id |
+                                nodes_2mode$id %in% edges_2mode$project_id,],
                bipartite = T,  
                directed = F)
+clrs <- c("#440154FF", "#46337EFF", "#365C8DFF", "#277F8EFF",
+          "#1FA187FF", "#4AC16DFF", "#9FDA3AFF", "#FDE725FF")
 ```
 
-```{r}
-net_b %v% 'degree' <- sna::degree(net_b)
-topdeg <- data.frame("deg" = net_b %v% 'degree') %>% 
-  top_n(5)
-net_b %v% 'labels' <- ifelse((net_b %v% 'degree') %in% topdeg$deg, 
-                           net_b %v% 'name', '')
-netplot_function(net_b)
-```
-
-```{r}
-net_b %v% 'mode'
-```
-
-```{r}
-ggraph(net_b, layout = 'fr') +
+```{r, echo = F}
+netplot_function <- function(netname){
+  p <- ggraph(netname, layout = 'fr') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net_b %v% 'degree',
-                      shape = factor(net_b %v% 'mode')), 
+  geom_node_point(aes(size = netname %v% 'degree'), 
                   color = clrs[6]) +
   theme_void() +
-  geom_node_text(aes(label = net_b %v% 'labels'),
+  theme(legend.position = "none") +
+  geom_node_text(aes(label = netname %v% 'labels'),
                    family = "Times",
                    size = 3, 
-                   color="black")
+                   color="black", repel = T) 
+  return(p)
+}
+```
+
+```{r}
+net2 %v% 'degree' <- sna::degree(net2)
+topdeg <- data.frame("deg" = net2 %v% 'degree') %>% 
+  top_n(5)
+net2 %v% 'labels' <- ifelse((net2 %v% 'degree') %in% topdeg$deg, 
+                           net2 %v% 'name', '')
+netplot_function(net2)
+```
+
+```{r}
+net2 %v% 'mode'
+```
+
+```{r}
+ggraph(net2, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net2 %v% 'degree',
+                      shape = factor(net2 %v% 'mode'),
+                      color = factor(net2 %v% 'mode'))) +
+  theme_void() +
+  scale_color_viridis_d() +
+  geom_node_text(aes(label = net2 %v% 'labels'),
+                   size = 3, 
+                   color="black") +
+    labs(size = "Degree", color = "Mode", shape = "Mode")
 ```
 
 # Normalized degree for both modes... (see Ebba)
 
-# Introductio to `ggbipart`
+```{r}
+# NORMALIZED degrees and label
+net2 %v% 'degree_norm' <- sna::degree(net2, rescale = T)
+
+# make a table, project id as rows and org id as columns
+#inc_mat <- table(edges_2mode[c('project_id', 'org_id')])
+degree_norm_bip <- bipartite::ND(as.matrix(net2))
+# output has two measures of degree: one for 'lower' and one for 'higher'
+# 'lower' is for for the rows, so in our case, projects
+length(degree_norm_bip$lower) == length(unique(edges_2mode$project_id))
+# this is compatible with mode 0, which are the second half of the nodes
+net2 %v% 'mode'
+```
+
+```{r}
+# So we want to assign this bipartite degree in accordance with that order
+# BUT, note that this function orders degree based on numeric order of id,
+# which may not align with the node order
+nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
+net2 %v% 'vertex.names' == names(nd_output)
+
+nd_output_df <- data.frame('degreeN' = nd_output,
+                           'id' = names(nd_output))
+nd_output_sorted <- nd_output_df[match((net2 %v% 'vertex.names'), 
+                                        nd_output_df $id),]
+
+net2 %v% 'vertex.names' == nd_output_sorted$id
+net2 %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+
+# Note: normalizing the degree for the whole network vs. normalizing degree for
+# each mode is a different process
+(net2 %v% 'degree_norm')[net2 %v% 'vertex.names' == 49590]
+(net2 %v% 'degree_norm_bip')[net2 %v% 'vertex.names' == 49590]
+```
+
+```{r}
+topdeg_mode0 <- data.frame("deg" = (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0]) %>% 
+  top_n(3)
+topdeg_mode1 <- data.frame("deg" = (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1]) %>% 
+  top_n(3)
+
+
+net2 %v% 'labels_bip' <- ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode0$deg & net2 %v% 'mode' == 0, net2 %v% 'name', 
+                                ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode1$deg & net2 %v% 'mode' == 1, net2 %v% 'name', ''))
+```
+
+```{r}
+ggraph(net2, layout = 'fr') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net2 %v% 'degree_norm_bip',
+                      shape = factor(net2 %v% 'mode'),
+                      color = factor(net2 %v% 'mode'))) +
+  theme_void() +
+  scale_color_viridis_d() +
+  geom_node_text(aes(label = net2 %v% 'labels_bip'),
+                   size = 2, 
+                   color="black") +
+    labs(size = "Degree", color = "Mode", shape = "Mode")
+```
+
+But I want to demonstrate that there can be no connections between projects or between collaborators, in this network, so let's pick a layout that demonstrates that
+
+```{r}
+net2 %v% 'type' <- ifelse(net2 %v% 'mode' == 0, T, F)
+ggraph(net2, layout = 'bipartite') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net2 %v% 'degree_norm_bip',
+                      shape = factor(net2 %v% 'mode'),
+                      color = factor(net2 %v% 'mode')),
+                  alpha = .75) +
+  theme_void() +
+  scale_color_viridis_d() +
+  geom_node_text(aes(label = net2 %v% 'labels_bip'),
+                   size = 2, 
+                   color="black") +
+    labs(size = "Degree", color = "Mode", shape = "Mode")
+```
+
+Add a guide: I only want one legend
+```{r}
+ggraph(net2, layout = 'bipartite') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = net2 %v% 'degree_norm_bip',
+                      shape = factor(net2 %v% 'mode'),
+                      color = factor(net2 %v% 'mode')),
+                  alpha = .75) +
+  theme_void() +
+  scale_color_viridis_d() +
+  geom_node_text(aes(label = net2 %v% 'labels_bip'),
+                   size = 2, 
+                   color="black") +
+    labs(color = "Mode", shape = "Mode") + 
+  guides(colour = "legend", shape = "legend", size = "none")
+```
+
+
+## Leaders versus contributors?  
+
+We can return to the idea of subnetworks.
+
+### Induce subgraphs by edge  
+```{r}
+# Induce subgraphs based on those edges
+net2_l <- network::get.inducedSubgraph(net2, 
+                                       eid = which(net2 %e% 'leadership' == T))
+net2_c <- network::get.inducedSubgraph(net2, 
+                                       eid = which(net2 %e% 'contribution' == T))
+```
+
+Now we have subgraphs
+```{r}
+net2_l
+```
+
+## Climate projects
+
+```{r}
+climate <- which(net2 %v% 'sci_Weatherandclimate' == T)
+landuse <- which(net2 %v% 'sci_Landuseandhumanactivities' == T)
+govnc <- which(net2 %v% 'mgmt_Governance' == T)
+flood <- which(net2 %v% 'mgmt_Floodriskandlandusemanagement' == T)
+
+# this is harder for bipartite
+net2_cli <- network::get.inducedSubgraph(net2, 
+                                       v = climate)
+```
+
+```{r}
+net2_cli
+```
+
+```{r}
+climate_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in% 
+                     (net2 %v% 'vertex.names')[climate]]
+landuse_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in% 
+                     (net2 %v% 'vertex.names')[landuse]]
+govnc_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in% 
+                     (net2 %v% 'vertex.names')[govnc]]
+flood_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in% 
+                     (net2 %v% 'vertex.names')[flood]]
+```
+
+```{r}
+climate_alters <- which(net2 %v% 'vertex.names' %in% climate_alter_ids)
+landuse_alters <- which(net2 %v% 'vertex.names' %in% landuse_alter_ids)
+govnc_alters <- which(net2 %v% 'vertex.names' %in% govnc_alter_ids)
+flood_alters <- which(net2 %v% 'vertex.names' %in% flood_alter_ids)
+
+net2_cli <- network::get.inducedSubgraph(net2, 
+                                       v = climate,
+                                       alters = climate_alters)
+net2_landuse <- network::get.inducedSubgraph(net2, 
+                                       v = landuse,
+                                       alters = landuse_alters)
+net2_govnc <- network::get.inducedSubgraph(net2, 
+                                       v = govnc,
+                                       alters = govnc_alters)
+net2_flood <- network::get.inducedSubgraph(net2, 
+                                       v = flood,
+                                       alters = flood_alters)
+```
+
+
+```{r}
+
+assign_bipartite_deg_labels <- function(netname, n){
+  degree_norm_bip <- bipartite::ND(as.matrix(netname))
+  nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
+  nd_output_df <- data.frame('degreeN' = nd_output,
+                             'id' = names(nd_output))
+  nd_output_sorted <- nd_output_df[match((netname %v% 'vertex.names'), 
+                                          nd_output_df $id),]
+  
+  netname %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+  
+  topdeg_mode0 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 0]) %>%
+    top_n(n)
+  topdeg_mode1 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' ==   1]) %>% 
+    top_n(n)
+
+  netname %v% 'labels_org' <- ifelse((netname %v% 'degree_norm_bip') %in%
+                                       topdeg_mode1$deg & 
+                                       netname %v% 'mode' == 1, 
+                                     netname %v% 'name', '')
+  return(netname)
+}
+
+```
+
+```{r}
+net2_cli <- assign_bipartite_deg_labels(net2_cli, 3)
+net2_landuse <- assign_bipartite_deg_labels(net2_landuse, 3)
+net2_govnc <- assign_bipartite_deg_labels(net2_govnc, 3)
+net2_flood <- assign_bipartite_deg_labels(net2_flood, 3)
+```
+
+```{r}
+plot_bipartite_fx <- function(netname){
+  p <- ggraph(netname, layout = 'bipartite') +
+  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_node_point(aes(size = netname %v% 'degree_norm_bip',
+                      shape = factor(netname %v% 'mode'),
+                      color = factor(netname %v% 'mode')),
+                  alpha = .75) +
+  theme_void() +
+  scale_color_viridis_d() +
+  geom_node_text(aes(label = netname %v% 'labels_org'),
+                   size = 2, 
+                   color="black") +
+    labs(color = "Mode", shape = "Mode") + 
+  guides(colour = "legend", shape = "legend", size = "none")
+  return(p)
+}
+```
+
+```{r}
+plot_bipartite_fx(net2_cli)
+plot_bipartite_fx(net2_landuse)
+plot_bipartite_fx(net2_govnc)
+plot_bipartite_fx(net2_flood)
+```
+

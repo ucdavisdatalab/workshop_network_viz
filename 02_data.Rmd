@@ -15,20 +15,20 @@ Before we get into visualizations, we want to take a look at the data we have av
 **Two-mode edge list:** The data was originally compiled as two-mode network data: how are organizations/researchers connected to research projects? Our first mode, `project_id` are the id numbers representing different Delta science research projects. And our second mode, `org_id`, is the organization(s) (agencies, universities, etc) that are working on that project. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.  
 
 ```{r}
-edges <- read.csv('data/edgelist_twomode.csv')
-head(edges)
+edges_2mode <- read.csv('data/edgelist_twomode.csv')
+head(edges_2mode)
 ```
 
 ```{r, eval = F, echo = F}
-length(unique(edges$org_id))
-length(unique(edges$project_id))
+length(unique(edges_2mode$org_id))
+length(unique(edges_2mode$project_id))
 ```
 
 **One-mode edge list:** We projected our two-mode network to a one-mode network to take a deeper look at research collaborations: What organizations are working together? We've also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together.
 
 ```{r}
-edges_p <- read.csv('data/edgelist_projected.csv') 
-head(edges_p)
+edges_1mode <- read.csv('data/edgelist_projected.csv') 
+head(edges_1mode)
 ```
 
 ```{r, echo = F}
@@ -37,7 +37,7 @@ head(edges_p)
 # following steps:
 
 # create count table where organizations are columns (make y)
-tbl <- table(edges[c(2,1)])
+tbl <- table(edges_2mode[c(2,1)])
 # pull out column names -- these are mode 1 (orgs)
 orgids <- colnames(tbl)
 # take the cross-product to get a co-occur matrix
@@ -65,11 +65,12 @@ el_proj <- igraph::get.data.frame(g)
 colnames(el_proj) <- c("V1", "V2", "weight")
 ```
 
-**Nodelist**: We have a 'master' list of all the nodes (organizations and projects), and some attribute information. We have more node attributes for projects than we do for organizations. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. For organizations, we have very few attributes, but for the sake of this presentation we projected the scientific and management theme attributes from projects onto organizations that worked on those projects.  
+**Nodelist**: We have a two-mode list of all the nodes (organizations and projects), and some attribute information. We have more node attributes for projects than we do for organizations. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. For organizations, we have very few attributes, but for the sake of this presentation we projected the scientific and management theme attributes from projects onto organizations that worked on those projects.  
 
 ```{r}
-nodes <- read.csv('data/nodelist_twomode.csv')
-head(nodes)
+nodes_1mode <- read.csv('data/nodelist_onemode.csv')
+nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+head(nodes_2mode)
 ```
 Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes. Further note: Formatting network data is half the battle. See our script if you want to see how we 
 
