@@ -1,6 +1,10 @@
 # Data
 
-### About Delta Science Tracker  
+```{r, setup, include=FALSE}
+knitr::opts_knit$set(warning = F, message = F)
+```
+
+## Delta Science Tracker   
 
 We are using publicly available data from the Delta Stewardship Council's (DSC) [Delta Science Tracker](https://sciencetracker.deltacouncil.ca.gov/). This database is a library of Sacramento and SJ Delta-related research over the last 50 years. As the DSC's website explains:
 
@@ -8,7 +12,7 @@ We are using publicly available data from the Delta Stewardship Council's (DSC) 
 
 The data we'll use was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the collaborations by organizations filter. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R).
 
-### Data descriptions  
+## Data descriptions  
 
 Before we get into visualizations, we want to take a look at the data we have available. What relationships do we have? And what node or edge attributes are available? 
 
@@ -30,61 +34,73 @@ length(unique(edges_2mode$project_id))
 edges_1mode <- read.csv('data/edgelist_projected.csv') 
 head(edges_1mode)
 ```
+<details>
+<summary>Reveal: How to project one-mode networks from two-mode edge list</summary>
 
-```{r, echo = F}
-# We got out projected data directly from the DST webpage, but generally,
+```{r, eval = F}
+# We got our projected data directly from the DST webpage, but generally,
 # you can project any bipartite network into a one-mode network using the
 # following steps:
 
-# create count table where organizations are columns (make y)
+# 1. Create count table where organizations are columns (make your mode of
+#    interest the 2nd/y argument in the table)
 tbl <- table(edges_2mode[c(2,1)])
-# pull out column names -- these are mode 1 (orgs)
+# 2. Extract column names -- these are mode 1 names (in our case, orgs)
 orgids <- colnames(tbl)
-# take the cross-product to get a co-occur matrix
+# 3. Take the cross-product of the table to get a co-occurence matrix
 comat <- crossprod(tbl)
-# assign self-co-occurrences 0
+# 4. Assign self-co-occurrences 0
 diag(comat) <- 0
-# This should be symmetrical
+#   Check: This should be symmetrical
 isSymmetric(comat)
-# make a df and add ids as the column names
+# 5. Make a data frame from the matrix and add ids as the column names
 comat <- data.frame(comat)
 colnames(comat) <- orgids
+#.  Check: This should be square
 dim(comat)
-# Remove those with no co-occurrence at all
-comat2 <- comat[rowSums(comat, na.rm = T) != 0, 
-                colSums(comat, na.rm = T) != 0]
-dim(comat2)
-# make co-occur df into matrix object
-comat3 <- as.matrix(comat2)
-
-# create a graph so that it can be converted into a weighted edgelist
-g <- igraph::graph_from_adjacency_matrix(comat3, weighted = T, mode = 'undirected')
+# 6. Remove those with no co-occurrence at all
+comat <- comat[rowSums(comat, na.rm = T) != 0, 
+               colSums(comat, na.rm = T) != 0]
+# 7. Make co-occur data frame into matrix object
+comat <- as.matrix(comat)
+# 8. Create a graph so that it can be converted into a weighted edge list
+g <- igraph::graph_from_adjacency_matrix(comat, weighted = T, mode = 'undirected')
 el_proj <- igraph::get.data.frame(g)
+```
+</details>
 
-# rename columns and sort
-colnames(el_proj) <- c("V1", "V2", "weight")
+**Two-mode node list**: We have a two-mode list of all the nodes (organizations and projects). We have more node attributes for projects than we do for organizations, so the dimensions of the two-mode node list is quite qide. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:  
+
+```{r}
+nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+head(nodes_2mode[,c(1,3:9,31:32,39)])
 ```
 
-**Nodelist**: We have a two-mode list of all the nodes (organizations and projects), and some attribute information. We have more node attributes for projects than we do for organizations. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. For organizations, we have very few attributes, but for the sake of this presentation we projected the scientific and management theme attributes from projects onto organizations that worked on those projects.  
+Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes.  
+
+**One-mode node list**: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, link to their DST page, and mode category.  
 
 ```{r}
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
-nodes_2mode <- read.csv('data/nodelist_twomode.csv')
-head(nodes_2mode)
+head(nodes_1mode)
 ```
-Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes. Further note: Formatting network data is half the battle. See our script if you want to see how we 
 
-### What story do we want to tell?
 
-One-mode:
-* How have different organizations collaborated across projects?
+## Guiding questions  
+
+As with any visualization, we need to have an idea of what stories we want to tell, or what questions we want to answer, through our plotting exercises. This can keep you focused on what is important as we navigate the wide array of visualization options.  
+
+### One-mode visualization goals:  
+
+* How have different organizations collaborated across projects?  
 * Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
 * How have those collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
 
-Two-mode: 
-* What actors have been most active across projects? 
+### Two-mode visualization goals:  
+
+* What actors have been most active across projects?  
+* What actors have been most active on different scientific and management themes: climate, land use, governance, and flooding? (make subgraphs based on node attribute)    
 * Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
-* What actors have been most active on climate-related projects? (Node attribute of project node)
 
 
 

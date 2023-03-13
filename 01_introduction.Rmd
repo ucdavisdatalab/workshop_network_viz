@@ -1,11 +1,10 @@
 # Introduction
 
-
-### What are network data?
+## What are network data?
 
 Network data are relational... humans to humans. Animals to plants. 
 
-### Features of a network 
+## Features of a network 
 * Node/vertex
   * Multi-mode
   * Attributes
@@ -18,17 +17,19 @@ Network data are relational... humans to humans. Animals to plants.
 ### Network statistics 
 
 **Network-level statistics**   
+
 * Size  
 * Density  
 * Centralization  
 * Transitivity  
 * Degree distribution  
 
-**Actor-level**
+**Actor-level**  
+
 * Centrality (degree, betweenness, eigenvector, etc.)
   
 
-### Storing network data
+## Storing network data
 
 Edge lists are columns of data, whereby the positioning of two nodes next to one another in a column indicates a connection. In a one-mode undirected network, the position of names in the columns have little meaning (A <-> B = B <-> A).In a one-mode directed network, however, the columns take on a meaning, where the first column is a list of names from which a connection originated (e.g. 'from'), and the second column is a list of names to whom the connection is made (e.g. 'to'). In these cases, A -> B != B -> A. In two-made networks, where nodes of mode 1 can only connect to nodes of mode 2, but not one another, each column will represent a mode. 
 

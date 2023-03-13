@@ -130,6 +130,7 @@ ggraph(net2, layout = 'fr') +
 
 But I want to demonstrate that there can be no connections between projects or between collaborators, in this network, so let's pick a layout that demonstrates that
 
+Bipartite minimizes edge crossing 
 ```{r}
 net2 %v% 'type' <- ifelse(net2 %v% 'mode' == 0, T, F)
 ggraph(net2, layout = 'bipartite') +

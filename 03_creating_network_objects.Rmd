@@ -6,6 +6,18 @@ Now that we have our edge lists and node lists, we want to create our network ob
 knitr::opts_knit$set(warning = F, message = F)
 ```
 
+First, let's read in our two network packages, as well as a couple other packages that we'll need for this workshop.
+
+```{r}
+library(dplyr)
+library(magrittr)
+library(igraph)
+library(network)
+library(sna)
+library(ggraph)
+```
+
+
 ```{r, echo = F}
 edges_2mode <- read.csv('data/edgelist_twomode.csv')
 edges_1mode <- read.csv('data/edgelist_projected.csv')
@@ -15,17 +27,28 @@ nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
 ## `igraph` 
 
-First, let's make an `igraph` object. `igraph` seems to have more documentation/Stack Overflow resources, so it might be tempting to start here. We can load in the `igraph` package and use the `graph_from_data_frame()` function. Note that there are dozens of `graph_from...` functions. Many of them sound intuitive, but I prefer `graph_from_data_frame()` over `graph_from_edgelist()` because the former allows us to include the node list as an argument, whereas the latter does not.
+First, let's make an `igraph` object. `igraph` generally seems to have more documentation/Stack Overflow resources than other network packages, so it might be tempting to start here. We can load in the `igraph` package and use the `graph_from_data_frame()` function to create our graph. Note that there are dozens of `graph_from...` functions. Many of them sound (and are) intuitive. When dealing with edge and node lists, I prefer `graph_from_data_frame()` over `graph_from_edgelist()` because the former allows us to include the node list as an argument, whereas the latter does not.
 
-We want to start with creating both our one and two-mode networks. For our one-mode networks we want to use the `edges_p` object (short for edges_projected because projections are one-mode) and our nodes. For our two-mode network we can use our edges (STILL WORKING ON THIS FUNCTION).
+We want to start with creating both our one and two-mode networks. For our one-mode networks we want to use the `edges_1mode` and `nodes_1mode` objects. 
 
 ```{r}
-library(igraph)
 g1 <- graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
 ```
 
+We can take a look at a summary of the igraph object below. We see the number of nodes (139) and edges (475) summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).
+
+```{r}
+summary(g1)
+```
+
+Two-mode networks are a bit harder to create in `igraph`. Generally this package has very little two-mode functionality. There is one functio fro this, `make_bipartite_graph()`, but it requires different inputs than the standard edge list or matrix, and node lists. Instead, this function requires a vector of vertex types, meaning a Boolean of modes (0-1), and a vector of the edges in the graph. 
+
+```{r, eval= F}
+?make_bipartite_graph()
+```
+
+
 ```{r, echo = F}
-library(dplyr)
 # edges need to be a as a vector where each pair is a connection, 
 # so we an vectorize to make from: 49590, to: 50122 be just paired together
 # as our first two values in the vector, and so on
@@ -53,11 +76,6 @@ g2 <- set_edge_attr(g2, 'leadership', value = edges_2mode$leadership)
 g2 <- set_edge_attr(g2, 'contribution', value = edges_2mode$contribution)
 ```
 
-We can take a look at a summary of the igraph object by just printing it. We see the number of nodes and edges summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).
-
-```{r}
-g1
-```
 
 ```{r}
 g2

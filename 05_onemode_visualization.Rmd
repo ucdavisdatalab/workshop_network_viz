@@ -1,35 +1,19 @@
 # One-mode visualization
 
-## Introduction
-
-### Visualization goals:
-
-1. What does the collaborative network of Delta science research look like? 
-2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have research collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
-
-### Preparing to work with `network`
-
-We are going to stick to only working with the `network` package, even though the functions we will use for visualization are compatible with both objects. However, there are commonly-used network functions in each package, `igraph` and `network`, that mask one another. For instance:
-
-
-```{r, eval = F}
-sna::degree()
-igraph::degree()
+```{r, setup, include=FALSE}
+knitr::opts_knit$set(warning = F, message = F, fig.align = 'center')
 ```
 
-To avoid confusion and masking in R, we are going to detach the igraph package.
-
-```{r, eval = F}
-detach("package:igraph", unload = TRUE)
+```{r}
+library(dplyr)
+library(magrittr)
+library(igraph)
+library(network)
+library(sna)
+library(ggraph)
 ```
 
 ```{r, echo = F}
-library(sna)
-library(network)
-library(magrittr)
-library(ggraph)
-library(dplyr)
 edges_1mode <- read.csv('data/edgelist_projected.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
@@ -40,16 +24,36 @@ net1 <- network(x = edges_1mode,
 g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
 ```
 
+## Introduction  
 
-```{r}
-net1 %v% 'degree' <- sna::degree(net1)
+### Visualization goals:  
+
+1. How have different organizations collaborated across projects?  
+2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
+3. How have those collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+
+### Preparing to work with `network`  
+
+We are going to stick to only working with the `network` package, even though the functions we will use for visualization are compatible with both objects. I propose using network objects because they are compatible with more advanced statistical analysis provided through the `statnet` suite of packages. `igraph` objects should also work with the `ggraph` function, but because the syntax for working with the objects is different, the code used to do that would need to change.  
+
+Before we move forward with network, it is worth mentioning that there are commonly-used network functions in each package, `igraph` and `network`, that mask one another. For instance:
+
+```{r, eval = F}
+sna::degree()
+igraph::degree()
+```
+
+The `igraph` degree function will work only on `igraph` objects and `sna` `degree` function will work only on network objects. This can create a headache. To avoid confusion and masking in R, we are going to detach the `igraph` package and work only with `network` objects and compatible packages like `sna`.  
+
+```{r, eval = F}
+detach("package:igraph", unload = TRUE)
 ```
 
 ## Getting started with `ggraph`
 
 To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What does the collaborative network of Delta science research look like?_ 
 
-`ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings
+As notes in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings
 
 ```{r}
 ggraph(net1) +
@@ -57,27 +61,36 @@ ggraph(net1) +
     geom_node_point()
 ```
 
-These are some defaults at play here:
+These are some defaults at play here:  
+
 * layout = 'auto', which is the 'stress' layout  
 * default aesthetic mapping for geom_edges: x, y, xend, yend
 * default aesthetic mapping for geom_node_point: x, y
 
 ### Layouts
 
-First, let's talk about layouts. Here is a good resource: https://www.data-imaginist.com/2017/ggraph-introduction-layouts/ 
+First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. These layouts then are a _choice_, based on how you would like to present the network. There is an overview of some of the different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. Below we present our network with a few different layouts.  
 
-```{r, out.width= "50%"}
+```{r, out.width= c("33%", "33%", "33%")}
+ggraph(net1, layout = 'stress', bbox = 20) +
+    geom_edge_link() +
+    geom_node_point() +
+  labs(title = 'Stress (bbox = 20)')
+
 ggraph(net1, layout = 'stress', bbox = 5) +
     geom_edge_link() +
-    geom_node_point()
+    geom_node_point() +
+  labs(title = 'Stress (bbox = 5)')
 
 ggraph(net1, layout = 'kk') +
     geom_edge_link() +
-    geom_node_point()
+    geom_node_point() +
+  labs(title = 'Kamada and Kawai (spring-based algorithm)')
 
 ggraph(net1, layout = 'fr') +
     geom_edge_link() +
-    geom_node_point()
+    geom_node_point() +
+  labs(title = 'Fruchterman and Reingold (force-directed algorithm)')
 
 ggraph(net1, layout = 'tree') +
     geom_edge_link() +
@@ -87,54 +100,78 @@ ggraph(net1, layout = 'circle') +
     geom_edge_link() +
     geom_node_point()
 ```
-### Removing isolates? 
+
+Note that you can also set a **manual layout**. Layouts are simply x and y coordinates of points defined by a certain algorithm. You can extract those coordinates using the `create_layout()` function, and manipulate them, if need be. We will deal with this more in our third question.  
 
 ```{r}
-isolates(net1)
+fixed_coord <- create_layout(net1, layout = 'fr')
+head(fixed_coord[c(1:3,6)])
 ```
 
- Draft...
- 
- 
-### Aesthetics, themes  
+For our one-mode networks, we are going to use the 'fr' layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery. 
 
-Now let's start adding some aesthetics, much like we would with a ggplot to improve overall appeal
+### Aesthetics and themes  
 
-Reminder about colors. I liek to set a colors object and call upon it
+Now that we've chosen a layout, let's start adding some aesthetic features. This process will look very much like aesthetic mapping in `ggplot2`: we can assign aesthetics like color, size, shape, etc. to both our edge and node geometries. We can assign those features from the data directly, or just as stand-alone features.  
+
+**Size by degree**: Let's first say that we'd like to size our nodes by their degree centrality. While more central nodes are already places at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point. To size by degree, we will want to create a degree variable are a node attribute using the `degree` function. 
+
 ```{r}
-viridis::viridis(8)
-```
-```{r}
-clrs <- c("#440154FF", "#46337EFF", "#365C8DFF", "#277F8EFF",
-          "#1FA187FF", "#4AC16DFF", "#9FDA3AFF", "#FDE725FF")
+net1 %v% 'degree' <- sna::degree(net1)
 ```
 
-We can change colors and assign additional aestehtics to the figure.
+**Color-blind friendly colors**: We'd also like our nodes and edges to be colored differently than the default black, so we can set these colors to our geometries. Because the focus of these networks are on nodes, not edges, we can set our edges to a less pronounced color like grey, and select a color-blind friendly color palette to select a node color from. I personally like to use viridis:
+
+```{r}
+viridis::viridis(12)
+```
+
+The latest version of R studio lets us see these colors when we write them out in a script, so let's do that, and assign these colors to an object named `clrs`. We will be referencing this vector as we start using the palette.
+
+```{r}
+clrs <- c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF",
+          "#2D708EFF", "#25858EFF", "#1E9B8AFF", "#2BB07FFF", 
+          "#51C56AFF", "#85D54AFF", "#C2DF23FF", "#FDE725FF")
+```
+
+We can now integrate these three features: node size, edge color, and node color, into our plot. Let's also add an alpha for the edges there.
+
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
+  geom_edge_link(color = "gray70") +
   geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) 
 ```
 
-We can also add themes and labels, just like with ggplot2. 
+We can also add themes and labels, just like with ggplot2. `theme_void()` is great for networks because it removes any coordinates or background color. 
+
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) +
+  geom_edge_link(color = "gray70", alpha = .5) +
+  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+                  alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
   labs(title = "Delta Science Collaborative Research Network")
 ```
-
 Notice it changes every time, a little bit. You can set your seed (every time before you plot to keep it consistent.)
 
 ### Node labels 
 
-We have a variable that is our names, but it might be a bit overwhelming
+So far we are getting a clear shape of the network. But our main goal is to understand _who_ is central to collaboration. Let's try to add some node text with `geom_node_text()`. 
+
+We have a variable that is the name of our vertices:
+
+```{r}
+head(net1 %v% 'name')
+```
+
+Let's add this as a text geometry.  
+
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) +
+  geom_edge_link(color = "gray70", alpha = 0.5) +
+  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+                  alpha = .7) +
   theme_void() +
   theme_void() +
   theme(legend.position = "none") +
@@ -144,7 +181,8 @@ ggraph(net1, layout = 'fr') +
                 color="black")
 ```
 
-Let's be selective based on degree. Let's say we want to take the top 5-degree nodes and label them.
+Okay, a bit overwhelming. Instead, let's be selective based on degree. Let's say we want to take the top 5-degree nodes and label them.
+
 ```{r}
 topdeg <- data.frame("deg" = net1 %v% 'degree') %>% 
   top_n(5)
@@ -152,17 +190,19 @@ net1 %v% 'labels' <- ifelse((net1 %v% 'degree') %in% topdeg$deg,
                            net1 %v% 'name', '')
 ```
 
-Now we have a sparse label attribute
+Now we have a sparse label attribute.  
 
 ```{r}
 net1 %v% 'labels'
 ```
 
-And so it can make our plotting a bit better
+We can use this labels aesthetic to make our figure more easily readable.  
+
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) +
+  geom_edge_link(color = "gray70", alpha = 0.5) +
+  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+                  alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
     labs(title = "Delta Science Collaborative Research Network") +
@@ -170,12 +210,14 @@ ggraph(net1, layout = 'fr') +
                    size = 3, 
                    color="black")
 ```
-We want text not to overlap
+
+Almost. Let's include a repel = T argument to make sure the text doesn't overlap. 
 
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) +
+  geom_edge_link(color = "gray70", alpha = 0.5) +
+  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+                  alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
     labs(title = "Delta Science Collaborative Research Network") +
@@ -185,84 +227,101 @@ ggraph(net1, layout = 'fr') +
                  repel = T)
 ```
 
+Now that we've got that down as a base, I want to set this as a function so that we can move through other material a little more smoothly.  
 
-Now that we've got that down as a base, I want to set this as a function so that we can move through other material a little more smoothly
 ```{r}
 netplot_function <- function(netname){
   p <- ggraph(netname, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = netname %v% 'degree'), 
-                  color = clrs[6]) +
+  geom_edge_link(color = "gray70", alpha = 0.5) +
+  geom_node_point(aes(size = netname %v% 'degree'), color = clrs[4],
+                  alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
   geom_node_text(aes(label = netname %v% 'labels'),
-                   family = "Times",
                    size = 3, 
-                   color="black", repel = T) 
+                   color="black", 
+                 repel = T) 
   return(p)
 }
 ```
 
+### Removing isolates 
+
+Before we move too far along in our formatting of this figure, we may want to remove isolates. There are certainly occasions where we _want_ to see isolates in our network, but other times we are interested in the main component. We can identify our isolates and then induce our subgraph with only the non-isolate nodes using the `get.inducedSubgraph()` function.  
+
+```{r}
+isolates(net1)
+noiso <-  (1:network.size(net1))[-isolates(net1)]
+net1_noiso <- get.inducedSubgraph(net1, noiso)
+```
+
+Now we can see our network without isolates.  
+
+```{r}
+netplot_function(net1_noiso)
+```
+
 ## Community detection
 
-Often we're curious about whether or not there is some pattern within that giant plate of spaghetti. Are some organizations linking with certain others on a more regular basis? We might want to do some community detection approaches.
+Moving on to a deeper look at the network. Often we're curious about whether or not there is some pattern within our network. Are some organizations linking with certain others on a more regular basis? Is there a grouping trend in our network that we can't see without some kind of visual aid? To answer this, we might want to do some community detection approaches.
+
+### Community is broadly defined  
 
 Broadly, community detection is...
 
-### Community is broadly defined 
 Have there been certain communities of research over time?
 
-The one thing I think igraph has going for it is community detection.
+While we've moved away from `igraph`, I do want to point out that it has a number of community detection algorithms. 
 
 ```{r, eval = F}
-?igraph::cluster_walktrap() # need to specify steps
+?igraph::cluster_walktrap() 
+?igraph::cluster_leiden()
+?igraph::cluster_optimal()
 ```
 
-```{r}
-wt <- igraph::cluster_walktrap(g1)
-table(wt$membership) # 20 communities, where most are in community 1
-```
-
-In network there is the equivalent cluster function
+In the `sna` package there is the equivalence cluster (`equiv.cluster`) function.  
 
 ```{r, eval = F}
 ?sna::equiv.clust()
 ```
 
 ### Equivalence clusters  
+
+Equivalence clustering is a clustering method which groups nodes based on distance from one another. You can specify what kinds of clustering method to use with the `cluster.method` argument and what distance function to use with `equiv.fun`, but it by default uses a hierarchical clustering method based on structural equivalence using Hamming distance. We can calculate the distance and plot a dendrogram of the clusters.  
 ```{r}
-ec <- equiv.clust(net1)
+ec <- equiv.clust(net1_noiso)
 plot(ec)
 ```
 
+We can look at the different 'heights' of the nodes within the dendrogram, and see how many different levels there are.  
 ```{r}
 length(unique(ec$cluster$height))
 ```
 
+Now that we have these clusters, we can turn to another method, blockmodelling, which will evaluate blocks of groupings of nodes. We can specify how may blocks we want (`k`), or specify a height at which to split the classes (`h`). The block model output is a matrix with density measures (this is the default of the function). 
 ```{r}
-nblocks = 30
-sbm <- blockmodel(net1, ec, k = nblocks)
-sbm
+bm <- blockmodel(net1_noiso, ec, k = 30,  glabels = "DSC Collaboration")
+bm$block.model
 ```
 
+
 ```{r}
-membership <- data.frame("block" = sbm$block.membership,
+membership <- data.frame("block" = bm$block.membership,
                          "id" = ec$cluster$order)
 membership <- membership[order(membership$id),]
-net1 %v% 'membership' <- membership$block
-table(net1 %v% 'membership')
+net1_noiso %v% 'membership' <- membership$block
+table(net1_noiso %v% 'membership')
 ```
 
-We could assign color to that membership... but some of those memberships are really not significant
+We could assign color to that membership... but some of those memberships may be more or less meaningful. 
 
 ```{r}
-ggraph(net1, layout = 'fr') +
+ggraph(net1_noiso, layout = 'fr') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree',
-                      color = factor(net1 %v% 'membership', 
-                                     levels = 1:30))) +
+  geom_node_point(aes(size = net1_noiso %v% 'degree',
+                      color = factor(net1_noiso %v% 'membership'))) +
   theme_void() +
-  geom_node_text(aes(label = net1 %v% 'labels'),
+  geom_node_text(aes(label = net1_noiso %v% 'labels'),
                    size = 3, 
                    color="black",
                  repel = T)  +
@@ -270,37 +329,46 @@ ggraph(net1, layout = 'fr') +
   labs(color = "Community", size = "Degree")
 ```
 
-Manually create your own grouping  
-```{r}
-sig_blocks <- data.frame('corr' = diag(sbm$block.model),
-           'b' = 1:30) %>% 
-  filter(!(is.nan(corr)) & corr > .5)
+One way to address this is to consider a threshold for the density values of each block to identify blocks that are more dense than the whole network (see [Slide 92](https://pauloserodio.com/eui2019/day2.pdf)). The density of our network is:
 
-net1 %v% 'member_grp' <- ifelse(net1 %v% 'membership' == sig_blocks$b[1], 1, 
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[2], 2, 
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[3], 3,
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[4], 4,
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[5], 5,
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[6], 6,
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[7], 7,
-                          ifelse(net1 %v% 'membership' == sig_blocks$b[8], 8,
-                                 9))))))))
+```{r}
+gden(net1_noiso)
 ```
 
-Now we can use the 'member_grp' node attribute, which associated large and correlated blocks with colors, as our color aesthetic. 
+So we can use this as a threshold.   
+```{r}
+dense_blocks <- data.frame('density' = diag(bm$block.model),
+           'b' = 1:length(unique(net1_noiso %v% 'membership'))) %>% 
+  filter(!(is.nan(density)) & density > gden(net1_noiso))
+
+net1_noiso %v% 'member_grp' <- ifelse(net1_noiso %v% 'membership' == dense_blocks$b[1], 1, 
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[2], 2, 
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[3], 3,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[4], 4,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[5], 5,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[6], 6,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[7], 7,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[8], 8,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[9], 9,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[10], 10,
+                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[11], 11,
+                                 12)))))))))))
+```
+
+Now we can use the 'member_grp' node attribute, which associated large and correlated blocks with colors, as our color aesthetic. What we can see is that the most active, central actors like USGS, USFWS, etc., are not in highly dense blocks. Instead, they must work in low density, broader networks in which they span multiple, less connected groups. 
 
 ```{r}
-ggraph(net1, layout = 'fr') +
+ggraph(net1_noiso, layout = 'fr') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree',
-                      color = factor(net1 %v% 'member_grp'))) +
+  geom_node_point(aes(size = net1_noiso %v% 'degree',
+                      color = factor(net1_noiso %v% 'member_grp'))) +
   theme_void() +
-  geom_node_text(aes(label = net1 %v% 'labels'),
+  geom_node_text(aes(label = net1_noiso %v% 'labels'),
                    size = 3, 
                    color="black",
                  repel = T)  +
   theme(legend.position = "none") +
-  scale_color_manual(values = c(clrs, "grey")) 
+  scale_color_manual(values = c(clrs[1:11], "grey")) 
 ```
 
 ## Longitudinal networks  
@@ -369,7 +437,7 @@ net1_t4 %v% 'labels' <- get_top_degree(net1_t4, 5)
 ```
 
 Now let's plot one of our subgraphs. We can use the same netplot function
-```{r}
+```{r, out.width = c("50%", "50%")}
 netplot_function(net1_t1)
 netplot_function(net1_t2)
 netplot_function(net1_t3)
@@ -385,12 +453,12 @@ With ggraph/network, we can fix coordinates by creating a layout table from our 
 fixed_coord <- create_layout(net1, layout = 'fr')
 ```
 
-# Then we can create those same layout tables for each subgraph
+With these coordinates fixed from our full plot, we can then apply those same coordinates for each subgraph.
+
 ```{r}
+# create a layout table for the subgraph
 fixed_coord_t1 <- create_layout(net1_t1, layout = 'fr')
-# joins don't seem to wrok
-#fixed_coord_t1 <- fixed_coord_t1[,-c(1:2)]
-#fixed_coord_t1 <- right_join(fixed_coord[,c(1,2,6)], fixed_coord_t1)
+# subset the relevant coordinates from the full layout table
 coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t1$id, c(1,2,6)]
 fixed_coord_t1$x <- coords_we_need$x
 fixed_coord_t1$y <- coords_we_need$y
