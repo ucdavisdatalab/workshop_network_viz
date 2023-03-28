@@ -1,7 +1,7 @@
 # Additional resources
 
-# igraph visualiation
+## igraph visualiation
 
-# ggnet2
+## ggnet2
 
-# interactive
+## interactive

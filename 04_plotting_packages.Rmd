@@ -1,7 +1,7 @@
 # Plotting packages
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F)
 library(igraph)
 library(network)
 ```
@@ -27,7 +27,7 @@ g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directe
 
 For this workshop we will use the [`ggraph` package](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf) (and function) for network visualization, created by Thomas Lin Pedersen, who also happens to make 'generative' artwork in R. 
 
-```{r echo=FALSE, out.width = c("50%","50"), fig.align= 'center'}
+```{r echo=FALSE, out.width = "50%", fig.align= 'center'}
 knitr::include_graphics("img/winds2020.jpeg")
 knitr::include_graphics("img/yonder1831.jpeg")
 ```
@@ -57,7 +57,7 @@ There are several plotting packages out there, some of them work with different 
 
 Base R plotting works with network and igraph objects, though their defaults for each object are different. 
 
-```{r, out.width=c('50%', '50%'), fig.show="hold"}
+```{r, out.width=c('48%', '48%'), fig.show="hold"}
 plot(net1)
 plot(g1)
 ```
