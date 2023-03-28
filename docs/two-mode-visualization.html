@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-13" />
+<meta name="date" content="2023-03-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -145,15 +147,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./" style="font-size: 18px"Network visualization</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#description"><i class="fa fa-check"></i><b>0.1</b> Description</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.2</b> Learning goals</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.2</b> Features of a network</a>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.2.1</b> Network statistics</a></li>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.1.1</b> Features of a network</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.1.2</b> Network statistics</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.3</b> Storing network data</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.2</b> Storing network data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
 <ul>
@@ -278,17 +285,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## Warning: `vertices` were not provided in the order required for bipartite networks. Reordering.
 ## 
 ## This is the first and last time you will be warned during this session.</code></pre>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="two-mode-visualization.html#cb224-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span> <span class="ot">&lt;-</span> sna<span class="sc">::</span><span class="fu">degree</span>(net2)</span>
-<span id="cb224-2"><a href="two-mode-visualization.html#cb224-2" aria-hidden="true" tabindex="-1"></a>topdeg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb224-3"><a href="two-mode-visualization.html#cb224-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="two-mode-visualization.html#cb269-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span> <span class="ot">&lt;-</span> sna<span class="sc">::</span><span class="fu">degree</span>(net2)</span>
+<span id="cb269-2"><a href="two-mode-visualization.html#cb269-2" aria-hidden="true" tabindex="-1"></a>topdeg <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deg&quot;</span> <span class="ot">=</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb269-3"><a href="two-mode-visualization.html#cb269-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## Selecting by deg</code></pre>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="two-mode-visualization.html#cb226-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%in%</span> topdeg<span class="sc">$</span>deg, </span>
-<span id="cb226-2"><a href="two-mode-visualization.html#cb226-2" aria-hidden="true" tabindex="-1"></a>                           net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="st">&#39;&#39;</span>)</span>
-<span id="cb226-3"><a href="two-mode-visualization.html#cb226-3" aria-hidden="true" tabindex="-1"></a><span class="fu">netplot_function</span>(net2)</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="two-mode-visualization.html#cb271-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%in%</span> topdeg<span class="sc">$</span>deg, </span>
+<span id="cb271-2"><a href="two-mode-visualization.html#cb271-2" aria-hidden="true" tabindex="-1"></a>                           net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="st">&#39;&#39;</span>)</span>
+<span id="cb271-3"><a href="two-mode-visualization.html#cb271-3" aria-hidden="true" tabindex="-1"></a><span class="fu">netplot_function</span>(net2)</span></code></pre></div>
 <pre><code>## Warning: Using the `size` aesthetic in this geom was deprecated in ggplot2 3.4.0.
 ## ℹ Please use `linewidth` in the `default_aes` field and elsewhere instead.</code></pre>
 <p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="two-mode-visualization.html#cb228-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="two-mode-visualization.html#cb273-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span></span></code></pre></div>
 <pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 ##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 ##  [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
@@ -301,17 +308,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [334] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ## [371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 ## [408] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
-<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="two-mode-visualization.html#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
-<span id="cb230-2"><a href="two-mode-visualization.html#cb230-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
-<span id="cb230-3"><a href="two-mode-visualization.html#cb230-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>,</span>
-<span id="cb230-4"><a href="two-mode-visualization.html#cb230-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
-<span id="cb230-5"><a href="two-mode-visualization.html#cb230-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>))) <span class="sc">+</span></span>
-<span id="cb230-6"><a href="two-mode-visualization.html#cb230-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
-<span id="cb230-7"><a href="two-mode-visualization.html#cb230-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
-<span id="cb230-8"><a href="two-mode-visualization.html#cb230-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;labels&#39;</span>),</span>
-<span id="cb230-9"><a href="two-mode-visualization.html#cb230-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
-<span id="cb230-10"><a href="two-mode-visualization.html#cb230-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
-<span id="cb230-11"><a href="two-mode-visualization.html#cb230-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="two-mode-visualization.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
+<span id="cb275-2"><a href="two-mode-visualization.html#cb275-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb275-3"><a href="two-mode-visualization.html#cb275-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>,</span>
+<span id="cb275-4"><a href="two-mode-visualization.html#cb275-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>),</span>
+<span id="cb275-5"><a href="two-mode-visualization.html#cb275-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span>))) <span class="sc">+</span></span>
+<span id="cb275-6"><a href="two-mode-visualization.html#cb275-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb275-7"><a href="two-mode-visualization.html#cb275-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb275-8"><a href="two-mode-visualization.html#cb275-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> net2 <span class="sc">%v%</span> <span class="st">&#39;labels&#39;</span>),</span>
+<span id="cb275-9"><a href="two-mode-visualization.html#cb275-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb275-10"><a href="two-mode-visualization.html#cb275-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb275-11"><a href="two-mode-visualization.html#cb275-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
 <p><img src="06_twomode_visualization_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
             </section>

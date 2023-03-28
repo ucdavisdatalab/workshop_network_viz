@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-13" />
+<meta name="date" content="2023-03-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -145,15 +147,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./" style="font-size: 18px"Network visualization</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#description"><i class="fa fa-check"></i><b>0.1</b> Description</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.2</b> Learning goals</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.2</b> Features of a network</a>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.2.1</b> Network statistics</a></li>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.1.1</b> Features of a network</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.1.2</b> Network statistics</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.3</b> Storing network data</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.2</b> Storing network data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
 <ul>
@@ -161,8 +168,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.2</b> Data descriptions</a></li>
 <li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#guiding-questions"><i class="fa fa-check"></i><b>2.3</b> Guiding questions</a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="data.html"><a href="data.html#one-mode-visualization-goals"><i class="fa fa-check"></i><b>2.3.1</b> One-mode visualization goals:</a></li>
-<li class="chapter" data-level="2.3.2" data-path="data.html"><a href="data.html#two-mode-visualization-goals"><i class="fa fa-check"></i><b>2.3.2</b> Two-mode visualization goals:</a></li>
+<li class="chapter" data-level="2.3.1" data-path="data.html"><a href="data.html#one-mode-visualization"><i class="fa fa-check"></i><b>2.3.1</b> One-mode visualization:</a></li>
+<li class="chapter" data-level="2.3.2" data-path="data.html"><a href="data.html#two-mode-visualization"><i class="fa fa-check"></i><b>2.3.2</b> Two-mode visualization:</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
@@ -180,33 +187,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2.3" data-path="plotting-packages.html"><a href="plotting-packages.html#ggnetwork"><i class="fa fa-check"></i><b>4.2.3</b> <code>ggnetwork</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
+<li class="chapter" data-level="5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<li class="chapter" data-level="5.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
-<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
+<li class="chapter" data-level="5.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
-<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-and-themes"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics and themes</a></li>
-<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
-<li class="chapter" data-level="5.2.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#removing-isolates"><i class="fa fa-check"></i><b>5.2.4</b> Removing isolates</a></li>
+<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#aesthetics"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
+<li class="chapter" data-level="5.2.4" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#removing-isolates"><i class="fa fa-check"></i><b>5.2.4</b> Removing isolates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
+<li class="chapter" data-level="5.3" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
-<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
+<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
+<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
+<li class="chapter" data-level="5.4" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
-<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
+<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>5.5</b> Interactive plots DRAFTING</a></li>
+<li class="chapter" data-level="5.5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>5.5</b> Interactive plots DRAFTING</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a></li>
+<li class="chapter" data-level="6" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a></li>
 <li class="chapter" data-level="7" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>7</b> Normalized degree for both modes… (see Ebba)</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>7.1</b> Leaders versus contributors?</a>
@@ -244,12 +251,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Network Visualization</h1>
 <p class="author"><em>Liza Wood</em></p>
-<p class="date"><em>2023-03-13</em></p>
+<p class="date"><em>2023-03-28</em></p>
 </div>
 <div id="overview" class="section level1 unnumbered hasAnchor">
 <h1>Overview<a href="index.html#overview" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>YOUR DESCRIPTION, LEARNING GOALS, PREREQUISITES, ETC</p>
+<div id="description" class="section level2 hasAnchor" number="0.1">
+<h2><span class="header-section-number">0.1</span> Description<a href="index.html#description" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Network science approaches are being increasingly used to explore complext interactions and the general connectivity among entities, from friends in a social network to the spread of a disease in a population. Due its complexity, network data is often best explored and communicated using data visualizations. In this intermediate R workshop we will cover how to tell useful stories with network data primarily using the ‘statnet’ suite of packages and the ‘ggraph’ plotting package that is compatible with much of the ggplot2 framework. In this interactive and hands-on workshop we’ll practice using these packages in R to plot one-mode and two-mode networks. As we introduce functions unique to these packages we will discuss what visualization features best suit different types of network data and research communication goals. Along the way we will cover basic data preparation steps and how to calculate (or assign) key network descriptives including centrality measures, edge attributes, and community clusters for your plots.</p>
+</div>
+<div id="learning-goals" class="section level2 hasAnchor" number="0.2">
+<h2><span class="header-section-number">0.2</span> Learning goals<a href="index.html#learning-goals" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>After completing this workshop, learners should be able to:</p>
+<ul>
+<li>Distinguish between ‘igraph’ and ‘network’ objects in R</li>
+<li>Identify the necessary components for visualizing network objects in ggraph</li>
+<li>Calculate network and node-level descriptives and integrate them into visualizations</li>
+<li>Select among various visualization strategies for diverse communication goals</li>
+<li>Create well-designed network figures</li>
+<li>Identify where to go to learn more</li>
+</ul>
+</div>
+<div id="prerequisites" class="section level2 hasAnchor" number="0.3">
+<h2><span class="header-section-number">0.3</span> Prerequisites<a href="index.html#prerequisites" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The target audience for this workshop is intermediate to advanced R users. This workshop will provide only a cursory introduction to network data and therefore is best suited for learners who have some familiarity working with networks. While workshop examples will be based primarily on social scientific examples (e.g., social connections and co-occurrence networks), network visualizations can be applied to a wide variety of research questions and learners from all domains are welcome.</p>
 
+</div>
 </div>
             </section>
 

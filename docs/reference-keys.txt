@@ -1,3 +1,8 @@
+tab:unnamed-chunk-5
+tab:unnamed-chunk-6
+description
+learning-goals
+prerequisites
 introduction
 what-are-network-data
 features-of-a-network
@@ -7,8 +12,8 @@ data
 delta-science-tracker
 data-descriptions
 guiding-questions
-one-mode-visualization-goals
-two-mode-visualization-goals
+one-mode-visualization
+two-mode-visualization
 creating-network-objects-in-r
 igraph
 network
@@ -18,13 +23,13 @@ other-packages-and-functions
 plot
 ggallyggnet2
 ggnetwork
-one-mode-visualization
+one-mode-visualization-1
 introduction-1
 visualization-goals
 preparing-to-work-with-network
 getting-started-with-ggraph
 layouts
-aesthetics-and-themes
+aesthetics
 node-labels
 removing-isolates
 community-detection
@@ -34,7 +39,7 @@ longitudinal-networks
 induce-subgraphs-by-edge
 fixing-coordinates
 interactive-plots-drafting
-two-mode-visualization
+two-mode-visualization-1
 normalized-degree-for-both-modes-see-ebba
 leaders-versus-contributors
 induce-subgraphs-by-edge-1

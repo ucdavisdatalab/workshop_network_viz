@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-13" />
+<meta name="date" content="2023-03-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -52,6 +52,8 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <script src="libs/plotly-binding-4.10.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
@@ -145,15 +147,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="./" style="font-size: 18px"Network visualization</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#description"><i class="fa fa-check"></i><b>0.1</b> Description</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.2</b> Learning goals</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+</ul></li>
 <li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a></li>
-<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.2</b> Features of a network</a>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a>
 <ul>
-<li class="chapter" data-level="1.2.1" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.2.1</b> Network statistics</a></li>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.1.1</b> Features of a network</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.1.2</b> Network statistics</a></li>
 </ul></li>
-<li class="chapter" data-level="1.3" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.3</b> Storing network data</a></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.2</b> Storing network data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
 <ul>
@@ -161,8 +168,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.2</b> Data descriptions</a></li>
 <li class="chapter" data-level="2.3" data-path="data.html"><a href="data.html#guiding-questions"><i class="fa fa-check"></i><b>2.3</b> Guiding questions</a>
 <ul>
-<li class="chapter" data-level="2.3.1" data-path="data.html"><a href="data.html#one-mode-visualization-goals"><i class="fa fa-check"></i><b>2.3.1</b> One-mode visualization goals:</a></li>
-<li class="chapter" data-level="2.3.2" data-path="data.html"><a href="data.html#two-mode-visualization-goals"><i class="fa fa-check"></i><b>2.3.2</b> Two-mode visualization goals:</a></li>
+<li class="chapter" data-level="2.3.1" data-path="data.html"><a href="data.html#one-mode-visualization"><i class="fa fa-check"></i><b>2.3.1</b> One-mode visualization:</a></li>
+<li class="chapter" data-level="2.3.2" data-path="data.html"><a href="data.html#two-mode-visualization"><i class="fa fa-check"></i><b>2.3.2</b> Two-mode visualization:</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
@@ -180,33 +187,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2.3" data-path="plotting-packages.html"><a href="plotting-packages.html#ggnetwork"><i class="fa fa-check"></i><b>4.2.3</b> <code>ggnetwork</code></a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
+<li class="chapter" data-level="5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
+<li class="chapter" data-level="5.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
-<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
 </ul></li>
-<li class="chapter" data-level="5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
+<li class="chapter" data-level="5.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
-<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-and-themes"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics and themes</a></li>
-<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
-<li class="chapter" data-level="5.2.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#removing-isolates"><i class="fa fa-check"></i><b>5.2.4</b> Removing isolates</a></li>
+<li class="chapter" data-level="5.2.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#layouts"><i class="fa fa-check"></i><b>5.2.1</b> Layouts</a></li>
+<li class="chapter" data-level="5.2.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#aesthetics"><i class="fa fa-check"></i><b>5.2.2</b> Aesthetics</a></li>
+<li class="chapter" data-level="5.2.3" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#node-labels"><i class="fa fa-check"></i><b>5.2.3</b> Node labels</a></li>
+<li class="chapter" data-level="5.2.4" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#removing-isolates"><i class="fa fa-check"></i><b>5.2.4</b> Removing isolates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
+<li class="chapter" data-level="5.3" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#community-detection"><i class="fa fa-check"></i><b>5.3</b> Community detection</a>
 <ul>
-<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
-<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
+<li class="chapter" data-level="5.3.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#community-is-broadly-defined"><i class="fa fa-check"></i><b>5.3.1</b> Community is broadly defined</a></li>
+<li class="chapter" data-level="5.3.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#equivalence-clusters"><i class="fa fa-check"></i><b>5.3.2</b> Equivalence clusters</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
+<li class="chapter" data-level="5.4" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#longitudinal-networks"><i class="fa fa-check"></i><b>5.4</b> Longitudinal networks</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
-<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
+<li class="chapter" data-level="5.4.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#induce-subgraphs-by-edge"><i class="fa fa-check"></i><b>5.4.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="5.4.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#fixing-coordinates"><i class="fa fa-check"></i><b>5.4.2</b> Fixing coordinates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>5.5</b> Interactive plots DRAFTING</a></li>
+<li class="chapter" data-level="5.5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>5.5</b> Interactive plots DRAFTING</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a></li>
+<li class="chapter" data-level="6" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a></li>
 <li class="chapter" data-level="7" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>7</b> Normalized degree for both modes… (see Ebba)</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>7.1</b> Leaders versus contributors?</a>
@@ -245,54 +252,950 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">1</span> Introduction<a href="introduction.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="what-are-network-data" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> What are network data?<a href="introduction.html#what-are-network-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Network data are relational… humans to humans. Animals to plants.</p>
+<p>Networks are composed of are relational data, whereby entities across all types of domains (actors, companies, species, topics, etc.) are connected based on certain kinds of relationships (friendship, trade, pollination, in-text co-occurrence, etc.)</p>
+<p>Networks are useful for studying interdependencies; their structure suggest that entities and their connections inter-relate. Though interdependent, most (social, at least) theory is often framed in terms of <em>selection</em>, nodes are choosing to make connections based on certain characteristics/decision criteria, or in terms of <em>influence</em>, connections are affecting the characteristics/decisions of actors.</p>
+<div id="features-of-a-network" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Features of a network<a href="introduction.html#features-of-a-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Networks are composed of ‘nodes’, the data points that represent and entity (also called vertex), and ‘edges’, representing the relationship between the nodes. These network structures are represented in Figure 1.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(statnet)</span></code></pre></div>
+<pre><code>## Loading required package: tergm</code></pre>
+<pre><code>## Loading required package: ergm</code></pre>
+<pre><code>## Loading required package: network</code></pre>
+<pre><code>## 
+## &#39;network&#39; 1.18.1 (2023-01-24), part of the Statnet Project
+## * &#39;news(package=&quot;network&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;network&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## 
+## &#39;ergm&#39; 4.4.0 (2023-01-26), part of the Statnet Project
+## * &#39;news(package=&quot;ergm&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;ergm&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## &#39;ergm&#39; 4 is a major update that introduces some backwards-incompatible
+## changes. Please type &#39;news(package=&quot;ergm&quot;)&#39; for a list of major
+## changes.</code></pre>
+<pre><code>## Loading required package: networkDynamic</code></pre>
+<pre><code>## 
+## &#39;networkDynamic&#39; 0.11.3 (2023-02-15), part of the Statnet Project
+## * &#39;news(package=&quot;networkDynamic&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;networkDynamic&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;tergm&#39;:
+##   method                   from
+##   simulate_formula.network ergm</code></pre>
+<pre><code>## 
+## &#39;tergm&#39; 4.1.1 (2022-11-07), part of the Statnet Project
+## * &#39;news(package=&quot;tergm&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;tergm&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## 
+## Attaching package: &#39;tergm&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ergm&#39;:
+## 
+##     snctrl</code></pre>
+<pre><code>## Loading required package: ergm.count</code></pre>
+<pre><code>## 
+## &#39;ergm.count&#39; 4.1.1 (2022-05-24), part of the Statnet Project
+## * &#39;news(package=&quot;ergm.count&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;ergm.count&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## Loading required package: sna</code></pre>
+<pre><code>## Loading required package: statnet.common</code></pre>
+<pre><code>## 
+## Attaching package: &#39;statnet.common&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:ergm&#39;:
+## 
+##     snctrl</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     attr, order</code></pre>
+<pre><code>## sna: Tools for Social Network Analysis
+## Version 2.7-1 created on 2023-01-24.
+## copyright (c) 2005, Carter T. Butts, University of California-Irvine
+##  For citation information, type citation(&quot;sna&quot;).
+##  Type help(package=&quot;sna&quot;) to get started.</code></pre>
+<pre><code>## Loading required package: tsna</code></pre>
+<pre><code>## 
+## &#39;statnet&#39; 2019.6 (2019-06-13), part of the Statnet Project
+## * &#39;news(package=&quot;statnet&quot;)&#39; for changes since last version
+## * &#39;citation(&quot;statnet&quot;)&#39; for citation information
+## * &#39;https://statnet.org&#39; for help, support, and other information</code></pre>
+<pre><code>## unable to reach CRAN</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="introduction.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span></code></pre></div>
+<pre><code>## Loading required package: ggplot2</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="introduction.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr) </span>
+<span id="cb27-2"><a href="introduction.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="introduction.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From Jared</span></span>
+<span id="cb28-2"><a href="introduction.html#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>) <span class="co"># Setting the random seed will control how networks are gnerated, included here to try and make uniform across participant&#39;s computers</span></span>
+<span id="cb28-3"><a href="introduction.html#cb28-3" aria-hidden="true" tabindex="-1"></a>e.m <span class="ot">=</span> sna<span class="sc">::</span><span class="fu">rgraph</span>(<span class="dv">2</span>, <span class="at">mode=</span><span class="st">&quot;graph&quot;</span>, <span class="at">tprob =</span> .<span class="dv">4</span>) <span class="co"># &#39;rgraph&#39; creates a random matrix using parameters supplied, which can be interpreted as a network (xplained more in the data section)</span></span>
+<span id="cb28-4"><a href="introduction.html#cb28-4" aria-hidden="true" tabindex="-1"></a>e.n <span class="ot">=</span> network<span class="sc">::</span><span class="fu">network</span>(e.m, <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>, <span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="co"># The &#39;network&#39; command turns data into a network object, which is required for later analyses</span></span>
+<span id="cb28-5"><a href="introduction.html#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(e.n, <span class="at">label =</span> <span class="st">&quot;Node&quot;</span>, <span class="at">edge.label =</span> <span class="st">&quot;edge&quot;</span>, <span class="at">vertex.cex =</span> <span class="dv">3</span>,</span>
+<span id="cb28-6"><a href="introduction.html#cb28-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.col =</span> <span class="st">&quot;#357BA2FF&quot;</span>)</span></code></pre></div>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><strong>Network ‘mode’</strong>: Networks can take several forms with variation in what kinds of connections can occur. One important distinction can be made between <strong>one-mode and two-mode networks</strong>. One-mode networks assumes that the nodes are all capable of making connections while two-mode networks assume that nodes of one type can only have relationships to nodes of a different type. Using the example of board members and corporations, Jasny (2012) explains: ‘Ties between the board members themselves (e.g., friendship ties) would constitute a one-mode network. Ties between companies (e.g., if the first company supplied the second with raw materials) would also be a one-mode network. The two-mode network is formed by ties from the board members, the first mode, to the boards of companies they sit on, the second mode.’ These two-mode networks, also called bipartite networks, assume that connections cannot be made within each mode.</p>
+<pre><code>## Warning: Using the `size` aesthetic in this geom was deprecated in ggplot2 3.4.0.
+## ℹ Please use `linewidth` in the `default_aes` field and elsewhere instead.</code></pre>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="01_introduction_files/figure-html/unnamed-chunk-3-2.png" width="50%" /></p>
+<p><strong>Node attributes</strong>:In both one and two mode networks, nodes have attributes. <strong>Node attributes</strong> are associated data that describe the entity, which can be either endogenous to the network (i.e. a characteristic of the node based on their place in the network) or exogenous (i.e. a characteristic of the node unrelated to their place in the network). Examples of endogenous node attributes are described in the X Section. Examples of exogenous node attributes could be the gender of an individual, the sector a company works in, the weight or species of a pollinator, or the author of a word’s corpus.</p>
+<p><strong>Directionality</strong>: The connections that connect entities in a network can be <strong>directed or undirected</strong>. Directed networks assume that there is a ‘sender’ and ‘receiver’ of an edge, and that the difference between these two matter (e.g. transmitting a disease). On the other hand, undirected networks assume that the connection is based on a mutual relationship (e.g. co-authorship). Whether or not edges are connected will alter our understanding of the network structure, since each connection-based statistic will be divided into incoming and outgoing connections.</p>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-4-1.png" width="50%" /><img src="01_introduction_files/figure-html/unnamed-chunk-4-2.png" width="50%" /></p>
+<p><strong>Edge attributes</strong>: Just like with nodes, edges can also have attributes. <strong>Edge attributes</strong> are exogenous data that describe the connection, such as the ‘weight’ of the tie (multiple connections) and/or the <em>type</em> of connection. For example, individuals in a network can be connected through different relationships (e.g. classmates, friends), companies can trade information and/or material goods; pollinators can visit or pollinate. Depending on how a researcher wants to analyze a network, these various types of connections can be considered to exist across multiple ‘levels’.</p>
 </div>
-<div id="features-of-a-network" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Features of a network<a href="introduction.html#features-of-a-network" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<ul>
-<li>Node/vertex
-<ul>
-<li>Multi-mode</li>
-<li>Attributes</li>
-</ul></li>
-<li>Edge/connection
-<ul>
-<li>directed/undirecied</li>
-<li>Multi-plex</li>
-<li>Attributes</li>
-</ul></li>
-<li>Levels</li>
-</ul>
-<div id="network-statistics" class="section level3 hasAnchor" number="1.2.1">
-<h3><span class="header-section-number">1.2.1</span> Network statistics<a href="introduction.html#network-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="network-statistics" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Network statistics<a href="introduction.html#network-statistics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p><strong>Network-level statistics</strong></p>
 <ul>
-<li>Size<br />
-</li>
-<li>Density<br />
-</li>
-<li>Centralization<br />
-</li>
-<li>Transitivity<br />
-</li>
-<li>Degree distribution</li>
+<li>Size: Number of nodes and/or number of connections</li>
+<li>Density: Number of edges out of all possible edges</li>
+<li>Centralization: propensity for nodes to connect to few or many nodes; closely related to degree distribution</li>
+<li>Transitivity: propensity for ‘triadic closure’</li>
 </ul>
 <p><strong>Actor-level</strong></p>
 <ul>
-<li>Centrality (degree, betweenness, eigenvector, etc.)</li>
+<li>Degree centrality: Number of connections per node</li>
+<li></li>
 </ul>
 </div>
 </div>
-<div id="storing-network-data" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Storing network data<a href="introduction.html#storing-network-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Edge lists are columns of data, whereby the positioning of two nodes next to one another in a column indicates a connection. In a one-mode undirected network, the position of names in the columns have little meaning (A &lt;-&gt; B = B &lt;-&gt; A).In a one-mode directed network, however, the columns take on a meaning, where the first column is a list of names from which a connection originated (e.g. ‘from’), and the second column is a list of names to whom the connection is made (e.g. ‘to’). In these cases, A -&gt; B != B -&gt; A. In two-made networks, where nodes of mode 1 can only connect to nodes of mode 2, but not one another, each column will represent a mode.</p>
-<p>Matrices are the graph form for storing relational data. All edge lists end up as matrices because networks are matrices. The differences we pointed out in edge lists (directed/undirected, one-mode/two-mode) are reflected in the shape and symmetry of the matrix.</p>
-<ul>
-<li>Undirected one-mode: square and symmetrical</li>
-<li>Directed one-mode: square and asymmetrical</li>
-<li>Two-mode: rectangular and symmetrical</li>
-</ul>
-<p>Generally in network analysis we also want to have node attributes: Charactersitics of our nodes that can help us understand the data better…</p>
+<div id="storing-network-data" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Storing network data<a href="introduction.html#storing-network-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Network data, which record the relationships (edges) between nodes, are typically stored in one of two ways: edge lists or matrices. <strong>Edge lists</strong> are columns of data, whereby the positioning of two nodes next to one another in a column indicates a connection. In a one-mode undirected network, the position of names in the columns have little meaning (A -&gt; B = B &lt;- A). In a one-mode directed network, however, the columns take on a meaning, where the first column is a list of names from which a connection originated (e.g. ‘from’, also called ‘ego’), and the second column is a list of names to whom the connection is made (e.g. ‘to’, also called ‘alter’). In these cases, A -&gt; B != B -&gt; A. In two-made networks, where nodes of mode 1 can only connect to nodes of mode 2, but not one another, each column will represent a mode and nodes listed in one column cannot be in the other.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="introduction.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;ego&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
+<span id="cb30-2"><a href="introduction.html#cb30-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;alter&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">6</span>)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="introduction.html#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;One-mode edge list&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb30-4"><a href="introduction.html#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-5">Table 1.1: </span>One-mode edge list
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+ego
+</th>
+<th style="text-align:center;">
+alter
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+A
+</td>
+<td style="text-align:center;">
+B
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+B
+</td>
+<td style="text-align:center;">
+B
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+C
+</td>
+<td style="text-align:center;">
+H
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+D
+</td>
+<td style="text-align:center;">
+E
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+E
+</td>
+<td style="text-align:center;">
+G
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+F
+</td>
+<td style="text-align:center;">
+C
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+G
+</td>
+<td style="text-align:center;">
+H
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+H
+</td>
+<td style="text-align:center;">
+J
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+I
+</td>
+<td style="text-align:center;">
+A
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+J
+</td>
+<td style="text-align:center;">
+F
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="introduction.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;mode1&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
+<span id="cb31-2"><a href="introduction.html#cb31-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;mode2&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">14</span>,<span class="dv">14</span>,<span class="dv">11</span>)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="introduction.html#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Two-mode edge list&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-4"><a href="introduction.html#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-5">Table 1.1: </span>Two-mode edge list
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+mode1
+</th>
+<th style="text-align:center;">
+mode2
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+A
+</td>
+<td style="text-align:center;">
+O
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+B
+</td>
+<td style="text-align:center;">
+K
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+C
+</td>
+<td style="text-align:center;">
+K
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+D
+</td>
+<td style="text-align:center;">
+M
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+E
+</td>
+<td style="text-align:center;">
+L
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+F
+</td>
+<td style="text-align:center;">
+L
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+G
+</td>
+<td style="text-align:center;">
+O
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+H
+</td>
+<td style="text-align:center;">
+N
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+I
+</td>
+<td style="text-align:center;">
+N
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+J
+</td>
+<td style="text-align:center;">
+K
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Matrices</strong> are the graph form for storing relational data. Nodes are listed as the rows and columns, and if two nodes are connected, a value is put into the matrix where they intersect. If two nodes do not have a connection, the value at their intersection is zero. The differences we pointed out in edge lists (directed/undirected, one-mode/two-mode) are reflected in the shape and symmetry of the matrix. One-mode undirected networks are square (i.e. the same nodes are represented in both the rows and columns) and symmetrical (i.e. the values across the diagonal are the same). In one-mode directed networks, the matrix is still square but the matrix is asymmetric: because it may be that nodeA -&gt; nodeB, inputting a value of 1 in row 1 and column 2, but if nodeB !-&gt; nodeA, there is a value of 0 in row 2 and column 1. In a two-mode network the matrix is likely rectangular, where mode one nodes are represented in the rows and mode two nodes are represented in the columns. Typically, two mode networks are not directed.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="introduction.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;ego&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
+<span id="cb32-2"><a href="introduction.html#cb32-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;alter&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">6</span>)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="introduction.html#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">network</span>(<span class="at">directed =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="introduction.html#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix.network.adjacency</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb32-5"><a href="introduction.html#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Undirected one-mode adjacency matrix&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-6"><a href="introduction.html#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-6">Table 1.2: </span>Undirected one-mode adjacency matrix
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+A
+</th>
+<th style="text-align:center;">
+B
+</th>
+<th style="text-align:center;">
+C
+</th>
+<th style="text-align:center;">
+D
+</th>
+<th style="text-align:center;">
+E
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+G
+</th>
+<th style="text-align:center;">
+H
+</th>
+<th style="text-align:center;">
+I
+</th>
+<th style="text-align:center;">
+J
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+J
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="introduction.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;mode1&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
+<span id="cb33-2"><a href="introduction.html#cb33-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;mode2&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">14</span>,<span class="dv">14</span>,<span class="dv">11</span>)]) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="introduction.html#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">network</span>(<span class="at">directed =</span> F, <span class="at">bipartite =</span> T) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="introduction.html#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix.network.adjacency</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb33-5"><a href="introduction.html#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Undirected two-mode adjacency matrix&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-6"><a href="introduction.html#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
+<table class="table" style="margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-6">Table 1.2: </span>Undirected two-mode adjacency matrix
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+O
+</th>
+<th style="text-align:center;">
+K
+</th>
+<th style="text-align:center;">
+M
+</th>
+<th style="text-align:center;">
+L
+</th>
+<th style="text-align:center;">
+N
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+I
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+J
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>

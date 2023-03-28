@@ -53,12 +53,13 @@ detach("package:igraph", unload = TRUE)
 
 To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What does the collaborative network of Delta science research look like?_ 
 
-As notes in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings
+As notes in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
 
 ```{r}
 ggraph(net1) +
     geom_edge_link() +
-    geom_node_point()
+    geom_node_point() +
+    theme_void()
 ```
 
 These are some defaults at play here:  
@@ -69,48 +70,59 @@ These are some defaults at play here:
 
 ### Layouts
 
-First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. These layouts then are a _choice_, based on how you would like to present the network. There is an overview of some of the different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. Below we present our network with a few different layouts.  
+First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. These layouts then are a _choice_, based on how you would like to present the network. Because networks are depicting actors and relationships in an two-dimensional space (x,y), there is no 'right' way to plot actors in space (unless, of course, you have actual spatial data associated with your nodes). In which case, you could use an approach like this NETWORK MAP. Instead, many network theorists have developed layout algorithms, which define rules for calculating the x and y coordinates of the nodes. Many layout algorithms aim to represent networks so that strongly connected nodes are plotting in close proximity.
 
-```{r, out.width= c("33%", "33%", "33%")}
-ggraph(net1, layout = 'stress', bbox = 20) +
-    geom_edge_link() +
-    geom_node_point() +
-  labs(title = 'Stress (bbox = 20)')
+There is an overview of some of the different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph vignette](https://cran.r-project.org/web/packages/ggraph/vignettes/Layouts.html) and [documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. Below we present our network with a few different layouts.  
 
+```{r, out.width= c("50%", "50%"), fig.show="hold"}
 ggraph(net1, layout = 'stress', bbox = 5) +
     geom_edge_link() +
     geom_node_point() +
-  labs(title = 'Stress (bbox = 5)')
+    theme_void() +
+    labs(title = 'Stress (bbox = 5)') +
+    theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'kk') +
     geom_edge_link() +
     geom_node_point() +
-  labs(title = 'Kamada and Kawai (spring-based algorithm)')
+    theme_void() +
+    labs(title = 'Kamada and Kawai (spring-based algorithm)')  +
+    theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'fr') +
     geom_edge_link() +
     geom_node_point() +
-  labs(title = 'Fruchterman and Reingold (force-directed algorithm)')
-
-ggraph(net1, layout = 'tree') +
-    geom_edge_link() +
-    geom_node_point()
+    theme_void() +
+    labs(title = 'Fruchterman and Reingold (force-directed algorithm)')  +
+    theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'circle') +
     geom_edge_link() +
-    geom_node_point()
+    geom_node_point() +
+    theme_void()  +
+    labs(title = 'Circle')  +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Note that you can also set a **manual layout**. Layouts are simply x and y coordinates of points defined by a certain algorithm. You can extract those coordinates using the `create_layout()` function, and manipulate them, if need be. We will deal with this more in our third question.  
+Note that there is a whole world of plotting networks using [different conceptualizations of nodes](https://cran.r-project.org/web/packages/ggraph/vignettes/Nodes.html) and [edges](https://cran.r-project.org/web/packages/ggraph/vignettes/Edges.html). These conceptualizations of nodes and edges may relate to the For the sake of this workshop we are sticking to more 'traditional' network visualization in that we will stay firmly rooted in nodes depicted as points and edges depicted as line.
+
+```{r, echo = F, eval = F}
+ggraph(net1, layout = 'tree') +
+    geom_edge_diagonal() +
+    theme_void() +
+    labs(title = 'Tree')
+```
+
+You can also set a **manual layout**. Because layouts are just x and y coordinates of points defined by a certain algorithm. You can extract those coordinates using the `create_layout()` function from `ggraph`, and manipulate those coordinates, if need be. We will deal with this more shortly.  
 
 ```{r}
 fixed_coord <- create_layout(net1, layout = 'fr')
-head(fixed_coord[c(1:3,6)])
+head(fixed_coord[c(1:3,5)])
 ```
 
 For our one-mode networks, we are going to use the 'fr' layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery. 
 
-### Aesthetics and themes  
+### Aesthetics
 
 Now that we've chosen a layout, let's start adding some aesthetic features. This process will look very much like aesthetic mapping in `ggplot2`: we can assign aesthetics like color, size, shape, etc. to both our edge and node geometries. We can assign those features from the data directly, or just as stand-alone features.  
 
@@ -140,6 +152,14 @@ We can now integrate these three features: node size, edge color, and node color
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray70") +
   geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) 
+```
+
+Note: There is also some [compatibility with tidyverse's graph function, tidygraph](https://cran.r-project.org/web/packages/ggraph/vignettes/tidygraph.html), but we will not really be exploring that today. 
+
+```{r}
+ggraph(net1, layout = 'fr') +
+  geom_edge_link(color = "gray70") +
+  geom_node_point(aes(size = tidygraph::centrality_degree()), color = clrs[4]) 
 ```
 
 We can also add themes and labels, just like with ggplot2. `theme_void()` is great for networks because it removes any coordinates or background color. 
