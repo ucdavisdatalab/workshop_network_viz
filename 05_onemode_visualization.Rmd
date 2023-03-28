@@ -1,10 +1,10 @@
 # One-mode visualization
 
 ```{r, setup, include=FALSE}
-knitr::opts_knit$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
-```{r}
+```{r, warning = F, message = F}
 library(dplyr)
 library(magrittr)
 library(igraph)

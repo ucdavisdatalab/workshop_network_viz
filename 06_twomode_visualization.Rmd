@@ -1,5 +1,9 @@
 # Two-mode visualization
 
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
+```
+
 * What actors have been most active across projects? 
 * Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
 * What actors have been most active on climate-related projects? (Node attribute of project node)
@@ -66,7 +70,7 @@ ggraph(net2, layout = 'fr') +
     labs(size = "Degree", color = "Mode", shape = "Mode")
 ```
 
-# Normalized degree for both modes... (see Ebba)
+## Normalized degree for both modes... (see Ebba)
 
 ```{r}
 # NORMALIZED degrees and label

@@ -1,7 +1,7 @@
 # Data
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(warning = F, message = F, comment="#")
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
 ## Delta Science Tracker   

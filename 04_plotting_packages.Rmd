@@ -1,7 +1,7 @@
 # Plotting packages
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 library(igraph)
 library(network)
 ```

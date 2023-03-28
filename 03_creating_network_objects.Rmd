@@ -3,7 +3,7 @@
 Now that we have our edge lists and node lists, we want to create our network objects. There are two popular network packages (and consequently, network object types) in R. `igraph` generates a list object of class "igraph" and `network` generates an list object of class "network". We are going to be working primarily with `network` objects, but I'd like to start by making both because you are likely to run into both of them along the way, and both are compatible with the `ggraph` package that we will be using. 
 
 ```{r setup, include=FALSE}
-knitr::opts_knit$set(warning = F, message = F)
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
 First, let's read in our two network packages, as well as a couple other packages that we'll need for this workshop.

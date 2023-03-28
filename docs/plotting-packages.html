@@ -213,19 +213,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#interactive-plots-drafting"><i class="fa fa-check"></i><b>5.5</b> Interactive plots DRAFTING</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a></li>
-<li class="chapter" data-level="7" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html"><i class="fa fa-check"></i><b>7</b> Normalized degree for both modes… (see Ebba)</a>
+<li class="chapter" data-level="6" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html"><i class="fa fa-check"></i><b>6</b> Two-mode visualization</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>7.1</b> Leaders versus contributors?</a>
+<li class="chapter" data-level="6.1" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html#normalized-degree-for-both-modes-see-ebba"><i class="fa fa-check"></i><b>6.1</b> Normalized degree for both modes… (see Ebba)</a></li>
+<li class="chapter" data-level="6.2" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html#leaders-versus-contributors"><i class="fa fa-check"></i><b>6.2</b> Leaders versus contributors?</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#induce-subgraphs-by-edge-1"><i class="fa fa-check"></i><b>7.1.1</b> Induce subgraphs by edge</a></li>
+<li class="chapter" data-level="6.2.1" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html#induce-subgraphs-by-edge-1"><i class="fa fa-check"></i><b>6.2.1</b> Induce subgraphs by edge</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="normalized-degree-for-both-modes-see-ebba.html"><a href="normalized-degree-for-both-modes-see-ebba.html#climate-projects"><i class="fa fa-check"></i><b>7.2</b> Climate projects</a></li>
+<li class="chapter" data-level="6.3" data-path="two-mode-visualization-1.html"><a href="two-mode-visualization-1.html#climate-projects"><i class="fa fa-check"></i><b>6.3</b> Climate projects</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>8</b> Additional resources</a></li>
-<li class="chapter" data-level="9" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>9</b> igraph visualiation</a></li>
-<li class="chapter" data-level="10" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>10</b> ggnet2</a></li>
-<li class="chapter" data-level="11" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>11</b> interactive</a></li>
+<li class="chapter" data-level="7" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>7</b> Additional resources</a></li>
+<li class="chapter" data-level="8" data-path="igraph-visualiation.html"><a href="igraph-visualiation.html"><i class="fa fa-check"></i><b>8</b> igraph visualiation</a></li>
+<li class="chapter" data-level="9" data-path="ggnet2.html"><a href="ggnet2.html"><i class="fa fa-check"></i><b>9</b> ggnet2</a></li>
+<li class="chapter" data-level="10" data-path="interactive.html"><a href="interactive.html"><i class="fa fa-check"></i><b>10</b> interactive</a></li>
 <li class="divider"></li>
 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
   <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
@@ -256,18 +256,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>For this workshop we will use the <a href="https://cran.r-project.org/web/packages/ggraph/ggraph.pdf"><code>ggraph</code> package</a> (and function) for network visualization, created by Thomas Lin Pedersen, who also happens to make ‘generative’ artwork in R.</p>
 <p><img src="img/winds2020.jpeg" width="50%" style="display: block; margin: auto;" /><img src="img/yonder1831.jpeg" width="50" style="display: block; margin: auto;" /></p>
 <p><code>ggraph</code> uses the same approach as the <code>ggplot2</code> grammar of graphics. This means is has three core components: 1. (network) data, 2. aesthetic mappings, and 3. geometries, in this case edges and nodes. Where this differs from more traditional ggplotting approaches using tabular data (e.g. data frames), network objects have built-in mapping coordinates for nodes and its. Specifically, there are x and y variables for the node data. We can combine the <code>ggraph()</code> function with a geometry specific to networks, <code>geom_node_point()</code>, to see this default setting.</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="plotting-packages.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1) <span class="sc">+</span></span>
-<span id="cb67-2"><a href="plotting-packages.html#cb67-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="plotting-packages.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1) <span class="sc">+</span></span>
+<span id="cb39-2"><a href="plotting-packages.html#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>()</span></code></pre></div>
 <pre><code>## Using &quot;stress&quot; as default layout</code></pre>
-<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Here we see that the node point geometry uses a default layout based on the ‘stress’ algorithm (more in the following section), plotting the node points as we see above. To connect these point, we can use a ‘edge link’ geometry, <code>geom_edge_link()</code>, which uses the network object’s built in x, y, xend, and yend variables for the edge data.</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="plotting-packages.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1) <span class="sc">+</span></span>
-<span id="cb69-2"><a href="plotting-packages.html#cb69-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>() <span class="sc">+</span></span>
-<span id="cb69-3"><a href="plotting-packages.html#cb69-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_edge_link</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="plotting-packages.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1) <span class="sc">+</span></span>
+<span id="cb41-2"><a href="plotting-packages.html#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>() <span class="sc">+</span></span>
+<span id="cb41-3"><a href="plotting-packages.html#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_edge_link</span>()</span></code></pre></div>
 <pre><code>## Using &quot;stress&quot; as default layout</code></pre>
-<pre><code>## Warning: Using the `size` aesthetic in this geom was deprecated in ggplot2 3.4.0.
-## ℹ Please use `linewidth` in the `default_aes` field and elsewhere instead.</code></pre>
-<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>This will be the foundation what we build on, starting in the next section.</p>
 </div>
 <div id="other-packages-and-functions" class="section level2 hasAnchor" number="4.2">
@@ -276,27 +274,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="plot" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> <code>plot()</code><a href="plotting-packages.html#plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Base R plotting works with network and igraph objects, though their defaults for each object are different.</p>
-<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="plotting-packages.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net1)</span>
-<span id="cb72-2"><a href="plotting-packages.html#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1)</span></code></pre></div>
-<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-6-1.png" width="50%" /><img src="04_plotting_packages_files/figure-html/unnamed-chunk-6-2.png" width="50%" /></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="plotting-packages.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(net1)</span>
+<span id="cb43-2"><a href="plotting-packages.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(g1)</span></code></pre></div>
+<p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /><img src="04_plotting_packages_files/figure-html/unnamed-chunk-6-2.png" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ggallyggnet2" class="section level3 hasAnchor" number="4.2.2">
 <h3><span class="header-section-number">4.2.2</span> <code>GGally::ggnet2()</code><a href="plotting-packages.html#ggallyggnet2" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <a href="https://briatte.github.io/ggnet/"><code>ggnet2</code> function</a> is also dynamic, but despite being housed as part of the <code>GGally</code> extension of the ggplot2 series it seems to function more like a base R plot. For this function, <code>igraph</code> and <code>network</code> objects look the same.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="plotting-packages.html#cb73-1" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggnet2</span>(net1)</span></code></pre></div>
-<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
-##   method from   
-##   +.gg   ggplot2</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="plotting-packages.html#cb44-1" aria-hidden="true" tabindex="-1"></a>GGally<span class="sc">::</span><span class="fu">ggnet2</span>(net1)</span></code></pre></div>
 <p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-7-1.png" width="50%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ggnetwork" class="section level3 hasAnchor" number="4.2.3">
 <h3><span class="header-section-number">4.2.3</span> <code>ggnetwork</code><a href="plotting-packages.html#ggnetwork" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Very similar to <code>ggraph</code> and also an extension of the ggplot family is the <a href="https://cran.r-project.org/web/packages/ggnetwork/vignettes/ggnetwork.html"><code>ggnetwork</code> function</a>. This function integrates directly with <code>ggplot2</code> and specifies the default coordinates of <code>ggraph</code>, but otherwise operates quite similarly. For this function, <code>igraph</code> and <code>network</code> objects look the same.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="plotting-packages.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb75-2"><a href="plotting-packages.html#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggnetwork)</span>
-<span id="cb75-3"><a href="plotting-packages.html#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(net1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend)) <span class="sc">+</span></span>
-<span id="cb75-4"><a href="plotting-packages.html#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_nodes</span>() <span class="sc">+</span></span>
-<span id="cb75-5"><a href="plotting-packages.html#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edges</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="plotting-packages.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb45-2"><a href="plotting-packages.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggnetwork)</span>
+<span id="cb45-3"><a href="plotting-packages.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(net1, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">xend =</span> xend, <span class="at">yend =</span> yend)) <span class="sc">+</span></span>
+<span id="cb45-4"><a href="plotting-packages.html#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_nodes</span>() <span class="sc">+</span></span>
+<span id="cb45-5"><a href="plotting-packages.html#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edges</span>()</span></code></pre></div>
 <p><img src="04_plotting_packages_files/figure-html/unnamed-chunk-8-1.png" width="50%" style="display: block; margin: auto;" /></p>
 
 </div>
