@@ -5,11 +5,8 @@ knitr::opts_chunk$set(warning = F, message = F)
 ```
 
 ```{r, warning = F, message = F, echo = F}
-library(dplyr)
-library(magrittr)
 library(igraph)
 library(network)
-library(sna)
 library(ggraph)
 ```
 
@@ -26,113 +23,136 @@ g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directe
 
 ## Introduction  
 
-### Visualization goals:  
-
-1. How have different organizations collaborated across projects?  
-2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have those collaborations changed over time? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
-
 ### Preparing to work with `network`  
 
-We are going to stick to only working with the `network` package, even though the functions we will use for visualization are compatible with both objects. I propose using network objects because they are compatible with more advanced statistical analysis provided through the `statnet` suite of packages. `igraph` objects should also work with the `ggraph` function, but because the syntax for working with the objects is different, the code used to do that would need to change.  
+For the remainder of this tutorial are going to stick to working with the `network` package, even though the functions we will use for visualization are compatible with both objects. I propose using network objects because they are compatible with more advanced statistical analysis provided through the `statnet` suite of packages. `igraph` objects should also work with the `ggraph` function, but because the syntax for working with the objects is different, the code used to do that would need to change.  
 
-Before we move forward with network, it is worth mentioning that there are commonly-used network functions in each package, `igraph` and `network`, that mask one another. For instance:
+To continue working with `network` objects and `ggraph`, we want to load in two more packages. The `sna` package provides us with several functions for calculating network statistics, and `dplyr` and `magrittr` are packages from that tidyverse that will help us streamline our plotting.  
+
+```{r}
+library(sna)
+library(dplyr)
+library(magrittr)
+```
+
+Because we will be using exclusively `network` objects, we want to detach `igraph` before we continue further. This is because there are several commonly-used network functions in both `igraph` and `sna` that mask one another. For instance:
 
 ```{r, eval = F}
 sna::degree()
 igraph::degree()
 ```
 
-The `igraph` degree function will work only on `igraph` objects and `sna` `degree` function will work only on network objects. This can create a headache. To avoid confusion and masking in R, we are going to detach the `igraph` package and work only with `network` objects and compatible packages like `sna`.  
+The `igraph` degree function will work only on `igraph` objects and `sna` `degree` function will work only on `network` objects. To avoid confusion and masking in R, we are going to detach the `igraph` package and work only with `network` objects and compatible packages like `sna`.  
 
-```{r, eval = F}
+```{r}
 detach("package:igraph", unload = TRUE)
 ```
 
+### Guiding questions:  
+
+To get started with visualization, let's remind ourselves of our visualization goals and guiding questions. With our one-mode network, we want to know: 
+
+1. What is the structure of the collaborative research network in the Delta?
+2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
+3. How have those collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+
 ## Getting started with `ggraph`
 
-To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What does the collaborative network of Delta science research look like?_ 
+To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What is the structure of the collaborative research network in the Delta?_ 
 
-As notes in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. geometries, in this case edges and nodes, and 3. aesthetic mappings. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
+As described in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1.) (network) data, 2.) geometries, in this case edges and nodes, and 3.) aesthetic mappings. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
 
-```{r}
+```{r, message = T}
 ggraph(net1) +
-    geom_edge_link() +
     geom_node_point() +
+    geom_edge_link() +
     theme_void()
 ```
 
 These are some defaults at play here:  
 
-* layout = 'auto', which is the 'stress' layout  
-* default aesthetic mapping for geom_edges: x, y, xend, yend
-* default aesthetic mapping for geom_node_point: x, y
+* The layout argument is set to = 'auto', which is the 'stress' layout  
+* The default aesthetic mapping for geom_node_point: x, y, which don't need specified  
+* The default aesthetic mapping for geom_edges: x, y, xend, yend, which don't need specified  
 
 ### Layouts
 
-First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. These layouts then are a _choice_, based on how you would like to present the network. Because networks are depicting actors and relationships in an two-dimensional space (x,y), there is no 'right' way to plot actors in space (unless, of course, you have actual spatial data associated with your nodes). In which case, you could use an approach like this NETWORK MAP. Instead, many network theorists have developed layout algorithms, which define rules for calculating the x and y coordinates of the nodes. Many layout algorithms aim to represent networks so that strongly connected nodes are plotting in close proximity.
+First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. Layouts are a _choice_ based on how you would like to present the network. Because networks are depicting actors and relationships in an two-dimensional space (x, y), there is no 'right' way to plot actors in space (unless, of course, you have actual spatial data associated with your nodes). In which case, you could use a geospatial network mapping (e.g. [flight route maps](https://news.delta.com/route-map-us-canada)). For scenarios without geospatial coordinates, many network theorists have developed layout algorithms which define rules for calculating the x and y coordinates of the nodes. Many layout algorithms aim to represent networks so that strongly connected nodes are plotted in close proximity to one another, representing a 'core' and a 'periphery'.  
 
-There is an overview of some of the different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph vignette](https://cran.r-project.org/web/packages/ggraph/vignettes/Layouts.html) and [documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. Below we present our network with a few different layouts.  
+There is an overview of `ggraph`'s different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph vignette](https://cran.r-project.org/web/packages/ggraph/vignettes/Layouts.html) and [documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. The layout is selected with the 'layout' argument within the ggraph function. Below we present our network with a few different layouts.  
 
-```{r, out.width= c("50%", "50%"), fig.show="hold"}
+```{r, out.width= c("50%", "50%"), fig.show="hold", echo = F}
 ggraph(net1, layout = 'stress', bbox = 5) +
     geom_edge_link() +
     geom_node_point() +
     theme_void() +
-    labs(title = 'Stress (bbox = 5)') +
+    labs(title = 'Stress: `layout = "stress", bbox = 5`') +
     theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'kk') +
     geom_edge_link() +
     geom_node_point() +
     theme_void() +
-    labs(title = 'Kamada and Kawai (spring-based algorithm)')  +
+    labs(title = 'Kamada and Kawai (spring-based algorithm): `layout = "kk"`')  +
     theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'fr') +
     geom_edge_link() +
     geom_node_point() +
     theme_void() +
-    labs(title = 'Fruchterman and Reingold (force-directed algorithm)')  +
+    labs(title = 'Fruchterman and Reingold (force-directed algorithm): `layout = "fr"`')  +
     theme(plot.title = element_text(hjust = 0.5))
 
 ggraph(net1, layout = 'circle') +
     geom_edge_link() +
     geom_node_point() +
     theme_void()  +
-    labs(title = 'Circle')  +
+    labs(title = 'Circle: `layout = "circle"`')  +
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-Note that there is a whole world of plotting networks using [different conceptualizations of nodes](https://cran.r-project.org/web/packages/ggraph/vignettes/Nodes.html) and [edges](https://cran.r-project.org/web/packages/ggraph/vignettes/Edges.html). These conceptualizations of nodes and edges may relate to the For the sake of this workshop we are sticking to more 'traditional' network visualization in that we will stay firmly rooted in nodes depicted as points and edges depicted as line.
+Note that there is a whole world of plotting networks using [different conceptualizations of nodes](https://cran.r-project.org/web/packages/ggraph/vignettes/Nodes.html) and [edges](https://cran.r-project.org/web/packages/ggraph/vignettes/Edges.html). These conceptualizations of nodes and edges may be dependent on certain layout algorithms. For example, if working with a 'tree' based layout, which creates more of a hierarchical structure like a dendrogram, edges as lines may not be suited. Instead, you can specify different edges (e.g. diagonals).  
 
-```{r, echo = F, eval = F}
+```{r, echo = T,  out.width = "50%", fig.align='center'}
 ggraph(net1, layout = 'tree') +
     geom_edge_diagonal() +
     theme_void() +
-    labs(title = 'Tree')
+    labs(title = 'Tree: `layout = "tree"`') +
+    theme(plot.title = element_text(hjust = 0.5))
 ```
 
-You can also set a **manual layout**. Because layouts are just x and y coordinates of points defined by a certain algorithm. You can extract those coordinates using the `create_layout()` function from `ggraph`, and manipulate those coordinates, if need be. We will deal with this more shortly.  
+
+For the sake of this workshop we are sticking to more 'traditional' network visualization, so we will only be depicting nodes as points and edges as lines.  
+ 
+You can also set a **manual layout**. Because layouts are just x and y coordinates of points defined by a certain algorithm, you can extract those coordinates using the `create_layout()` function from `ggraph`, and fix and/or manipulate those coordinates, if need be. We will deal with this more shortly.  
 
 ```{r}
 fixed_coord <- create_layout(net1, layout = 'fr')
-head(fixed_coord[c(1:3,5)])
+head(fixed_coord[c(1:2,5)])
 ```
 
 For our one-mode networks, we are going to use the 'fr' layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery. 
 
-### Aesthetics
-
-Now that we've chosen a layout, let's start adding some aesthetic features. This process will look very much like aesthetic mapping in `ggplot2`: we can assign aesthetics like color, size, shape, etc. to both our edge and node geometries. We can assign those features from the data directly, or just as stand-alone features.  
-
-**Size by degree**: Let's first say that we'd like to size our nodes by their degree centrality. While more central nodes are already places at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point. To size by degree, we will want to create a degree variable are a node attribute using the `degree` function. 
-
 ```{r}
-net1 %v% 'degree' <- sna::degree(net1)
+ggraph(net1, layout = 'fr') +
+    geom_node_point() +
+    geom_edge_link() +
+    theme_void()
 ```
 
-**Color-blind friendly colors**: We'd also like our nodes and edges to be colored differently than the default black, so we can set these colors to our geometries. Because the focus of these networks are on nodes, not edges, we can set our edges to a less pronounced color like grey, and select a color-blind friendly color palette to select a node color from. I personally like to use viridis:
+### Aesthetics
+
+Now that we've chosen a layout, let's start adding some aesthetic features. This process will look very much like aesthetic mapping in `ggplot2`: we can assign aesthetics like color, size, shape, etc. to both our edge and node geometries. 
+
+**Size by degree**: One common approach for network visualization is to size nodes by their degree centrality. While more central nodes are already places at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point. To size by degree, we will want to create a degree variable as a node attribute using the `degree` function, and assign that attribute to our network data.  
+
+```{r}
+net1 %v% 'degree' <- degree(net1)
+```
+
+Hint: if you get `Error in degree(net1) : Not a graph object`, double check that you have detached the `igraph` package!  
+
+**Color-blind friendly colors**: We'd also like our nodes and edges to be colored differently than the default black, so we can set these colors to our geometries. Because the focus of these networks are on nodes, not edges, we can set our edges to a less pronounced color like grey, and select an [accessible, color-blind friendly color palette](https://ucdavisdatalab.github.io/workshop_data_viz_principles/accessible-data-visualizations.html) to select a node color from. I personally like to use viridis:
 
 ```{r}
 viridis::viridis(12)
@@ -146,40 +166,54 @@ clrs <- c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF",
           "#51C56AFF", "#85D54AFF", "#C2DF23FF", "#FDE725FF")
 ```
 
-We can now integrate these three features: node size, edge color, and node color, into our plot. Let's also add an alpha for the edges there.
+We can now integrate these three features: node size, edge color, and node color, into our plot. 
+
+```{r}
+ggraph(net1, layout = 'fr') +
+  geom_node_point(aes(size = degree), 
+                  color = clrs[4]) +
+  geom_edge_link(color = "gray80") +
+  theme_void()
+```
+
+Notice how layer order matters (as as with `ggplot2`), and so by having edges layered on top of nodes, we are really hiding the nodes. Let's try to switch this, but also include some alpha arguments to help increase transparency.  
+
+```{r}
+ggraph(net1, layout = 'fr') +
+  geom_edge_link(color = "gray80") +
+  geom_node_point(aes(size = degree), 
+                  color = clrs[4], alpha = .7) +
+  theme_void()
+```
+
+<!----
+Note: The approach we will take for this workshop is to assign attributes to the network data frame, then add them into our plotting aesthetics. There is also some [compatibility with tidyverse's graph package, tidygraph](https://cran.r-project.org/web/packages/ggraph/vignettes/tidygraph.html), which we could use to set network aesthetics directly in the plotting functions (below), but we will not really be exploring that today. 
 
 ```{r}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray70") +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4]) 
+  geom_node_point(aes(size = tidygraph::centrality_degree()), 
+                  color = clrs[4], alpha = .8) +
+  theme_void()
 ```
+---->
 
-Note: There is also some [compatibility with tidyverse's graph function, tidygraph](https://cran.r-project.org/web/packages/ggraph/vignettes/tidygraph.html), but we will not really be exploring that today. 
+We can also add labels and make thematic alterations to features like the legend, just like with ggplot2.  
 
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(color = "gray70") +
-  geom_node_point(aes(size = tidygraph::centrality_degree()), color = clrs[4]) 
-```
-
-We can also add themes and labels, just like with ggplot2. `theme_void()` is great for networks because it removes any coordinates or background color. 
-
-```{r}
-ggraph(net1, layout = 'fr') +
-  geom_edge_link(color = "gray70", alpha = .5) +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+  geom_edge_link(color = "gray80") +
+  geom_node_point(aes(size = degree), color = clrs[4],
                   alpha = .7) +
   theme_void() +
-  theme(legend.position = "none") +
-  labs(title = "Delta Science Collaborative Research Network")
+  labs(title = "Delta Science Collaborative Research Network") +
+  theme(legend.position = "none")
 ```
-Notice it changes every time, a little bit. You can set your seed (every time before you plot to keep it consistent.)
+Notice that with the 'fr' layout (and any other layout algorithm), the coordinates change a bit every time. This is because each time we create a visualization the algorithm is re-run, and there is variation in the exact calculation. You can set your seed (every time before you plot) to keep it consistent)
 
 ### Node labels 
 
-So far we are getting a clear shape of the network. But our main goal is to understand _who_ is central to collaboration. Let's try to add some node text with `geom_node_text()`. 
-
-We have a variable that is the name of our vertices:
+So far we are getting a clear shape of the network. But related to our first question about understanding network structure, we may want to understand  _who_ is central to collaboration. To better identify our nodes, let's try to add some node text with `geom_node_text()`. Already, we have a variable that is the name of our vertices:
 
 ```{r}
 head(net1 %v% 'name')
@@ -189,14 +223,13 @@ Let's add this as a text geometry.
 
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(color = "gray70", alpha = 0.5) +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+  geom_edge_link(color = "gray80") +
+  geom_node_point(aes(size = degree), color = clrs[4],
                   alpha = .7) +
-  theme_void() +
   theme_void() +
   theme(legend.position = "none") +
   labs(title = "Delta Science Collaborative Research Network") +
-  geom_node_text(aes(label = net1 %v% 'name'),
+  geom_node_text(aes(label = name),
                 size = 3, 
                 color="black")
 ```
@@ -204,9 +237,13 @@ ggraph(net1, layout = 'fr') +
 Okay, a bit overwhelming. Instead, let's be selective based on degree. Let's say we want to take the top 5-degree nodes and label them.
 
 ```{r}
-topdeg <- data.frame("deg" = net1 %v% 'degree') %>% 
-  top_n(5)
-net1 %v% 'labels' <- ifelse((net1 %v% 'degree') %in% topdeg$deg, 
+# Use extract the network's degree values based on the order of degrees
+degs <- (net1 %v% 'degree')[order(net1 %v% 'degree')]
+# Then identify the top 5 unique degree values
+topdegs <- unique(rev(degs))[1:5]
+# Then create a network variable named labels and add the name only if a
+# node has the number of degrees in the 'top degrees'
+net1 %v% 'labels' <- ifelse((net1 %v% 'degree') %in% topdegs, 
                            net1 %v% 'name', '')
 ```
 
@@ -216,51 +253,64 @@ Now we have a sparse label attribute.
 net1 %v% 'labels'
 ```
 
-We can use this labels aesthetic to make our figure more easily readable.  
+We can use this labels attribute to make our figure more easily readable.  
 
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(color = "gray70", alpha = 0.5) +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+  geom_edge_link(color = "gray80") +
+  geom_node_point(aes(size = degree), color = clrs[4],
                   alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
     labs(title = "Delta Science Collaborative Research Network") +
-  geom_node_text(aes(label = net1 %v% 'labels'),
-                   size = 3, 
-                   color="black")
+  geom_node_text(aes(label = labels),
+                   size = 3)
 ```
 
 Almost. Let's include a repel = T argument to make sure the text doesn't overlap. 
 
 ```{r}
 ggraph(net1, layout = 'fr') +
-  geom_edge_link(color = "gray70", alpha = 0.5) +
-  geom_node_point(aes(size = net1 %v% 'degree'), color = clrs[4],
+  geom_edge_link(color = "gray80") +
+  geom_node_point(aes(size = degree), color = clrs[4],
                   alpha = .7) +
   theme_void() +
   theme(legend.position = "none") +
     labs(title = "Delta Science Collaborative Research Network") +
-  geom_node_text(aes(label = net1 %v% 'labels'),
-                   size = 3, 
-                   color="black",
-                 repel = T)
+  geom_node_text(aes(label = labels),
+                   size = 3,
+                   repel = T)
 ```
 
-Now that we've got that down as a base, I want to set this as a function so that we can move through other material a little more smoothly.  
+So, _what is the structure of the collaborative research network in the Delta?_ This network shows us the overall picture, and  we can use summary statistics to fill in the gaps. Among the 139 organizations involved in scientific research in the Delta, there is a mean degree of 14, suggesting that organizations are involved with, on average, 14 other organizations (across one or more projects). The network is quite connected, as the main component includes 107 (77%) of the organizations, with 27 isolates, meaning that 27 organizations have not collaborated at all. Within that main component, the average path length is 2.3, meaning that on average an organization is less then 3 connections away from any other organization. At the center of the network are three federal agencies, the [US Geological Survey (USGS)](https://sciencetracker.deltacouncil.ca.gov/node/49743), [US Fish and Wildlife Service (USFWS)](https://sciencetracker.deltacouncil.ca.gov/node/49741), and [US Bureau of Reclamation (USBR)](https://sciencetracker.deltacouncil.ca.gov/node/49731), two state agencies, [California Department of Fish and Wildlife (CDFW)](https://sciencetracker.deltacouncil.ca.gov/node/49602) and [California Department of Water Resources (DWR)](https://sciencetracker.deltacouncil.ca.gov/node/49609) one research institute, the [San Francisco Estuary Institute (SFEI)](https://sciencetracker.deltacouncil.ca.gov/node/49707). 
+
+<details>
+<summary>**Reveal:** How to calculate network-level statistics with the `sna` package </summary>
+```{r, purl = T}
+network.size(net1)
+mean(net1 %v% 'degree')
+sum(component.largest(net1))
+length(isolates(net1))
+main_comp <- component.largest(net1, result = 'graph')
+mean(geodist(main_comp)[['gdist']], na.rm = T)
+```
+</details>
+<br>
+
+Now that we've got that down as a base, I want to create this network visualization approach as a function so that we can move through other material a little more smoothly. Feel free to just copy this function -- all we are doing is taking the code we previously wrote, and replacing the network name that we've been using, net1, with the generic argument for the network name, netname. 
 
 ```{r}
 netplot_function <- function(netname){
   p <- ggraph(netname, layout = 'fr') +
-  geom_edge_link(color = "gray70", alpha = 0.5) +
-  geom_node_point(aes(size = netname %v% 'degree'), color = clrs[4],
-                  alpha = .7) +
-  theme_void() +
-  theme(legend.position = "none") +
-  geom_node_text(aes(label = netname %v% 'labels'),
-                   size = 3, 
-                   color="black", 
-                 repel = T) 
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree), color = clrs[4],
+                         alpha = .7) +
+         theme_void() +
+         theme(legend.position = "none") +
+           labs(title = "Delta Science Collaborative Research Network") +
+         geom_node_text(aes(label = labels),
+                          size = 3,
+                          repel = T)
   return(p)
 }
 ```

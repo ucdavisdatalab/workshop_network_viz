@@ -1,7 +1,8 @@
 # Introduction
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F,
+                      echo = F)
 ```
 
 ## What are network data?
@@ -14,14 +15,14 @@ Networks are useful for studying interdependencies; their structure suggest that
 
 Networks are composed of 'nodes', the data points that represent and entity (also called vertex), and 'edges', representing the relationship between the nodes. These network structures are represented in Figure 1.
 
-```{r}
+```{r, echo = F}
 library(statnet)
 library(ggraph)
 library(magrittr) 
 library(kableExtra)
 ```
 
-```{r}
+```{r, echo = F}
 # From Jared
 set.seed(10) # Setting the random seed will control how networks are gnerated, included here to try and make uniform across participant's computers
 e.m = sna::rgraph(2, mode="graph", tprob = .4) # 'rgraph' creates a random matrix using parameters supplied, which can be interpreted as a network (xplained more in the data section)
@@ -32,7 +33,7 @@ plot(e.n, label = "Node", edge.label = "edge", vertex.cex = 3,
 
 **Network 'mode'**: Networks can take several forms with variation in what kinds of connections can occur. One important distinction can be made between **one-mode and two-mode networks**. One-mode networks assumes that the nodes are all capable of making connections while two-mode networks assume that nodes of one type can only have relationships to nodes of a different type. Using the example of board members and corporations, Jasny (2012) explains: 'Ties between the board members themselves (e.g., friendship ties) would constitute a one-mode network. Ties between companies (e.g., if the first company supplied the second with raw materials) would also be a one-mode network. The two-mode network is formed by ties from the board members, the first mode, to the boards of companies they sit on, the second mode.' These two-mode networks, also called bipartite networks, assume that connections cannot be made within each mode.
 
-```{r, out.width=c('50%', '50%'), echo = F}
+```{r, out.width=c('49%', '49%'), fig.show="hold"}
 set.seed(10)
 m1mat = sna::rgraph(n = 20,  mode="graph", tprob = .25) 
 m1net = network::network(m1mat, matrix.type = "adjacency", 
@@ -69,7 +70,7 @@ ggraph(m2net, layout = 'bipartite') +
 
 **Directionality**: The connections that connect entities in a network can be **directed or undirected**. Directed networks assume that there is a 'sender' and 'receiver' of an edge, and that the difference between these two matter (e.g. transmitting a disease). On the other hand, undirected networks assume that the connection is based on a mutual relationship (e.g. co-authorship). Whether or not edges are connected will alter our understanding of the network structure, since each connection-based statistic will be divided into incoming and outgoing connections. 
 
-```{r, out.width=c('50%', '50%'), echo = F}
+```{r, out.width=c('49%', '49%'), fig.show="hold"}
 mat = rgraph(10, mode="digraph", tprob = .3)
 netd = network(mat, matrix.type = "adjacency", directed = TRUE)
 netud = network(mat, matrix.type = "adjacency", directed = FALSE)
@@ -93,13 +94,13 @@ plot(netud, vertex.cex = 3,
 **Actor-level**  
 
 * Degree centrality: Number of connections per node
-* 
+* ... DRAFTING
   
 ## Storing network data
 
 Network data, which record the relationships (edges) between nodes, are typically stored in one of two ways: edge lists or matrices. **Edge lists** are columns of data, whereby the positioning of two nodes next to one another in a column indicates a connection. In a one-mode undirected network, the position of names in the columns have little meaning (A -> B = B <- A). In a one-mode directed network, however, the columns take on a meaning, where the first column is a list of names from which a connection originated (e.g. 'from', also called 'ego'), and the second column is a list of names to whom the connection is made (e.g. 'to', also called 'alter'). In these cases, A -> B != B -> A. In two-made networks, where nodes of mode 1 can only connect to nodes of mode 2, but not one another, each column will represent a mode and nodes listed in one column cannot be in the other.
 
-```{r, out.width=c("40%", "40%"), fig.align='center'}
+```{r, out.width=c("40%", "40%"),fig.show="hold", echo = F}
 data.frame('ego' = LETTERS[1:10],
            'alter' = LETTERS[c(2,2,8,5,7,3,8,10,1,6)]) %>% 
   kable(align = 'c', caption = 'One-mode edge list') %>% 
@@ -114,7 +115,7 @@ data.frame('mode1' = LETTERS[1:10],
 
 **Matrices** are the graph form for storing relational data. Nodes are listed as the rows and columns, and if two nodes are connected, a value is put into the matrix where they intersect. If two nodes do not have a connection, the value at their intersection is zero. The differences we pointed out in edge lists (directed/undirected, one-mode/two-mode) are reflected in the shape and symmetry of the matrix. One-mode undirected networks are square (i.e. the same nodes are represented in both the rows and columns) and symmetrical (i.e. the values across the diagonal are the same). In one-mode directed networks, the matrix is still square but the matrix is asymmetric: because it may be that nodeA -> nodeB, inputting a value of 1 in row 1 and column 2, but if nodeB !-> nodeA, there is a value of 0 in row 2 and column 1. In a two-mode network the matrix is likely rectangular, where mode one nodes are represented in the rows and mode two nodes are represented in the columns. Typically, two mode networks are not directed. 
 
-```{r, out.width=c("40%", "40%"), fig.align='center',fig.show="hold"}
+```{r, out.width=c("40%", "40%"),fig.show="hold", echo = F}
 data.frame('ego' = LETTERS[1:10],
            'alter' = LETTERS[c(2,3,8,5,7,3,8,10,1,6)]) %>% 
   network(directed = T) %>% 

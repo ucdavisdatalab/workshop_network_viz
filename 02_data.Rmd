@@ -94,19 +94,19 @@ head(nodes_1mode[1:2])
 
 ## Guiding questions  
 
-As with any visualization, we need to have an idea of what stories we want to tell / what questions we want to answer. With networks, there are limits to how much you can 'explore' through visualization alone, and so throughout these plotting exercises having guiding questions can keep you focused on what is important as we navigate the wide array of visualization options.  
+As with any visualization, we need to have an idea of [what stories we want to tell](https://ucdavisdatalab.github.io/workshop_data_viz_principles/before-you-viz-make-a-plan.html) / what questions we want to answer. With networks, there are limits to how much you can 'explore' through visualization alone, and so throughout these plotting exercises having guiding questions can keep you focused on what is important as we navigate the wide array of visualization options.  
 
 ### One-mode visualization:  
 
-* What is the structure of the collaborative research network research in the Delta?
-* Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-* How have those collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+1. What is the structure of the collaborative research network in the Delta?
+2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
+3. How have those collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
 
 ### Two-mode visualization:  
 
-* Across the Delta science project, what organizations have been most active?  
-* How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
-* Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+1. Across the Delta science project, what organizations have been most active?  
+2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
+3. Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
 
 
 

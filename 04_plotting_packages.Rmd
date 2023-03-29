@@ -6,11 +6,6 @@ library(igraph)
 library(network)
 ```
 
-Let's load in a few more libraries that we'll need for plotting
-```{r, include = F}
-library(sna)
-library(ggraph)
-```
 
 ```{r, echo = F}
 edges_1mode <- read.csv('data/edgelist_projected.csv')
@@ -27,7 +22,7 @@ g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directe
 
 For this workshop we will use the [`ggraph` package](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf) (and function) for network visualization, created by Thomas Lin Pedersen, who also happens to make 'generative' artwork in R. 
 
-```{r echo=FALSE, out.width = "50%", fig.align= 'center'}
+```{r echo=FALSE, out.width=c('45%', '45%'), fig.show="hold"}
 knitr::include_graphics("img/winds2020.jpeg")
 knitr::include_graphics("img/yonder1831.jpeg")
 ```
@@ -35,6 +30,7 @@ knitr::include_graphics("img/yonder1831.jpeg")
 `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. aesthetic mappings, and 3. geometries, in this case edges and nodes. Where this differs from more traditional ggplotting approaches using tabular data (e.g. data frames), network objects have built-in mapping coordinates for nodes and its. Specifically, there are x and y variables for the node data. We can combine the `ggraph()` function with a geometry specific to networks, `geom_node_point()`, to see this default setting.
 
 ```{r, message = T}
+library(ggraph)
 ggraph(net1) +
     geom_node_point()
 ```
@@ -57,7 +53,7 @@ There are several plotting packages out there, some of them work with different 
 
 Base R plotting works with network and igraph objects, though their defaults for each object are different. 
 
-```{r, out.width=c('48%', '48%'), fig.show="hold"}
+```{r, out.width=c('49%', '49%'), fig.show="hold"}
 plot(net1)
 plot(g1)
 ```
@@ -66,11 +62,11 @@ plot(g1)
 
 The [`ggnet2` function](https://briatte.github.io/ggnet/) is also dynamic, but despite being housed as part of the `GGally` extension of the ggplot2 series it seems to function more like a base R plot. For this function, `igraph` and `network` objects look the same. 
 
-```{r, out.width='50%', fig.align='center'}
+```{r, out.width='49%', fig.align='center'}
 GGally::ggnet2(net1)
 ```
 
-### `ggnetwork`
+### `ggnetwork::ggnetwork()`
 
 Very similar to `ggraph` and also an extension of the ggplot family is the [`ggnetwork` function](https://cran.r-project.org/web/packages/ggnetwork/vignettes/ggnetwork.html). This function integrates directly with `ggplot2` and specifies the default coordinates of `ggraph`, but otherwise operates quite similarly. For this function, `igraph` and `network` objects look the same.  
 

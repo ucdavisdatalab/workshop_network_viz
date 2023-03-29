@@ -22,11 +22,11 @@ ggraph
 other-packages-and-functions
 plot
 ggallyggnet2
-ggnetwork
+ggnetworkggnetwork
 one-mode-visualization-1
 introduction-1
-visualization-goals
 preparing-to-work-with-network
+guiding-questions-1
 getting-started-with-ggraph
 layouts
 aesthetics

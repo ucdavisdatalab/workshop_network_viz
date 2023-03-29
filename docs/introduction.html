@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-28" />
+<meta name="date" content="2023-03-29" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,15 +184,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="4.2.1" data-path="plotting-packages.html"><a href="plotting-packages.html#plot"><i class="fa fa-check"></i><b>4.2.1</b> <code>plot()</code></a></li>
 <li class="chapter" data-level="4.2.2" data-path="plotting-packages.html"><a href="plotting-packages.html#ggallyggnet2"><i class="fa fa-check"></i><b>4.2.2</b> <code>GGally::ggnet2()</code></a></li>
-<li class="chapter" data-level="4.2.3" data-path="plotting-packages.html"><a href="plotting-packages.html#ggnetwork"><i class="fa fa-check"></i><b>4.2.3</b> <code>ggnetwork</code></a></li>
+<li class="chapter" data-level="4.2.3" data-path="plotting-packages.html"><a href="plotting-packages.html#ggnetworkggnetwork"><i class="fa fa-check"></i><b>4.2.3</b> <code>ggnetwork::ggnetwork()</code></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html"><i class="fa fa-check"></i><b>5</b> One-mode visualization</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#visualization-goals"><i class="fa fa-check"></i><b>5.1.1</b> Visualization goals:</a></li>
-<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.2</b> Preparing to work with <code>network</code></a></li>
+<li class="chapter" data-level="5.1.1" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>5.1.1</b> Preparing to work with <code>network</code></a></li>
+<li class="chapter" data-level="5.1.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#guiding-questions-1"><i class="fa fa-check"></i><b>5.1.2</b> Guiding questions:</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="one-mode-visualization-1.html"><a href="one-mode-visualization-1.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>5.2</b> Getting started with <code>ggraph</code></a>
 <ul>
@@ -259,22 +259,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="features-of-a-network" class="section level3 hasAnchor" number="1.1.1">
 <h3><span class="header-section-number">1.1.1</span> Features of a network<a href="introduction.html#features-of-a-network" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Networks are composed of ‘nodes’, the data points that represent and entity (also called vertex), and ‘edges’, representing the relationship between the nodes. These network structures are represented in Figure 1.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="introduction.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(statnet)</span>
-<span id="cb1-2"><a href="introduction.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
-<span id="cb1-3"><a href="introduction.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr) </span>
-<span id="cb1-4"><a href="introduction.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="introduction.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From Jared</span></span>
-<span id="cb2-2"><a href="introduction.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>) <span class="co"># Setting the random seed will control how networks are gnerated, included here to try and make uniform across participant&#39;s computers</span></span>
-<span id="cb2-3"><a href="introduction.html#cb2-3" aria-hidden="true" tabindex="-1"></a>e.m <span class="ot">=</span> sna<span class="sc">::</span><span class="fu">rgraph</span>(<span class="dv">2</span>, <span class="at">mode=</span><span class="st">&quot;graph&quot;</span>, <span class="at">tprob =</span> .<span class="dv">4</span>) <span class="co"># &#39;rgraph&#39; creates a random matrix using parameters supplied, which can be interpreted as a network (xplained more in the data section)</span></span>
-<span id="cb2-4"><a href="introduction.html#cb2-4" aria-hidden="true" tabindex="-1"></a>e.n <span class="ot">=</span> network<span class="sc">::</span><span class="fu">network</span>(e.m, <span class="at">matrix.type =</span> <span class="st">&quot;adjacency&quot;</span>, <span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="co"># The &#39;network&#39; command turns data into a network object, which is required for later analyses</span></span>
-<span id="cb2-5"><a href="introduction.html#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(e.n, <span class="at">label =</span> <span class="st">&quot;Node&quot;</span>, <span class="at">edge.label =</span> <span class="st">&quot;edge&quot;</span>, <span class="at">vertex.cex =</span> <span class="dv">3</span>,</span>
-<span id="cb2-6"><a href="introduction.html#cb2-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">vertex.col =</span> <span class="st">&quot;#357BA2FF&quot;</span>)</span></code></pre></div>
-<p><img src="01_introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p><strong>Network ‘mode’</strong>: Networks can take several forms with variation in what kinds of connections can occur. One important distinction can be made between <strong>one-mode and two-mode networks</strong>. One-mode networks assumes that the nodes are all capable of making connections while two-mode networks assume that nodes of one type can only have relationships to nodes of a different type. Using the example of board members and corporations, Jasny (2012) explains: ‘Ties between the board members themselves (e.g., friendship ties) would constitute a one-mode network. Ties between companies (e.g., if the first company supplied the second with raw materials) would also be a one-mode network. The two-mode network is formed by ties from the board members, the first mode, to the boards of companies they sit on, the second mode.’ These two-mode networks, also called bipartite networks, assume that connections cannot be made within each mode.</p>
-<p><img src="01_introduction_files/figure-html/unnamed-chunk-3-1.png" width="50%" style="display: block; margin: auto;" /><img src="01_introduction_files/figure-html/unnamed-chunk-3-2.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-3-1.png" width="49%" /><img src="01_introduction_files/figure-html/unnamed-chunk-3-2.png" width="49%" /></p>
 <p><strong>Node attributes</strong>:In both one and two mode networks, nodes have attributes. <strong>Node attributes</strong> are associated data that describe the entity, which can be either endogenous to the network (i.e. a characteristic of the node based on their place in the network) or exogenous (i.e. a characteristic of the node unrelated to their place in the network). Examples of endogenous node attributes are described in the X Section. Examples of exogenous node attributes could be the gender of an individual, the sector a company works in, the weight or species of a pollinator, or the author of a word’s corpus.</p>
 <p><strong>Directionality</strong>: The connections that connect entities in a network can be <strong>directed or undirected</strong>. Directed networks assume that there is a ‘sender’ and ‘receiver’ of an edge, and that the difference between these two matter (e.g. transmitting a disease). On the other hand, undirected networks assume that the connection is based on a mutual relationship (e.g. co-authorship). Whether or not edges are connected will alter our understanding of the network structure, since each connection-based statistic will be divided into incoming and outgoing connections.</p>
-<p><img src="01_introduction_files/figure-html/unnamed-chunk-4-1.png" width="50%" style="display: block; margin: auto;" /><img src="01_introduction_files/figure-html/unnamed-chunk-4-2.png" width="50%" style="display: block; margin: auto;" /></p>
+<p><img src="01_introduction_files/figure-html/unnamed-chunk-4-1.png" width="49%" /><img src="01_introduction_files/figure-html/unnamed-chunk-4-2.png" width="49%" /></p>
 <p><strong>Edge attributes</strong>: Just like with nodes, edges can also have attributes. <strong>Edge attributes</strong> are exogenous data that describe the connection, such as the ‘weight’ of the tie (multiple connections) and/or the <em>type</em> of connection. For example, individuals in a network can be connected through different relationships (e.g. classmates, friends), companies can trade information and/or material goods; pollinators can visit or pollinate. Depending on how a researcher wants to analyze a network, these various types of connections can be considered to exist across multiple ‘levels’.</p>
 </div>
 <div id="network-statistics" class="section level3 hasAnchor" number="1.1.2">
@@ -289,17 +279,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Actor-level</strong></p>
 <ul>
 <li>Degree centrality: Number of connections per node</li>
-<li></li>
+<li>… DRAFTING</li>
 </ul>
 </div>
 </div>
 <div id="storing-network-data" class="section level2 hasAnchor" number="1.2">
 <h2><span class="header-section-number">1.2</span> Storing network data<a href="introduction.html#storing-network-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Network data, which record the relationships (edges) between nodes, are typically stored in one of two ways: edge lists or matrices. <strong>Edge lists</strong> are columns of data, whereby the positioning of two nodes next to one another in a column indicates a connection. In a one-mode undirected network, the position of names in the columns have little meaning (A -&gt; B = B &lt;- A). In a one-mode directed network, however, the columns take on a meaning, where the first column is a list of names from which a connection originated (e.g. ‘from’, also called ‘ego’), and the second column is a list of names to whom the connection is made (e.g. ‘to’, also called ‘alter’). In these cases, A -&gt; B != B -&gt; A. In two-made networks, where nodes of mode 1 can only connect to nodes of mode 2, but not one another, each column will represent a mode and nodes listed in one column cannot be in the other.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="introduction.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;ego&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
-<span id="cb3-2"><a href="introduction.html#cb3-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;alter&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">6</span>)]) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="introduction.html#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;One-mode edge list&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-4"><a href="introduction.html#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-5">Table 1.1: </span>One-mode edge list
@@ -397,10 +383,6 @@ F
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="introduction.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;mode1&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
-<span id="cb4-2"><a href="introduction.html#cb4-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;mode2&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">14</span>,<span class="dv">14</span>,<span class="dv">11</span>)]) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="introduction.html#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Two-mode edge list&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="introduction.html#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-5">Table 1.1: </span>Two-mode edge list
@@ -499,12 +481,6 @@ K
 </tbody>
 </table>
 <p><strong>Matrices</strong> are the graph form for storing relational data. Nodes are listed as the rows and columns, and if two nodes are connected, a value is put into the matrix where they intersect. If two nodes do not have a connection, the value at their intersection is zero. The differences we pointed out in edge lists (directed/undirected, one-mode/two-mode) are reflected in the shape and symmetry of the matrix. One-mode undirected networks are square (i.e. the same nodes are represented in both the rows and columns) and symmetrical (i.e. the values across the diagonal are the same). In one-mode directed networks, the matrix is still square but the matrix is asymmetric: because it may be that nodeA -&gt; nodeB, inputting a value of 1 in row 1 and column 2, but if nodeB !-&gt; nodeA, there is a value of 0 in row 2 and column 1. In a two-mode network the matrix is likely rectangular, where mode one nodes are represented in the rows and mode two nodes are represented in the columns. Typically, two mode networks are not directed.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="introduction.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;ego&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
-<span id="cb5-2"><a href="introduction.html#cb5-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;alter&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">7</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">1</span>,<span class="dv">6</span>)]) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-3"><a href="introduction.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">network</span>(<span class="at">directed =</span> T) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="introduction.html#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix.network.adjacency</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb5-5"><a href="introduction.html#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Undirected one-mode adjacency matrix&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-6"><a href="introduction.html#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-6">Table 1.2: </span>Undirected one-mode adjacency matrix
@@ -898,12 +874,6 @@ J
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="introduction.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">&#39;mode1&#39;</span> <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>],</span>
-<span id="cb6-2"><a href="introduction.html#cb6-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;mode2&#39;</span> <span class="ot">=</span> LETTERS[<span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">12</span>,<span class="dv">15</span>,<span class="dv">14</span>,<span class="dv">14</span>,<span class="dv">11</span>)]) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="introduction.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">network</span>(<span class="at">directed =</span> F, <span class="at">bipartite =</span> T) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="introduction.html#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix.network.adjacency</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-5"><a href="introduction.html#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&#39;c&#39;</span>, <span class="at">caption =</span> <span class="st">&#39;Undirected two-mode adjacency matrix&#39;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-6"><a href="introduction.html#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code></pre></div>
 <table class="table" style="margin-left: auto; margin-right: auto;">
 <caption>
 <span id="tab:unnamed-chunk-6">Table 1.2: </span>Undirected two-mode adjacency matrix

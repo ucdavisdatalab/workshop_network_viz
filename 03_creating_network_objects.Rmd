@@ -11,8 +11,6 @@ First, let's read in our two network packages, as well as a couple other package
 ```{r, results = F, message=F, warning = F}
 library(igraph)
 library(network)
-library(dplyr)
-library(magrittr)
 ```
 
 
