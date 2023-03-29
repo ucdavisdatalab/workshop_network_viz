@@ -263,7 +263,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="creating-network-objects-in-r.html#cb11-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(edges_1mode, <span class="at">vertices =</span> nodes_1mode, <span class="at">directed =</span> F)</span></code></pre></div>
 <p>We can take a look at a summary of the igraph object below. We see the number of nodes (139) and edges (475) summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="creating-network-objects-in-r.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(g1)</span></code></pre></div>
-<pre><code>## IGRAPH 1d4c185 UN-- 139 475 -- 
+<pre><code>## IGRAPH 473d105 UN-- 139 475 -- 
 ## + attr: name (v/c), url (v/c), mode (v/n), Y1995_2009 (e/l), Y2010_2024
 ## | (e/l), before_1980 (e/l), Y1980_1994 (e/l)</code></pre>
 <p>Two-mode networks are a bit harder to create in <code>igraph</code>. Generally this package has very little two-mode functionality. There is one function for this, <code>make_bipartite_graph()</code>, but it requires different inputs than the standard edge list or matrix, and node lists. Instead, this function requires a vector of vertex types, meaning a Boolean of modes (0-1), and a vector of the edges in the graph.</p>
@@ -307,10 +307,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><br></p>
 <p>Still, we can take a look. Much like the one-mode graph, we see the number of nodes (now 435) and edges (680) summarized at top and our list of node attributes and edges attributes.</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="creating-network-objects-in-r.html#cb16-1" aria-hidden="true" tabindex="-1"></a>g2</span></code></pre></div>
-<pre><code>## IGRAPH b93265b U--B 435 680 -- 
+<pre><code>## IGRAPH d9a720b U--B 435 680 -- 
 ## + attr: type (v/l), id (v/n), n_years (v/n), leadership (e/l),
 ## | contribution (e/l)
-## + edges from b93265b:
+## + edges from d9a720b:
 ##  [1]  1--298  2--299  3--299  4--301  5--302  6--303  7--304  8--305  9--305
 ## [10] 10--305 11--305 12--305 13--305 14--305 15--305 16--305 17--305 18--305
 ## [19] 19--305 20--305 21--305 22--305 23--305 24--305 25--305 26--305 27--305

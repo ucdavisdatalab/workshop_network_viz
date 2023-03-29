@@ -1,7 +1,7 @@
 # One-mode visualization
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(warning = F, message = F)
+knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
 ```{r, warning = F, message = F, echo = F}
@@ -325,7 +325,7 @@ noiso <-  (1:network.size(net1))[-isolates(net1)]
 net1_noiso <- get.inducedSubgraph(net1, noiso)
 ```
 
-Now we can see our network without isolates.  
+Now we can see our network without isolates, and quickly use our new `netplot_function`:  
 
 ```{r}
 netplot_function(net1_noiso)
@@ -333,23 +333,19 @@ netplot_function(net1_noiso)
 
 ## Community detection
 
-Moving on to a deeper look at the network. Often we're curious about whether or not there is some pattern within our network. Are some organizations linking with certain others on a more regular basis? Is there a grouping trend in our network that we can't see without some kind of visual aid? To answer this, we might want to do some community detection approaches.
+Now, let's combine some network statistics for visualization to take a deeper look at the network structure and address our second guiding question: _Do we see any particular research communities emerge across these collaborations?_. Often researchers are curious about whether or not there is some pattern within the network. Though the majority of the nodes are connected in one relatively dense component, are some organizations linking with others on a more regular basis? Is there a grouping trend in our network that we can't see from the network figure on its own? To answer this, we might want to use some community detection approaches.
 
 ### Community is broadly defined  
 
-Broadly, community detection is...
-
-Have there been certain communities of research over time?
-
-While we've moved away from `igraph`, I do want to point out that it has a number of community detection algorithms. 
+Broadly, community detection is an approach that employs a wide range of distance/clustering algorithms to identify to find connected communities within a network based on features like density/modularity. While we've moved away from `igraph`, I do want to point out that it has a number of community detection algorithms. You can read more about community detection algorithms [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6103523/). 
 
 ```{r, eval = F}
 ?igraph::cluster_walktrap() 
-?igraph::cluster_leiden()
-?igraph::cluster_optimal()
+?igraph::cluster_label_prop()
+?igraph::cluster_fast_greedy
 ```
 
-In the `sna` package there is the equivalence cluster (`equiv.cluster`) function.  
+In the `sna` package there is the equivalence cluster (`equiv.cluster`) function, which identifies distances based on structural equivalence. The resource above, Hoffman et al. 2018, define it as follows: 'Structural equivalence is an important concept from the blockmodeling literature. It is defined where two nodes play the exact same role in a network in terms of their edges, and would be considered interchangeable (Doreian et al., 2005).'  
 
 ```{r, eval = F}
 ?sna::equiv.clust()
@@ -358,88 +354,102 @@ In the `sna` package there is the equivalence cluster (`equiv.cluster`) function
 ### Equivalence clusters  
 
 Equivalence clustering is a clustering method which groups nodes based on distance from one another. You can specify what kinds of clustering method to use with the `cluster.method` argument and what distance function to use with `equiv.fun`, but it by default uses a hierarchical clustering method based on structural equivalence using Hamming distance. We can calculate the distance and plot a dendrogram of the clusters.  
+
 ```{r}
 ec <- equiv.clust(net1_noiso)
 plot(ec)
 ```
-
+<!---
 We can look at the different 'heights' of the nodes within the dendrogram, and see how many different levels there are.  
 ```{r}
 length(unique(ec$cluster$height))
 ```
+---> 
 
-Now that we have these clusters, we can turn to another method, blockmodelling, which will evaluate blocks of groupings of nodes. We can specify how may blocks we want (`k`), or specify a height at which to split the classes (`h`). The block model output is a matrix with density measures (this is the default of the function). 
+Now that we have these clusters, we can turn to another method, blockmodelling, which will evaluate the density of node groupings (or 'blocks') estimated by the equivalence clusters. We can specify how may blocks we want (`k`), or specify a height at which to split the classes (`h`).  We will pick a rather arbitrary number for blocks, k = 5. 
+
 ```{r}
-bm <- blockmodel(net1_noiso, ec, k = 30,  glabels = "DSC Collaboration")
-bm$block.model
+bm <- blockmodel(net1_noiso, ec, k = 5,  glabels = "DSC Collaboration")
 ```
 
+The block model output includes a vector assigning each node to a block through 'block membership'. We can wrap this output in the `table` function to get a sense of how many nodes have been combined across the different blocks. Most of the nodes (97) are in block 1, while the remaning blocks are much smaller, and block 5 has only one node.  
+```{r}
+table(bm$block.membership)
+```
+
+Additionally, the block model itself provides a matrix with a density measure for the within and between block pairings. Looking along the diagonal, we see that the first block has very low density (0.03), but the smaller blocks have high within-block density (1, .89, 1), while there is no value for block 5 because the density cannot be calculated for a network of 1. [CHECK: IS THIS WHAT'S HAPPENING HERE?]
+
+```{r}
+bm$block.model
+```
+We can then assign the block membership to the network. It is worth noting, however, that the vector output of `bm$block.membership` does not maintain the same node order as the nodes in our network. So we want to make sure we reorder the membership vector to align with the vertex names, which are listed under `bm$plabels`. 
 
 ```{r}
 membership <- data.frame("block" = bm$block.membership,
-                         "id" = ec$cluster$order)
-membership <- membership[order(membership$id),]
+                         "vertex.names" = bm$plabels)
+membership <- membership[order(membership$vertex.names),]
 net1_noiso %v% 'membership' <- membership$block
-table(net1_noiso %v% 'membership')
 ```
-
-We could assign color to that membership... but some of those memberships may be more or less meaningful. 
 
 ```{r}
 ggraph(net1_noiso, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1_noiso %v% 'degree',
-                      color = factor(net1_noiso %v% 'membership'))) +
-  theme_void() +
-  geom_node_text(aes(label = net1_noiso %v% 'labels'),
-                   size = 3, 
-                   color="black",
-                 repel = T)  +
-  scale_color_viridis_d() +
-  labs(color = "Community", size = "Degree")
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree, color = factor(membership)),
+                         alpha = .7) +
+         theme_void() +
+         labs(title = "Delta Science Collaborative Research Network") +
+         geom_node_text(aes(label = labels),
+                          size = 3,
+                          repel = T) +
+         scale_color_viridis_d() +
+         labs(color = "Community", size = "Degree")
 ```
 
-One way to address this is to consider a threshold for the density values of each block to identify blocks that are more dense than the whole network (see [Slide 92](https://pauloserodio.com/eui2019/day2.pdf)). The density of our network is:
-
+Let's rethink our labels to get a better sense of who is in what group
 ```{r}
-gden(net1_noiso)
+# Like before, set a conditional statement so that we only have labels
+# for nodes whose membership is in the dense nodes
+net1_noiso %v% 'member_label' <- ifelse(net1_noiso %v% 'membership' %in% 2:5,
+                                        net1_noiso %v% 'name', "")
 ```
 
-So we can use this as a threshold.   
+We might also want to make a table of those so we can check it out
 ```{r}
-dense_blocks <- data.frame('density' = diag(bm$block.model),
-           'b' = 1:length(unique(net1_noiso %v% 'membership'))) %>% 
-  filter(!(is.nan(density)) & density > gden(net1_noiso))
-
-net1_noiso %v% 'member_grp' <- ifelse(net1_noiso %v% 'membership' == dense_blocks$b[1], 1, 
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[2], 2, 
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[3], 3,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[4], 4,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[5], 5,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[6], 6,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[7], 7,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[8], 8,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[9], 9,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[10], 10,
-                          ifelse(net1_noiso %v% 'membership' == dense_blocks$b[11], 11,
-                                 12)))))))))))
+data.frame('block' = 
+             (net1_noiso %v% 'membership')[net1_noiso %v% 'membership' %in% 2:5],
+           'name' = (net1_noiso %v% 'name')[net1_noiso %v% 'membership' %in% 2:5]) %>% 
+  arrange(block)
 ```
 
-Now we can use the 'member_grp' node attribute, which associated large and correlated blocks with colors, as our color aesthetic. What we can see is that the most active, central actors like USGS, USFWS, etc., are not in highly dense blocks. Instead, they must work in low density, broader networks in which they span multiple, less connected groups. 
+<!--- additional resource: (see [Slide 92](https://pauloserodio.com/eui2019/day2.pdf)).--->
 
-```{r}
-ggraph(net1_noiso, layout = 'fr') +
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net1_noiso %v% 'degree',
-                      color = factor(net1_noiso %v% 'member_grp'))) +
-  theme_void() +
-  geom_node_text(aes(label = net1_noiso %v% 'labels'),
-                   size = 3, 
-                   color="black",
-                 repel = T)  +
-  theme(legend.position = "none") +
-  scale_color_manual(values = c(clrs[1:11], "grey")) 
+```{r, warning = T}
+iso_net <- ggraph(net1_noiso, layout = 'fr') +
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree, color = factor(membership)),
+                         alpha = .7) +
+         theme_void() +
+         labs(title = "Delta Science Collaborative Research Network") +
+         geom_node_text(aes(label = member_label),
+                          size = 3,
+                          repel = T) +
+         scale_color_viridis_d() +
+         labs(color = "Community", size = "Degree")
+iso_net
 ```
+
+And what if I want to clean this up, say, have only one legend and move the legend below. We can specify which legends we want with `guides()` and put the legend in the 'bottom' position with `themes()`.
+
+```{r, warning = T}
+iso_net +
+    labs(color = "Community", size = "Degree") + 
+    guides(color = "legend", size = "none") +
+    theme(legend.position = "bottom")
+```
+
+Do we see any particular research communities emerge across these collaborations?
+
+To conclude this section we can revisit the second guiding question: _Do we see any particular research communities emerge across these collaborations?_ We've used the `blockmodel` function, paired with more conditional assignments of network attributes to identify some possible research clusters. Among our five 'blocks' we see high density among three of them: blocks 2, 3, and 4. Block 2 includes three of the most central nodes -- CDFW, USBR, USFWS -- suggesting that these three wild-life and land use agencies at the state and federal levels repeatedly collaborate together in the Delta. Block 3 includes a wider variety of state agencies that are closely clustered. And block 4 has only three federal agencies, USDA, EPA, and NOAA, who much like block 2 seem to be consistently collaborating on science projects. Block 5 includes only USGS, the network's most central node, pointing to the challenge of clustering highly central nodes given that they span so many connections. The remainder of the organizations are grouped into Block 1, a low-density mass that have no clear trend towards clustering.  
 
 ## Longitudinal networks  
 
