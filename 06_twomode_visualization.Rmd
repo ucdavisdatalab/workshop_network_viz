@@ -173,6 +173,8 @@ ggraph(net2, layout = 'bipartite') +
 
 We can return to the idea of subnetworks.
 
+SHOULD MAKE THIS A BINARY AN DINSTEAD OF INDUCING JUST FACET BUT SHOW THE LIMITATIONS
+
 ### Induce subgraphs by edge  
 ```{r}
 # Induce subgraphs based on those edges

@@ -6,16 +6,21 @@ knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 
 ## Delta Science Tracker   
 
-This workshop uses publicly available data from the Delta Stewardship Council's (DSC) [Delta Science Tracker](https://sciencetracker.deltacouncil.ca.gov/). This database is a library of Sacramento and San Joaquin Delta-related research over the last 50 years. As the DSC's website explains:
+This workshop uses publicly available data from the Delta Stewardship Council's (DSC) [Delta Science Tracker](https://sciencetracker.deltacouncil.ca.gov/). This database is a library of Sacramento and San Joaquin Delta-related research over the last 50 years. As the DSC's website explains:  
 
 | "The Delta Science Tracker is a tool to improve coordination and collaboration of science 
 | activities in a way that is valuable to scientists, decision-makers, and managers in the
 | Delta. The Delta Science Tracker allows users to explore and visualize recent research and 
 | monitoring efforts through the lenses of science activities, organizations, and people. It 
 | is intended to promote communication, create opportunities for collaboration, and enhance 
-| transparency for science funding opportunities and decisions."
+| transparency for science funding opportunities and decisions."  
+
 
 The data we're using was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the 'collaborations by' filter set to organizations. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R).
+
+```{r echo=FALSE, out.width='75%', ig.align='center'}
+knitr::include_graphics("img/milesherman.jpeg")
+```
 
 ## Data descriptions  
 
@@ -100,7 +105,7 @@ As with any visualization, we need to have an idea of [what stories we want to t
 
 1. What is the structure of the collaborative research network in the Delta?
 2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have those collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+3. How have the Delta's research collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
 
 ### Two-mode visualization:  
 

@@ -1,7 +1,7 @@
 # One-mode visualization
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F)
 ```
 
 ```{r, warning = F, message = F, echo = F}
@@ -54,7 +54,7 @@ To get started with visualization, let's remind ourselves of our visualization g
 
 1. What is the structure of the collaborative research network in the Delta?
 2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have those collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+3. How have the Delta's research collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
 
 ## Getting started with `ggraph`
 
@@ -62,7 +62,7 @@ To introduce the basics of the `ggraph` package, we're going to focus on our fir
 
 As described in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1.) (network) data, 2.) geometries, in this case edges and nodes, and 3.) aesthetic mappings. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
 
-```{r, message = T}
+```{r, message = T, fig.align= 'center'}
 ggraph(net1) +
     geom_node_point() +
     geom_edge_link() +
@@ -133,7 +133,7 @@ head(fixed_coord[c(1:2,5)])
 
 For our one-mode networks, we are going to use the 'fr' layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery. 
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
     geom_node_point() +
     geom_edge_link() +
@@ -168,7 +168,7 @@ clrs <- c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF",
 
 We can now integrate these three features: node size, edge color, and node color, into our plot. 
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_node_point(aes(size = degree), 
                   color = clrs[4]) +
@@ -178,7 +178,7 @@ ggraph(net1, layout = 'fr') +
 
 Notice how layer order matters (as as with `ggplot2`), and so by having edges layered on top of nodes, we are really hiding the nodes. Let's try to switch this, but also include some alpha arguments to help increase transparency.  
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
   geom_node_point(aes(size = degree), 
@@ -200,7 +200,7 @@ ggraph(net1, layout = 'fr') +
 
 We can also add labels and make thematic alterations to features like the legend, just like with ggplot2.  
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
   geom_node_point(aes(size = degree), color = clrs[4],
@@ -221,7 +221,7 @@ head(net1 %v% 'name')
 
 Let's add this as a text geometry.  
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
   geom_node_point(aes(size = degree), color = clrs[4],
@@ -255,7 +255,7 @@ net1 %v% 'labels'
 
 We can use this labels attribute to make our figure more easily readable.  
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
   geom_node_point(aes(size = degree), color = clrs[4],
@@ -269,7 +269,7 @@ ggraph(net1, layout = 'fr') +
 
 Almost. Let's include a repel = T argument to make sure the text doesn't overlap. 
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
   geom_node_point(aes(size = degree), color = clrs[4],
@@ -296,6 +296,8 @@ mean(geodist(main_comp)[['gdist']], na.rm = T)
 ```
 </details>
 <br>
+
+### Network plotting function  
 
 Now that we've got that down as a base, I want to create this network visualization approach as a function so that we can move through other material a little more smoothly. Feel free to just copy this function -- all we are doing is taking the code we previously wrote, and replacing the network name that we've been using, net1, with the generic argument for the network name, netname. 
 
@@ -327,7 +329,7 @@ net1_noiso <- get.inducedSubgraph(net1, noiso)
 
 Now we can see our network without isolates, and quickly use our new `netplot_function`:  
 
-```{r}
+```{r, fig.align= 'center'}
 netplot_function(net1_noiso)
 ```
 
@@ -335,14 +337,14 @@ netplot_function(net1_noiso)
 
 Now, let's combine some network statistics for visualization to take a deeper look at the network structure and address our second guiding question: _Do we see any particular research communities emerge across these collaborations?_. Often researchers are curious about whether or not there is some pattern within the network. Though the majority of the nodes are connected in one relatively dense component, are some organizations linking with others on a more regular basis? Is there a grouping trend in our network that we can't see from the network figure on its own? To answer this, we might want to use some community detection approaches.
 
-### Community is broadly defined  
+### Algorithms for community detection      
 
 Broadly, community detection is an approach that employs a wide range of distance/clustering algorithms to identify to find connected communities within a network based on features like density/modularity. While we've moved away from `igraph`, I do want to point out that it has a number of community detection algorithms. You can read more about community detection algorithms [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6103523/). 
 
 ```{r, eval = F}
 ?igraph::cluster_walktrap() 
 ?igraph::cluster_label_prop()
-?igraph::cluster_fast_greedy
+?igraph::cluster_fast_greedy()
 ```
 
 In the `sna` package there is the equivalence cluster (`equiv.cluster`) function, which identifies distances based on structural equivalence. The resource above, Hoffman et al. 2018, define it as follows: 'Structural equivalence is an important concept from the blockmodeling literature. It is defined where two nodes play the exact same role in a network in terms of their edges, and would be considered interchangeable (Doreian et al., 2005).'  
@@ -351,11 +353,11 @@ In the `sna` package there is the equivalence cluster (`equiv.cluster`) function
 ?sna::equiv.clust()
 ```
 
-### Equivalence clusters  
+### Equivalence clusters & block models  
 
 Equivalence clustering is a clustering method which groups nodes based on distance from one another. You can specify what kinds of clustering method to use with the `cluster.method` argument and what distance function to use with `equiv.fun`, but it by default uses a hierarchical clustering method based on structural equivalence using Hamming distance. We can calculate the distance and plot a dendrogram of the clusters.  
 
-```{r}
+```{r, fig.align= 'center'}
 ec <- equiv.clust(net1_noiso)
 plot(ec)
 ```
@@ -384,6 +386,7 @@ bm$block.model
 ```
 We can then assign the block membership to the network. It is worth noting, however, that the vector output of `bm$block.membership` does not maintain the same node order as the nodes in our network. So we want to make sure we reorder the membership vector to align with the vertex names, which are listed under `bm$plabels`. 
 
+### Plotting block membership  
 ```{r}
 membership <- data.frame("block" = bm$block.membership,
                          "vertex.names" = bm$plabels)
@@ -391,7 +394,7 @@ membership <- membership[order(membership$vertex.names),]
 net1_noiso %v% 'membership' <- membership$block
 ```
 
-```{r}
+```{r, fig.align= 'center'}
 ggraph(net1_noiso, layout = 'fr') +
          geom_edge_link(color = "gray80") +
          geom_node_point(aes(size = degree, color = factor(membership)),
@@ -423,7 +426,7 @@ data.frame('block' =
 
 <!--- additional resource: (see [Slide 92](https://pauloserodio.com/eui2019/day2.pdf)).--->
 
-```{r, warning = T}
+```{r, warning = T, fig.align= 'center'}
 iso_net <- ggraph(net1_noiso, layout = 'fr') +
          geom_edge_link(color = "gray80") +
          geom_node_point(aes(size = degree, color = factor(membership)),
@@ -440,23 +443,29 @@ iso_net
 
 And what if I want to clean this up, say, have only one legend and move the legend below. We can specify which legends we want with `guides()` and put the legend in the 'bottom' position with `themes()`.
 
-```{r, warning = T}
+```{r, warning = T, fig.align= 'center'}
 iso_net +
     labs(color = "Community", size = "Degree") + 
     guides(color = "legend", size = "none") +
     theme(legend.position = "bottom")
 ```
 
-Do we see any particular research communities emerge across these collaborations?
-
 To conclude this section we can revisit the second guiding question: _Do we see any particular research communities emerge across these collaborations?_ We've used the `blockmodel` function, paired with more conditional assignments of network attributes to identify some possible research clusters. Among our five 'blocks' we see high density among three of them: blocks 2, 3, and 4. Block 2 includes three of the most central nodes -- CDFW, USBR, USFWS -- suggesting that these three wild-life and land use agencies at the state and federal levels repeatedly collaborate together in the Delta. Block 3 includes a wider variety of state agencies that are closely clustered. And block 4 has only three federal agencies, USDA, EPA, and NOAA, who much like block 2 seem to be consistently collaborating on science projects. Block 5 includes only USGS, the network's most central node, pointing to the challenge of clustering highly central nodes given that they span so many connections. The remainder of the organizations are grouped into Block 1, a low-density mass that have no clear trend towards clustering.  
 
 ## Longitudinal networks  
 
-Often you will want to induce subnetworks -- based on edge attribute
+Now that we've worked with nodes attributes, lets turn to think more deeply about edges with the third guiding question: _How have the Delta's research collaborations changed over time?_. So far we've been looking at all of the research collaborations in the DST database, which range from 1950 to more or less present day. But remember that our data have edge attributes based on when the collaborative project occurred, binned into 4 time periods: Before 1980, 1980-1994, 1995-2009, and 2010-2024 (including ongoing projects). See the edge attributes summarized at the bottom of the network object. To visualize how our networks change over time we are going to be 'inducing subgraphs', which is a network phrase for taking slices of our network. Networks can be induced based on certain nodes, which we will experiment with when we look at two mode networks. But for this question we will be making subgraphs based on edge attributes. 
 
-### Induce subgraphs by edge  
 ```{r}
+net1
+```
+
+### Inducing subgraphs by edge attribute  
+
+To induce our network based on edge attributes, we'll want to identify which edges have those attributes. We can identify the edge ids for which each time category is equal to TRUE. We have these are four binary variables, rather than one attribute with four time categories, because organizations can collaborate on projects in more than one time period. 
+
+```{r}
+# First, let's give these ids, which will become important later
 net1 %v% 'id' <- net1 %v% 'vertex.names'
 
 # Get the edges for each time period
@@ -464,12 +473,16 @@ t1 <- which(net1 %e% 'before_1980' == T)
 t2 <- which(net1 %e% 'Y1980_1994' == T)
 t3 <- which(net1 %e% 'Y1995_2009' == T)
 t4 <- which(net1 %e% 'Y2010_2024' == T)
+```
 
-# Induce subgraphs based on those edges
-net1_t1 <- network::get.inducedSubgraph(net1, eid = t1)
-net1_t2 <- network::get.inducedSubgraph(net1, eid = t2)
-net1_t3 <- network::get.inducedSubgraph(net1, eid = t3)
-net1_t4 <- network::get.inducedSubgraph(net1, eid = t4)
+Now that we have our edge ids before each time period (t1 through t4), we can use the `get.inducedSubgraph` function and identify the edge ids that we'd like to keep in each network.  
+
+```{r}
+# Induce subgraphs based on edges
+net1_t1 <- get.inducedSubgraph(net1, eid = t1)
+net1_t2 <- get.inducedSubgraph(net1, eid = t2)
+net1_t3 <- get.inducedSubgraph(net1, eid = t3)
+net1_t4 <- get.inducedSubgraph(net1, eid = t4)
 ```
 
 ```{r, echo = F, eval = F}
@@ -480,207 +493,116 @@ t3_edges <- filter(edges_1mode, Y1995_2009 == T)
 t4_edges <- filter(edges_1mode, Y2010_2024 == T)
 ```
 
-Now we have subgraphs
+Now we have a slice of the network for each time period. Note that because we did not specify the vertex ids, these networks will include only the nodes that has connections for that time period, and it will not include isolates. For example, though our whole collaborative network has 139 nodes, the network from time period 2 has only 30. 
+
 ```{r}
-net1_t4
+net1_t2
 ```
 
-But note that our attributes remain from the whole network
+With these induced networks, an important thing to notice is that the attributes assigned in the complete network remain. This is is less important for exogenous, fixed attributes like name, but is important for endogenous/structural attributes like degree. For example, we can check the degree of SFEI in two different networks against the whole network and see that the degree attribute has carried over, but that calcuation is no longer correct in the induced networks.  
 ```{r}
 (net1_t1 %v% 'degree')[(net1_t1 %v% 'name' == "SFEI")]
 (net1_t2 %v% 'degree')[(net1_t2 %v% 'name' == "SFEI")]
+(net1 %v% 'degree')[(net1 %v% 'name' == "SFEI")]
 ```
 
-But this is incorrect, so we want to reassign those values
+We need to update/reassign any structural values that we calculated for the whole network so that they are accurate for each sub-network. 
 ```{r}
-net1_t1 %v% 'degree' <- sna::degree(net1_t1)
-net1_t2 %v% 'degree' <- sna::degree(net1_t2)
-net1_t3 %v% 'degree' <- sna::degree(net1_t3)
-net1_t4 %v% 'degree' <- sna::degree(net1_t4)
+net1_t1 %v% 'degree' <- degree(net1_t1)
+net1_t2 %v% 'degree' <- degree(net1_t2)
+net1_t3 %v% 'degree' <- degree(net1_t3)
+net1_t4 %v% 'degree' <- degree(net1_t4)
 ```
 
-Since our degree value has changed, we also wanted to change our labels. We can write a function to do that
+Just as the degree attribute needed changed, we also need to change the the label attribute, which was assigned based on degree. We can write a function to do that to avoid repetition across each time period.  
 
 ```{r}
-get_top_degree <- function(netname, n){
-  topdeg <- data.frame("deg" = netname %v% 'degree') %>% 
-    top_n(n)
-  labels <- ifelse((netname %v% 'degree') %in% topdeg$deg, 
-                             netname %v% 'name', '')
+label_top_degree <- function(netname, n){
+  degs <- (netname %v% 'degree')[order(netname %v% 'degree')]
+  topdegs <- unique(rev(degs))[1:n]
+  labels <- ifelse((netname %v% 'degree') %in% topdegs, 
+                           netname %v% 'name', '')
   return(labels)
 }
 
-net1_t1 %v% 'labels' <- get_top_degree(net1_t1, 5)
-net1_t2 %v% 'labels' <- get_top_degree(net1_t2, 5)
-net1_t3 %v% 'labels' <- get_top_degree(net1_t3, 5)
-net1_t4 %v% 'labels' <- get_top_degree(net1_t4, 5)
+net1_t1 %v% 'labels' <- label_top_degree(net1_t1, 5)
+net1_t2 %v% 'labels' <- label_top_degree(net1_t2, 5)
+net1_t3 %v% 'labels' <- label_top_degree(net1_t3, 5)
+net1_t4 %v% 'labels' <- label_top_degree(net1_t4, 5)
 ```
 
-Now let's plot one of our subgraphs. We can use the same netplot function
-```{r, out.width = c("50%", "50%")}
-netplot_function(net1_t1)
-netplot_function(net1_t2)
-netplot_function(net1_t3)
-netplot_function(net1_t4)
-```
-The issue here is that it is hard to really visualize change because the layout changes every time to make the visualize look more like a network... So let's fixing our coordinates. We want nodes to be in the same position in the plotting of every subgraph.
+Now that we've updated our attributes, let's plot one of our subgraphs. We can use the `netplot_function` that we wrote in the Section 5.5.
 
+```{r, out.width = c("50%", "50%"), fig.show="hold"}
+netplot_function(net1_t1) + labs(title = "Collaborative network: Pre 1980")
+netplot_function(net1_t2) + labs(title = "Collaborative network: 1980-1994")
+netplot_function(net1_t3) + labs(title = "Collaborative network: 1995-2009")
+netplot_function(net1_t4) + labs(title = "Collaborative network: 2010-2024")
+```
+This is a start, but the visualization challenge here is that it is hard to really detect change because the layout changes every time. Remember, our layout algorithm wants to cluster densely connected nodes, and because those clusters shift across time periods (combined with the random element in the algorithmic calculation itself), the algorithm will move nodes to a new coordinate in each time period. To improve this visualization, then, we want nodes to be in the same position for each subgraph. So next we learn how to fix the coordinates of the nodes across multiple graphs.
 
 ### Fixing coordinates
 
-With ggraph/network, we can fix coordinates by creating a layout table from our initial network. First let's make sure we have unique identifiers as that table. These layout tables give x and y coordinates to each 
-```{r}
-fixed_coord <- create_layout(net1, layout = 'fr')
-```
-
-With these coordinates fixed from our full plot, we can then apply those same coordinates for each subgraph.
+With `ggraph`, we can fix coordinates by creating a layout table from our initial network. Let's all set the same seed so that we can have the same coordinates across computers. Note that we created an 'id' variable earlier based on the vertex name to serve as unique identifiers in these layout tables. We'll do that again for out no isolates network
 
 ```{r}
-# create a layout table for the subgraph
-fixed_coord_t1 <- create_layout(net1_t1, layout = 'fr')
-# subset the relevant coordinates from the full layout table
-coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t1$id, c(1,2,6)]
-fixed_coord_t1$x <- coords_we_need$x
-fixed_coord_t1$y <- coords_we_need$y
-
-fixed_coord_t1  %>% 
-  ggraph() + 
-  geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = degree), 
-                  color = clrs[6]) +
-  theme_void() +
-  theme(legend.position = "none") +
-  geom_node_text(aes(label = labels),
-                   family = "Times",
-                   size = 3, 
-                   color="black") +
-  xlim(c(-9, 7)) +
-  ylim(c(-7, 8))
+set.seed(26)
+net1_noiso %v% 'id' <- net1_noiso %v% 'vertex.names'
+fixed_coord <- create_layout(net1_noiso, layout = 'fr')
+head(fixed_coord[,c(1:8)])
 ```
+
+With these coordinates fixed from our full plot, we can then apply those same coordinates for each subgraph. To do that, we'll first create manual layouts for each subgraph. Next we will subset the relevant coordinates from the full coordinate list using the node 'id'.
 
 ```{r}
-subplot_viz_fixed <- function(fixed_coords, netname){
-
-  fixed_coord_t <- create_layout(netname, layout = 'fr')
-  coords_we_need <- fixed_coord[fixed_coord$id %in% fixed_coord_t$id, c(1,2,6)]
-  fixed_coord_t$x <- coords_we_need$x
-  fixed_coord_t$y <- coords_we_need$y
-  
-  fixed_coord_t  %>% 
-    ggraph() + 
-    geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-    geom_node_point(aes(size = degree), 
-                    color = clrs[4]) +
-    theme_void() +
-    theme(legend.position = "none") +
-    geom_node_text(aes(label = labels),
-                     family = "Times",
-                     size = 3, 
-                     color="black") +
-    xlim(c(-9, 7)) +
-    ylim(c(-7, 8))
-}
+# 1. Create a layout table for the subgraph
+coord_t1 <- create_layout(net1_t1, layout = 'fr')
+# 2. Subset the relevant coordinates from the full layout table
+fixed_coord_t1 <- fixed_coord[fixed_coord$id %in% coord_t1$id, c('x','y', 'id')]
+# 3. Assign the 
+coord_t1$x <- fixed_coord_t1$x
+coord_t1$y <- fixed_coord_t1$y
 ```
 
+Instead of copying and pasting this over again, we'll write a function to quickly assign the coordinates that we set as fixed to a given subgraph. To do that, we take the code we wrote above but generalize the network and fixed coordinate arguments to 'netname' and 'fixed'. Then we can input any network name and any fixed coordinates, and set them all.  
 ```{r}
-subplot_viz_fixed(fixed_coord, net1)
-subplot_viz_fixed(fixed_coord, net1_t1)
-subplot_viz_fixed(fixed_coord, net1_t2)
-subplot_viz_fixed(fixed_coord, net1_t3)
-subplot_viz_fixed(fixed_coord, net1_t4)
+assign_fixed_coords <- function(netname, fixed){
+  coord_t <- create_layout(netname, layout = 'fr')
+  fixed_coord_t <- fixed[fixed$id %in% coord_t$id, c('x','y')]
+  coord_t$x <- fixed_coord_t$x
+  coord_t$y <- fixed_coord_t$y
+  return(coord_t)
+} 
+
+coord_t1 <- assign_fixed_coords(net1_t1, fixed_coord)
+coord_t2 <- assign_fixed_coords(net1_t2, fixed_coord)
+coord_t3 <- assign_fixed_coords(net1_t3, fixed_coord)
+coord_t4 <- assign_fixed_coords(net1_t4, fixed_coord)
 ```
 
-```{r}
-subplot_viz_fixed(fixed_coord, net1) + 
-  labs(title = "Collaborative network: 1950-2022") +
-  theme(text= element_text(size=10, family="Times")) 
-subplot_viz_fixed(fixed_coord, net1_t1) + 
-  labs(title = "Collaborative network: 1950-1979") +
-  theme(text= element_text(size=10, family="Times")) 
-subplot_viz_fixed(fixed_coord, net1_t2) + 
-  labs(title = "Collaborative network: 1980-1994") +
-  theme(text= element_text(size=10, family="Times")) 
-subplot_viz_fixed(fixed_coord, net1_t3) + 
-  labs(title = "Collaborative network: 1995-2009") +
-  theme(text= element_text(size=10, family="Times")) 
-subplot_viz_fixed(fixed_coord, net1_t4) + 
-  labs(title = "Collaborative network: 2010-2022") +
-  theme(text= element_text(size=10, family="Times")) 
+Now we can feed these coordinates directly into the `netplot_function` and just add new labels. Notice that we can feed these layout data frames directly in to the function, as we would a network object. This is a great functionality of `ggraph`.  
+
+```{r, out.width = c("50%", "50%"), fig.show="hold"}
+netplot_function(coord_t1) + labs(title = "Collaborative network: Pre 1980")
+netplot_function(coord_t2) + labs(title = "Collaborative network: 1980-1994")
+netplot_function(coord_t3) + labs(title = "Collaborative network: 1995-2009")
+netplot_function(coord_t4) + labs(title = "Collaborative network: 2010-2024")
 ```
 
-## Interactive plots DRAFTING
-```{r}
-p1 <- subplot_viz_fixed(fixed_coord, net1) + 
-  labs(title = "Collaborative network: 1950-2022") +
-  theme(text= element_text(size=10, family="Times")) 
-plotly::ggplotly(p1)
+Huh, we're _really_ close, but something is not quite right yet. Even though the point have the same coordinates, each version of the network does not take up the same amount of space. For example, the subgraph for the 4th time period includes University of Kansas, which is fixed at x = -8.3, so it is one of the left-most points on the network. However, University of Kansas is not included in the subgraph for the 1st time period, and the left-most node in this network is only positioned at x = -4.7. So our issue is that the x and y axis limits adjust based on the data we input. We can just that as one more layer, specifying the widest range of x and y values in the complete network:
+
+```{r, out.width = c("50%", "50%"), fig.show="hold"}
+netplot_function(coord_t1) + labs(title = "Collaborative network: Pre 1980") +
+  xlim(c(-9,7)) + ylim(c(-10,6))
+netplot_function(coord_t2) + labs(title = "Collaborative network: 1980-1994") +
+  xlim(c(-9,7)) + ylim(c(-10,6))
+netplot_function(coord_t3) + labs(title = "Collaborative network: 1995-2009") +
+  xlim(c(-9,7)) + ylim(c(-10,6))
+netplot_function(coord_t4) + labs(title = "Collaborative network: 2010-2024") +
+  xlim(c(-9,7)) + ylim(c(-10,6))
 ```
 
-D3
-
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree",
-               label = 'labels',
-               color = 'membership',
-               label.size = 2,
-               legend.position = "none")
-```
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree",
-               label = 'labels',
-               color = 'membership',
-               palette = viridisLite::cividis(n=12),
-               label.size = 2,
-               legend.position = "none")
-```
-
-```{r, eval = F, echo = F}
-colors <- viridis::viridis(nblocks)
-net %v% 'member_color' <- ifelse(net %v% 'membership' %in% c(4,7,9,10,12), colors[7],
-                          ifelse(net %v% 'membership' == 1, colors[2], 
-                          ifelse(net %v% 'membership' == 2, colors[3], 
-                          ifelse(net %v% 'membership' == 3, colors[4], 
-                          ifelse(net %v% 'membership' == 5, colors[5], 
-                          ifelse(net %v% 'membership' == 6, colors[6], 
-                          ifelse(net %v% 'membership' == 8, colors[8], 
-                          ifelse(net %v% 'membership' == 11, colors[11], 
-                                 colors[12]))))))))
-```
-
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree",
-               label = 'labels',
-               color = 'member_color',
-               label.size = 2,
-               legend.position = "none")
-```
-
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree")
-```
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree",
-               color = clrs[6],
-               alpha = .5,
-               legend.position = "none")
-```
-
-```{r, eval = F, echo = F}
-GGally::ggnet2(net,
-               size = "degree",
-               label = 'labels',
-               color = clrs[6],
-               alpha = .9,
-               label.size = 2,
-               legend.position = "none")
-```
+_How have the Delta's research collaborations changed over time?_  
+[DRAFTING]
+* Can see who has been most active over different years.  
+* See a widening of periphery -- more actors, less collaborative
