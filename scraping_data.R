@@ -160,6 +160,7 @@ projs <- el_twomode %>%
 # Make these blank to fill in
 projs$proj_name = NA
 projs$funds = NA
+projs$funding_org = NA
 projs$startdate = NA
 projs$enddate = NA
 projs$n_years = NA
@@ -178,6 +179,10 @@ for(i in 1:nrow(projs)){
     html_text() %>% 
     str_remove('Total allocated funding: ')
   projs$funds[i] <- funds[1]
+  funding_org <- page %>% 
+    xml_find_all('//*[(@id = "funding-accordion")]//tr[(((count(preceding-sibling::*) + 1) = 3) and parent::*)]//td') %>% 
+    html_text()
+  projs$funding_org[i] <- funding_org[1]
   startdate <- page %>% 
     xml_find_all('//*[(@id = "activity-status")]//li[(((count(preceding-sibling::*) + 1) = 1) and parent::*)]') %>% 
     html_text() %>% 
@@ -220,16 +225,16 @@ projs <- full_join(projs, themes_df, multiple = 'all')
 projs <- projs %>% 
   mutate(val = T) %>% 
   pivot_wider(names_from = sci_theme, values_from = val) %>% 
-  mutate(across(9:ncol(.), ~replace_na(.x, FALSE))) %>% 
+  mutate(across(10:ncol(.), ~replace_na(.x, FALSE))) %>% 
   select(-`NA`)
-colnames(projs)[9:ncol(projs)] <- paste0('sci_', str_remove_all(colnames(projs)[9:ncol(projs)], "\\s|\\,|\\/|\\-"))
+colnames(projs)[10:ncol(projs)] <- paste0('sci_', str_remove_all(colnames(projs)[10:ncol(projs)], "\\s|\\,|\\/|\\-"))
 
 projs <- projs %>%  
   mutate(val = T) %>% 
   pivot_wider(names_from = mgmt_theme, values_from = val) %>% 
-  mutate(across(31:ncol(.), ~replace_na(.x, FALSE))) %>% 
+  mutate(across(32:ncol(.), ~replace_na(.x, FALSE))) %>% 
   select(-`NA`)
-colnames(projs)[31:ncol(projs)] <- paste0('mgmt_', str_remove_all(colnames(projs)[31:ncol(projs)], "\\s|\\,|\\/|\\-"))
+colnames(projs)[32:ncol(projs)] <- paste0('mgmt_', str_remove_all(colnames(projs)[32:ncol(projs)], "\\s|\\,|\\/|\\-"))
 
 # 6. Create full node list ----
 
@@ -318,4 +323,4 @@ nl_twomode <- filter(nl, id %in% el_twomode$org_id |
 write.csv(nl_twomode, "data/nodelist_twomode.csv", row.names = F)
 write.csv(nl_onemode, "data/nodelist_onemode.csv", row.names = F)
 write.csv(el_twomode, "data/edgelist_twomode.csv", row.names = F)
-write.csv(el_projected, "data/edgelist_projected.csv", row.names = F)
+write.csv(el_projected, "data/edgelist_onemode_projected.csv", row.names = F)

@@ -601,7 +601,7 @@ netplot_function(coord_t3) + labs(title = "Collaborative network: 1995-2009") +
 netplot_function(coord_t4) + labs(title = "Collaborative network: 2010-2024") +
   xlim(c(-9,7)) + ylim(c(-10,6))
 ```
-
+^^ DO I WANT TO TRY TO MAGICK THIS ---> MAKE IT INTO A JPEG
 _How have the Delta's research collaborations changed over time?_  
 [DRAFTING]
 * Can see who has been most active over different years.  
