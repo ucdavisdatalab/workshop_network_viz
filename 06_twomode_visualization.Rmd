@@ -1,31 +1,40 @@
 # Two-mode visualization
 
 ```{r, setup, include=FALSE}
-knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
+knitr::opts_chunk$set(warning = F, message = F)
 ```
 
-* What actors have been most active across projects? 
-* Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
-* What actors have been most active on climate-related projects? (Node attribute of project node)
+```{r, warning = F, message = F, echo = F}
+library(igraph)
+library(network)
+library(ggraph)
+library(sna)
+library(dplyr)
 
-We can use the same approaches as with one mode... but we shouldn't because mode one and two are just not comparable.
+clrs <- c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF",
+          "#2D708EFF", "#25858EFF", "#1E9B8AFF", "#2BB07FFF", 
+          "#51C56AFF", "#85D54AFF", "#C2DF23FF", "#FDE725FF")
+```
 
 ```{r, echo = F}
-library(sna)
-library(network)
-library(magrittr)
-library(ggraph)
-library(dplyr)
 edges_2mode <- read.csv('data/edgelist_twomode.csv')
 nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+
 net2 <- network(x = edges_2mode, 
-               vertices = nodes_2mode[nodes_2mode$id %in% edges_2mode$org_id |
-                                nodes_2mode$id %in% edges_2mode$project_id,],
+               vertices = nodes_2mode,
                bipartite = T,  
                directed = F)
-clrs <- c("#440154FF", "#46337EFF", "#365C8DFF", "#277F8EFF",
-          "#1FA187FF", "#4AC16DFF", "#9FDA3AFF", "#FDE725FF")
 ```
+
+## Guiding questions:  
+
+Next we're going to shift to the two-mode network. That is, a network consisting of two distinctly different types of nodes, where ties are possible between (but not within) each node type. For our data, our two modes are research organizations and projects, where researchers are linked to projects based on their involvement, but in this case there is no link between projects or between researchers. With our two-mode network, we want to know: 
+
+1. Across the Delta science projects, which have the largest number of collaborators?    
+2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
+3. Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+
+We will be using approaches that are _similar_ to one-mode networks, but there are some features that we will want to rethink given that there are differences given what we can calculate and what we want to communicate.  
 
 ```{r, echo = F}
 netplot_function <- function(netname){
@@ -41,84 +50,131 @@ netplot_function <- function(netname){
                    color="black", repel = T) 
   return(p)
 }
+
+label_top_degree <- function(netname, n){
+  degs <- (netname %v% 'degree')[order(netname %v% 'degree')]
+  topdegs <- unique(rev(degs))[1:n]
+  labels <- ifelse((netname %v% 'degree') %in% topdegs, 
+                           netname %v% 'name', '')
+  return(labels)
+}
 ```
 
+## Representing two-mode networks    
+
+Analytical approaches for two-mode networks are slightly different from one-mode networks given that there are unique structural limitations of two-mode networks. As we've discussed already, in two-mode networks there cannot be connections between nodes of the same mode. Because of this, many structural statistics that you can calculate are not directly transferable. We'll start with the one-mode visualization approach that we've started with, then build on these to improve our representation of the two-mode features. 
+
+### The one-mode approach
+
+With one-mode networks, we used `sna::degree()` function to calculate the number of connections per node, and we can apply this same function to our two-mode network, `net2`, then run through the functions we've made so far to create a plot: `label_top_degree()` and `netplot_function()`. 
 ```{r}
-net2 %v% 'degree' <- sna::degree(net2)
-topdeg <- data.frame("deg" = net2 %v% 'degree') %>% 
-  top_n(5)
-net2 %v% 'labels' <- ifelse((net2 %v% 'degree') %in% topdeg$deg, 
-                           net2 %v% 'name', '')
+net2 %v% 'degree' <- degree(net2)
+net2 %v% 'labels' <- label_top_degree(net2, 5)
 netplot_function(net2)
 ```
+
+This is a fine start, but here we aren't communicating anything about to two-modality of the data. Without any further specification, it just looks like a one-mode network with some central nodes. We could consider an important attribute in our data, mode, telling is which of those points are organizations (mode 1) and which are projects (mode 0).  
 
 ```{r}
 net2 %v% 'mode'
 ```
 
+To account for mode in our visualization, we could start by adding an aesthetic feature to our visualization, changing the shape and color to be determined by mode. 
+
 ```{r}
+set.seed(21)
 ggraph(net2, layout = 'fr') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
-  geom_node_point(aes(size = net2 %v% 'degree',
-                      shape = factor(net2 %v% 'mode'),
-                      color = factor(net2 %v% 'mode'))) +
+  geom_node_point(aes(size = degree,
+                      shape = factor(mode),
+                      color = factor(mode))) +
   theme_void() +
   scale_color_viridis_d() +
-  geom_node_text(aes(label = net2 %v% 'labels'),
+  geom_node_text(aes(label = labels),
                    size = 3, 
                    color="black") +
     labs(size = "Degree", color = "Mode", shape = "Mode")
 ```
 
-## Normalized degree for both modes... (see Ebba)
+So now we can see our modes, but there are a few things that are somewhat misrepresented when we use this approach:  
 
-```{r}
-# NORMALIZED degrees and label
+1) Degree size is skewed by the limitations of the mode. Meaning: due to the nature of how two-mode networks are structured, it is likely that one mode will be more represented than the other. For instance in this case, organizations can participate in multiple projects across time, but projects are limited to the participants involved in the one time span on the project. Because of this, we see that organizations are all highest-degree, and don't know much about the projects that are highly collaborative.  
+
+2) The layout of the network hides that within-mode connections are not possible. By using one of the more classical layout algorithms that try to limit distance and group similar nodes, it is hard to notice that no two yellow triangles are connected to one another, nor are there any connections between the purple circles. 
+
+So let's address each of these points.  
+
+### Normalized degree in two-mode networks  
+
+One way to adjust and compare degree between modes is to calculate normalized degree _for each mode_. We can do this using the `bipartite` package:
+
+```{r, echo = F, eval = F}
 net2 %v% 'degree_norm' <- sna::degree(net2, rescale = T)
-
-# make a table, project id as rows and org id as columns
-#inc_mat <- table(edges_2mode[c('project_id', 'org_id')])
-degree_norm_bip <- bipartite::ND(as.matrix(net2))
-# output has two measures of degree: one for 'lower' and one for 'higher'
-# 'lower' is for for the rows, so in our case, projects
-length(degree_norm_bip$lower) == length(unique(edges_2mode$project_id))
-# this is compatible with mode 0, which are the second half of the nodes
-net2 %v% 'mode'
 ```
 
 ```{r}
-# So we want to assign this bipartite degree in accordance with that order
-# BUT, note that this function orders degree based on numeric order of id,
-# which may not align with the node order
-nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
-net2 %v% 'vertex.names' == names(nd_output)
+install.packages('bipartite')
+library(bipartite)
+?bipartite::ND
+```
 
+This function, designed to think of bipartite (two-mode) data as species on different trophic levels, takes a matrix and uses that to calculate normalized degree for each mode.
+```{r}
+degree_norm_bip <- bipartite::ND(as.matrix(net2), normalised = T)
+```
+
+The output has two measures of degree, one for rows (in this case called 'lower' because the package was designed to think about lower and higher trophic levels) and one for columns ('higher'). Check which matches up. 
+
+```{r}
+# 'lower' is for for the rows, so in our case, organizations
+length(degree_norm_bip$lower) == length(unique(edges_2mode$org_id))
+# 'higher' is for for the columns, so in our case, projects
+length(degree_norm_bip$higher) == length(unique(edges_2mode$project_id))
+```
+
+Now, we want to sign this bipartite degree in accordance with that order. BUT, note that this function orders degree based on numeric order of id, so we want to make sure this matches with the order of nodes in our network.  
+```{r}
+nd_output <- c(degree_norm_bip$lower, degree_norm_bip$higher)
+table(net2 %v% 'vertex.names' == as.numeric(names(nd_output)))
+```
+
+```{r, echo = F, eval = F}
+# if it didn't match, could do this
 nd_output_df <- data.frame('degreeN' = nd_output,
                            'id' = names(nd_output))
 nd_output_sorted <- nd_output_df[match((net2 %v% 'vertex.names'), 
                                         nd_output_df $id),]
+```
 
-net2 %v% 'vertex.names' == nd_output_sorted$id
-net2 %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+Looks good, so now let's assign this new degree measure to our network. [NOTE: IS THIS DOING WHAT I EXPECT]
+```{r}
+net2 %v% 'degree_norm_bip' <- nd_output
 
 # Note: normalizing the degree for the whole network vs. normalizing degree for
 # each mode is a different process
-(net2 %v% 'degree_norm')[net2 %v% 'vertex.names' == 49590]
-(net2 %v% 'degree_norm_bip')[net2 %v% 'vertex.names' == 49590]
+summary((net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0])
+summary((net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1])
 ```
 
+Now, let's assign labels but let's pull out the labels for each mode specifically: 
 ```{r}
-topdeg_mode0 <- data.frame("deg" = (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0]) %>% 
+topdeg_mode0 <- data.frame("deg" = 
+                             (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0]) %>% 
   top_n(3)
-topdeg_mode1 <- data.frame("deg" = (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1]) %>% 
+topdeg_mode1 <- data.frame("deg" = 
+                             (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1]) %>% 
   top_n(3)
 
 
-net2 %v% 'labels_bip' <- ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode0$deg & net2 %v% 'mode' == 0, net2 %v% 'name', 
-                                ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode1$deg & net2 %v% 'mode' == 1, net2 %v% 'name', ''))
+net2 %v% 'labels_bip' <- ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode0$deg & 
+                                  net2 %v% 'mode' == 0, net2 %v% 'name', 
+                         ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode1$deg & 
+                                  net2 %v% 'mode' == 1, net2 %v% 'name', ''))
 ```
+Now we can size by our new node attribute, 'degree_norm_bip' and label the nodes by 'labels_bip'.  
 
 ```{r}
+set.seed(21)
 ggraph(net2, layout = 'fr') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
   geom_node_point(aes(size = net2 %v% 'degree_norm_bip',
@@ -131,12 +187,16 @@ ggraph(net2, layout = 'fr') +
                    color="black") +
     labs(size = "Degree", color = "Mode", shape = "Mode")
 ```
+### Bipartite layout  
 
-But I want to demonstrate that there can be no connections between projects or between collaborators, in this network, so let's pick a layout that demonstrates that
+Next, I want to reconsider layouts that help demonstrate the structural limitations between modes: that there can be no connections between projects or between collaborators. The 'bipartite' layout minimizes edge crossing and lines up modes next to one another. However, this layout requires a T/F 'type' variable to define the mode, so we can create that using our mode variable.
 
-Bipartite minimizes edge crossing 
 ```{r}
 net2 %v% 'type' <- ifelse(net2 %v% 'mode' == 0, T, F)
+```
+
+Now we can specify the layout to bipartite: 
+```{r}
 ggraph(net2, layout = 'bipartite') +
   geom_edge_link(width = 0.5, alpha = 0.5, color = "gray70") +
   geom_node_point(aes(size = net2 %v% 'degree_norm_bip',
@@ -173,7 +233,7 @@ ggraph(net2, layout = 'bipartite') +
 
 We can return to the idea of subnetworks.
 
-SHOULD MAKE THIS A BINARY AN DINSTEAD OF INDUCING JUST FACET BUT SHOW THE LIMITATIONS
+SHOULD MAKE THIS A BINARY INSTEAD OF INDUCING AND JUST FACET BUT SHOW THE LIMITATIONS
 
 ### Induce subgraphs by edge  
 ```{r}
@@ -182,6 +242,32 @@ net2_l <- network::get.inducedSubgraph(net2,
                                        eid = which(net2 %e% 'leadership' == T))
 net2_c <- network::get.inducedSubgraph(net2, 
                                        eid = which(net2 %e% 'contribution' == T))
+```
+
+```{r}
+assign_bipartite_deg_labels <- function(netname, n){
+  degree_norm_bip <- bipartite::ND(as.matrix(netname))
+  nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
+  nd_output_df <- data.frame('degreeN' = nd_output,
+                             'id' = names(nd_output))
+  nd_output_sorted <- nd_output_df[match((netname %v% 'vertex.names'), 
+                                          nd_output_df $id),]
+  
+  netname %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+  
+  topdeg_mode0 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 0]) %>%
+    top_n(n)
+  topdeg_mode1 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' ==   1]) %>% 
+    top_n(n)
+
+  netname %v% 'labels_org' <- ifelse((netname %v% 'degree_norm_bip') %in%
+                                       topdeg_mode1$deg & 
+                                       netname %v% 'mode' == 1, 
+                                     netname %v% 'name', '')
+  return(netname)
+}
 ```
 
 Now we have subgraphs
@@ -238,33 +324,6 @@ net2_flood <- network::get.inducedSubgraph(net2,
 ```
 
 
-```{r}
-
-assign_bipartite_deg_labels <- function(netname, n){
-  degree_norm_bip <- bipartite::ND(as.matrix(netname))
-  nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
-  nd_output_df <- data.frame('degreeN' = nd_output,
-                             'id' = names(nd_output))
-  nd_output_sorted <- nd_output_df[match((netname %v% 'vertex.names'), 
-                                          nd_output_df $id),]
-  
-  netname %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
-  
-  topdeg_mode0 <- data.frame("deg" = 
-              (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 0]) %>%
-    top_n(n)
-  topdeg_mode1 <- data.frame("deg" = 
-              (netname %v% 'degree_norm_bip')[netname %v% 'mode' ==   1]) %>% 
-    top_n(n)
-
-  netname %v% 'labels_org' <- ifelse((netname %v% 'degree_norm_bip') %in%
-                                       topdeg_mode1$deg & 
-                                       netname %v% 'mode' == 1, 
-                                     netname %v% 'name', '')
-  return(netname)
-}
-
-```
 
 ```{r}
 net2_cli <- assign_bipartite_deg_labels(net2_cli, 3)

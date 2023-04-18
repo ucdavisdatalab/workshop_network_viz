@@ -109,7 +109,7 @@ As with any visualization, we need to have an idea of [what stories we want to t
 
 ### Two-mode visualization:  
 
-1. Across the Delta science project, what organizations have been most active?  
+1. Across the Delta science projects, what organizations have been most active?  
 2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
 3. Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
 

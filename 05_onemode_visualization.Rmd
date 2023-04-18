@@ -48,7 +48,7 @@ The `igraph` degree function will work only on `igraph` objects and `sna` `degre
 detach("package:igraph", unload = TRUE)
 ```
 
-### Guiding questions:  
+## Guiding questions:  
 
 To get started with visualization, let's remind ourselves of our visualization goals and guiding questions. With our one-mode network, we want to know: 
 
