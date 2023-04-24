@@ -29,7 +29,7 @@ Before getting started with visualizations, we want to take a look at the data w
 **Two-mode edge list:** The DSC data was originally compiled as two-mode network data, describing how organizations/researchers are connected to research projects. In these data, our first mode, `project_id`, is the id numbers representing different Delta science research projects. And our second mode, `org_id`, is the organization(s) (agencies, universities, etc) that are working on that project. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.  
 
 ```{r}
-edges_2mode <- read.csv('data/edgelist_twomode.csv')
+edges_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_twomode.csv')
 head(edges_2mode)
 ```
 
@@ -41,7 +41,7 @@ length(unique(edges_2mode$project_id))
 **Two-mode node list**: We have a two-mode list of all the nodes (organizations and projects). We have more node attributes for project nodes than we do for organization nodes, so many of the attributes for organizations are empty. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:  
 
 ```{r}
-nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+nodes_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_twomode.csv')
 head(nodes_2mode[,c(1,4:6,16,31,39)])
 ```
 
@@ -50,7 +50,7 @@ Note that the scientific and management themes are formatted as Boolean values f
 **One-mode edge list:** We projected our two-mode network to a one-mode network to take a deeper look at research collaborations. Projection of two-mode data into one-mode is a common practice, though it has its limitations (Jasny 2012). By converting two-mode into one-mode data, we can take a look at what organizations are working together on projects. We've also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together. See below for a hint on how to project one-mode data from two-mode data.  
 
 ```{r}
-edges_1mode <- read.csv('data/edgelist_projected.csv') 
+edges_1mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_onemode_projected.csv') 
 head(edges_1mode)
 ```
 <details>
@@ -92,7 +92,7 @@ el_proj <- igraph::get.data.frame(g)
 **One-mode node list**: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page. 
 
 ```{r}
-nodes_1mode <- read.csv('data/nodelist_onemode.csv')
+nodes_1mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_onemode.csv')
 head(nodes_1mode[1:2])
 ```
 

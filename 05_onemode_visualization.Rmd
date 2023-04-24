@@ -11,7 +11,7 @@ library(ggraph)
 ```
 
 ```{r, echo = F}
-edges_1mode <- read.csv('data/edgelist_projected.csv')
+edges_1mode <- read.csv('data/edgelist_onemode_projected.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
 net1 <- network(x = edges_1mode, 

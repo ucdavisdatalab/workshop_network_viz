@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>5 One-mode visualization | Network Visualization</title>
   <meta name="description" content="5 One-mode visualization | Network Visualization" />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="5 One-mode visualization | Network Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-29" />
+<meta name="date" content="2023-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -305,13 +305,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>You can also set a <strong>manual layout</strong>. Because layouts are just x and y coordinates of points defined by a certain algorithm, you can extract those coordinates using the <code>create_layout()</code> function from <code>ggraph</code>, and fix and/or manipulate those coordinates, if need be. We will deal with this more shortly.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="one-mode-visualization-1.html#cb48-1" aria-hidden="true" tabindex="-1"></a>fixed_coord <span class="ot">&lt;-</span> <span class="fu">create_layout</span>(net1, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>)</span>
 <span id="cb48-2"><a href="one-mode-visualization-1.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fixed_coord[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">5</span>)])</span></code></pre></div>
-<pre><code>##            x         y                                                name
-## 1 -2.7682024 -8.867560 Agricultural Coalitions: Landowners membership fees
-## 2  0.3442963  1.520134                                          Anchor QEA
-## 3 -7.7717075  6.473676                                Audubon Canyon Ranch
-## 4  1.0091851  6.683354                              Bachand and Associates
-## 5 -9.0085372  1.508391                                                 BTS
-## 6 -8.7210464  3.182984                                             CalFish</code></pre>
+<pre><code>##           x         y                                                name
+## 1  4.229713 -8.803918 Agricultural Coalitions: Landowners membership fees
+## 2 -1.139651  2.183834                                          Anchor QEA
+## 3  7.106485 -7.651376                                Audubon Canyon Ranch
+## 4 -5.309567  1.147760                              Bachand and Associates
+## 5 -4.697939 -7.743573                                                 BTS
+## 6 -6.463409 -6.363404                                             CalFish</code></pre>
 <p>For our one-mode networks, we are going to use the ‘fr’ layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery.</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="one-mode-visualization-1.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
 <span id="cb50-2"><a href="one-mode-visualization-1.html#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>() <span class="sc">+</span></span>
@@ -604,7 +604,7 @@ length(unique(ec$cluster$height))
 <span id="cb96-2"><a href="one-mode-visualization-1.html#cb96-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">&quot;Community&quot;</span>, <span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb96-3"><a href="one-mode-visualization-1.html#cb96-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(<span class="at">color =</span> <span class="st">&quot;legend&quot;</span>, <span class="at">size =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
 <span id="cb96-4"><a href="one-mode-visualization-1.html#cb96-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<pre><code>## Warning: ggrepel: 3 unlabeled data points (too many overlaps). Consider
+<pre><code>## Warning: ggrepel: 2 unlabeled data points (too many overlaps). Consider
 ## increasing max.overlaps</code></pre>
 <p><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>To conclude this section we can revisit the second guiding question: <em>Do we see any particular research communities emerge across these collaborations?</em> We’ve used the <code>blockmodel</code> function, paired with more conditional assignments of network attributes to identify some possible research clusters. Among our five ‘blocks’ we see high density among three of them: blocks 2, 3, and 4. Block 2 includes three of the most central nodes – CDFW, USBR, USFWS – suggesting that these three wild-life and land use agencies at the state and federal levels repeatedly collaborate together in the Delta. Block 3 includes a wider variety of state agencies that are closely clustered. And block 4 has only three federal agencies, USDA, EPA, and NOAA, who much like block 2 seem to be consistently collaborating on science projects. Block 5 includes only USGS, the network’s most central node, pointing to the challenge of clustering highly central nodes given that they span so many connections. The remainder of the organizations are grouped into Block 1, a low-density mass that have no clear trend towards clustering.</p>
@@ -748,8 +748,9 @@ This is a start, but the visualization challenge here is that it is hard to real
 <span id="cb118-6"><a href="one-mode-visualization-1.html#cb118-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>,<span class="dv">7</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">6</span>))</span>
 <span id="cb118-7"><a href="one-mode-visualization-1.html#cb118-7" aria-hidden="true" tabindex="-1"></a><span class="fu">netplot_function</span>(coord_t4) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Collaborative network: 2010-2024&quot;</span>) <span class="sc">+</span></span>
 <span id="cb118-8"><a href="one-mode-visualization-1.html#cb118-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>,<span class="dv">7</span>)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">6</span>))</span></code></pre></div>
-<p><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-1.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-2.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-3.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-4.png" width="50%" /></p>
-<p><em>How have the Delta’s research collaborations changed over time?</em><br />
+<p><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-1.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-2.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-3.png" width="50%" /><img src="05_onemode_visualization_files/figure-html/unnamed-chunk-54-4.png" width="50%" />
+^^ DO I WANT TO TRY TO MAGICK THIS —&gt; MAKE IT INTO A JPEG
+<em>How have the Delta’s research collaborations changed over time?</em><br />
 [DRAFTING]
 * Can see who has been most active over different years.<br />
 * See a widening of periphery – more actors, less collaborative</p>

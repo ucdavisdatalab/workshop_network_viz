@@ -16,7 +16,7 @@ library(network)
 
 ```{r, echo = F}
 edges_2mode <- read.csv('data/edgelist_twomode.csv')
-edges_1mode <- read.csv('data/edgelist_projected.csv')
+edges_1mode <- read.csv('data/edgelist_onemode_projected.csv')
 nodes_2mode <- read.csv('data/nodelist_twomode.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 ```

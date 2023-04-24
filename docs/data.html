@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Data | Network Visualization</title>
   <meta name="description" content="2 Data | Network Visualization" />
-  <meta name="generator" content="bookdown 0.32 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Data | Network Visualization" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Liza Wood" />
 
 
-<meta name="date" content="2023-03-29" />
+<meta name="date" content="2023-04-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -262,7 +262,7 @@ transparency for science funding opportunities and decisions.”</div>
 <h2><span class="header-section-number">2.2</span> Data descriptions<a href="data.html#data-descriptions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Before getting started with visualizations, we want to take a look at the data we have available. Typical questions you should be able to answer based on your network data are as follows: What types of nodes do we have and how are they related? Are there any node and/or edge attributes are available? Are the network data one or two mode? Directed or undirected? Let’s take a look at what we have.</p>
 <p><strong>Two-mode edge list:</strong> The DSC data was originally compiled as two-mode network data, describing how organizations/researchers are connected to research projects. In these data, our first mode, <code>project_id</code>, is the id numbers representing different Delta science research projects. And our second mode, <code>org_id</code>, is the organization(s) (agencies, universities, etc) that are working on that project. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_twomode.csv&#39;</span>)</span>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_twomode.csv&#39;</span>)</span>
 <span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges_2mode)</span></code></pre></div>
 <pre><code>##   org_id project_id contribution leadership
 ## 1  49590      50122         TRUE      FALSE
@@ -272,18 +272,25 @@ transparency for science funding opportunities and decisions.”</div>
 ## 5  49598      50091         TRUE      FALSE
 ## 6  49600      50170         TRUE      FALSE</code></pre>
 <p><strong>Two-mode node list</strong>: We have a two-mode list of all the nodes (organizations and projects). We have more node attributes for project nodes than we do for organization nodes, so many of the attributes for organizations are empty. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>nodes_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_twomode.csv&#39;</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a>nodes_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_twomode.csv&#39;</span>)</span>
 <span id="cb3-2"><a href="data.html#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes_2mode[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>,<span class="dv">16</span>,<span class="dv">31</span>,<span class="dv">39</span>)])</span></code></pre></div>
-<pre><code>##      id    funds startdate enddate sci_Floodplain mgmt_Waterquality mode
-## 1 50122       $0      2008    2019          FALSE              TRUE    0
-## 2 49780       $0      2020    2021          FALSE             FALSE    0
-## 3 49865 $445,921      2019    2022          FALSE             FALSE    0
-## 4 49860 $931,104      2019    2022          FALSE             FALSE    0
-## 5 50091       $0        NA      NA          FALSE             FALSE    0
-## 6 50170       $0        NA      NA          FALSE             FALSE    0</code></pre>
+<pre><code>##      id    funds                                   funding_org startdate
+## 1 50122       $0                                          &lt;NA&gt;      2008
+## 2 49780       $0 California Department of Water Resource [DWR]      2020
+## 3 49865 $445,921             U.S. Bureau of Reclamation [USBR]      2019
+## 4 49860 $931,104                     Delta Stewardship Council      2019
+## 5 50091       $0                                          &lt;NA&gt;        NA
+## 6 50170       $0                                          &lt;NA&gt;        NA
+##   sci_Channelizedhabitats sci_Amphibiansandreptiles mgmt_Governance
+## 1                   FALSE                     FALSE           FALSE
+## 2                   FALSE                     FALSE           FALSE
+## 3                   FALSE                     FALSE           FALSE
+## 4                   FALSE                     FALSE           FALSE
+## 5                   FALSE                     FALSE           FALSE
+## 6                   FALSE                     FALSE           FALSE</code></pre>
 <p>Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be ‘long’ with repeated project observations. With node lists, we want to only have unique observations. If your data are ‘long’ (with repeating observations), widen them out as we did with the scientific and management themes.</p>
 <p><strong>One-mode edge list:</strong> We projected our two-mode network to a one-mode network to take a deeper look at research collaborations. Projection of two-mode data into one-mode is a common practice, though it has its limitations (Jasny 2012). By converting two-mode into one-mode data, we can take a look at what organizations are working together on projects. We’ve also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together. See below for a hint on how to project one-mode data from two-mode data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a>edges_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_projected.csv&#39;</span>) </span>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a>edges_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_onemode_projected.csv&#39;</span>) </span>
 <span id="cb5-2"><a href="data.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges_1mode)</span></code></pre></div>
 <pre><code>##   from_org_id to_org_id Y1995_2009 Y2010_2024 before_1980 Y1980_1994
 ## 1       49590     49709       TRUE      FALSE       FALSE      FALSE
@@ -327,7 +334,7 @@ transparency for science funding opportunities and decisions.”</div>
 </details>
 <p><br></p>
 <p><strong>One-mode node list</strong>: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>nodes_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_onemode.csv&#39;</span>)</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data.html#cb8-1" aria-hidden="true" tabindex="-1"></a>nodes_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_onemode.csv&#39;</span>)</span>
 <span id="cb8-2"><a href="data.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes_1mode[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code></pre></div>
 <pre><code>##      id                                                name
 ## 1 49590 Agricultural Coalitions: Landowners membership fees
