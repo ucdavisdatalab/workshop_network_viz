@@ -41,7 +41,10 @@ longitudinal-networks
 inducing-subgraphs-by-edge-attribute
 fixing-coordinates
 two-mode-visualization-1
-normalized-degree-for-both-modes-see-ebba
+guiding-questions-2
+representing-two-mode-networks
+the-one-mode-approach
+normalized-degree-in-two-mode-networks
 leaders-versus-contributors
 induce-subgraphs-by-edge
 climate-projects

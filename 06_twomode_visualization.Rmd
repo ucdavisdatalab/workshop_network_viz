@@ -113,7 +113,7 @@ net2 %v% 'degree_norm' <- sna::degree(net2, rescale = T)
 ```
 
 ```{r}
-install.packages('bipartite')
+#install.packages('bipartite')
 library(bipartite)
 ?bipartite::ND
 ```
