@@ -8,28 +8,27 @@ knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 
 This workshop uses publicly available data from the Delta Stewardship Council's (DSC) [Delta Science Tracker](https://sciencetracker.deltacouncil.ca.gov/). This database is a library of Sacramento and San Joaquin Delta-related research over the last 50 years. As the DSC's website explains:  
 
-| "The Delta Science Tracker is a tool to improve coordination and collaboration of science 
-| activities in a way that is valuable to scientists, decision-makers, and managers in the
-| Delta. The Delta Science Tracker allows users to explore and visualize recent research and 
-| monitoring efforts through the lenses of science activities, organizations, and people. It 
-| is intended to promote communication, create opportunities for collaboration, and enhance 
-| transparency for science funding opportunities and decisions."  
+> "The Delta Science Tracker is a tool to improve coordination and collaboration of science activities in a way that is valuable to scientists, decision-makers, and managers in the Delta. The Delta Science Tracker allows users to explore and visualize recent research and monitoring efforts through the lenses of science activities, organizations, and people. It is intended to promote communication, create opportunities for collaboration, and enhance transparency for science funding opportunities and decisions."  
 
 
-The data we're using was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the 'collaborations by' filter set to organizations. Additional data was downloaded through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R).
+The data we're using was downloaded from the DSC's [visualizations page](https://sciencetracker.deltacouncil.ca.gov/visualizations), with the 'collaborations by' filter set to organizations. Additional data were obtained through scraping their webpage, which we did with permission from the DSC. Code for scraping their webpage can be found [here](https://github.com/ucdavisdatalab/workshop_network_viz/blob/main/scraping_data.R).
 
-```{r echo=FALSE, out.width='75%', ig.align='center'}
+```{r echo=FALSE, out.width='75%', fig.align='center', fig.cap='Miles Hermann'}
 knitr::include_graphics("img/milesherman.jpeg")
 ```
 
 ## Data descriptions  
 
-Before getting started with visualizations, we want to take a look at the data we have available. Typical questions you should be able to answer based on your network data are as follows: What types of nodes do we have and how are they related? Are there any node and/or edge attributes are available? Are the network data one or two mode? Directed or undirected? Let's take a look at what we have.  
+Before getting started with visualizations, we want to take a look at the data we have available. Typical questions you should be able to answer before getting started are as follows: What types of nodes do we have and how are they related? What node and/or edge attributes are available? Are the network data one or two mode? Directed or undirected? Let's take a look at what we have.  
 
-**Two-mode edge list:** The DSC data was originally compiled as two-mode network data, describing how organizations/researchers are connected to research projects. In these data, our first mode, `project_id`, is the id numbers representing different Delta science research projects. And our second mode, `org_id`, is the organization(s) (agencies, universities, etc) that are working on that project. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.  
+**Two-mode edge list:** The DSC data was originally compiled as two-mode network data, describing how organizations/researchers are connected to research projects. In these data, our first mode, `org_id`, is the organization(s) (agencies, universities, etc) that are working on projects in the Delta. And our second mode, `project_id`, are the Delta science research projects themselves. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of involvement an organization has in the project: contributor or leader.  
 
 ```{r}
 edges_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_twomode.csv')
+dim(edges_2mode)
+```
+
+```{r}
 head(edges_2mode)
 ```
 
@@ -38,21 +37,26 @@ length(unique(edges_2mode$org_id))
 length(unique(edges_2mode$project_id))
 ```
 
-**Two-mode node list**: We have a two-mode list of all the nodes (organizations and projects). We have more node attributes for project nodes than we do for organization nodes, so many of the attributes for organizations are empty. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:  
+**Node list for two-mode network**: We also have a list of all the nodes (organizations and projects), each of which has different attributes. We have more node attributes for project nodes than we do for organization nodes, so many of the attributes for organizations are empty. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:  
 
 ```{r}
 nodes_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_twomode.csv')
-head(nodes_2mode[,c(1,4:6,16,31,39)])
+head(nodes_2mode[,c(1,4,6,16,31,39)])
 ```
 
-Note that the scientific and management themes are formatted as Boolean values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes.  
+Note that the scientific and management themes are formatted as logical values for each theme. This is because projects can have more than one theme, and so listing them out would cause our data to be 'long' with repeated project observations. With node lists, we want to only have unique observations. If your data are 'long' (with repeating observations), widen them out as we did with the scientific and management themes.  
 
-**One-mode edge list:** We projected our two-mode network to a one-mode network to take a deeper look at research collaborations. Projection of two-mode data into one-mode is a common practice, though it has its limitations (Jasny 2012). By converting two-mode into one-mode data, we can take a look at what organizations are working together on projects. We've also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together. See below for a hint on how to project one-mode data from two-mode data.  
+**One-mode edge list:** We projected our two-mode network to a one-mode network to take a deeper look at research collaborations. Projection of two-mode data into one-mode is a common practice, though it has its limitations (Jasny 2012). By converting two-mode into one-mode data, we can take a look at what organizations are working together on projects. Looking at the dimensions of our data, we have 475 collaborative ties in the network.  We've also added in an edge attribute to our collaboration tie based on the years that different actors collaborated together. Reveal below for more on how to project one-mode data from two-mode data.  
 
 ```{r}
 edges_1mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_onemode_projected.csv') 
+dim(edges_1mode)
+```
+
+```{r}
 head(edges_1mode)
 ```
+
 <details>
 <summary>**Reveal:** How to project one-mode networks from two-mode edge list</summary>
 
@@ -89,7 +93,7 @@ el_proj <- igraph::get.data.frame(g)
 </details>
 <br>
 
-**One-mode node list**: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page. 
+**Node list for one-mode network**: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page. 
 
 ```{r}
 nodes_1mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_onemode.csv')
@@ -99,19 +103,17 @@ head(nodes_1mode[1:2])
 
 ## Guiding questions  
 
-As with any visualization, we need to have an idea of [what stories we want to tell](https://ucdavisdatalab.github.io/workshop_data_viz_principles/before-you-viz-make-a-plan.html) / what questions we want to answer. With networks, there are limits to how much you can 'explore' through visualization alone, and so throughout these plotting exercises having guiding questions can keep you focused on what is important as we navigate the wide array of visualization options.  
+As with any visualization, we need to have an idea of [what stories we want to tell](https://ucdavisdatalab.github.io/workshop_data_viz_principles/before-you-viz-make-a-plan.html) / what questions we want to answer. With networks, there are limits to how much you can 'explore' through visualization alone, and so throughout these plotting exercises having guiding questions can keep us focused on what is important as we navigate the wide array of visualization options.  
 
 ### One-mode visualization:  
 
 1. What is the structure of the collaborative research network in the Delta?
-2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have the Delta's research collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+2. How have the Delta's research collaborations changed over time? 
 
 ### Two-mode visualization:  
 
 1. Across the Delta science projects, what organizations have been most active?  
-2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
-3. Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? 
 
 
 

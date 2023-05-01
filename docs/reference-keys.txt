@@ -1,5 +1,9 @@
+fig:unnamed-chunk-2
+fig:unnamed-chunk-3
+fig:unnamed-chunk-4
 tab:unnamed-chunk-5
 tab:unnamed-chunk-6
+fig:unnamed-chunk-1
 description
 learning-goals
 prerequisites
@@ -33,10 +37,6 @@ aesthetics
 node-labels
 network-plotting-function
 removing-isolates
-community-detection
-algorithms-for-community-detection
-equivalence-clusters-block-models
-plotting-block-membership
 longitudinal-networks
 inducing-subgraphs-by-edge-attribute
 fixing-coordinates
@@ -45,10 +45,5 @@ guiding-questions-2
 representing-two-mode-networks
 the-one-mode-approach
 normalized-degree-in-two-mode-networks
-leaders-versus-contributors
-induce-subgraphs-by-edge
 climate-projects
 additional-resources
-igraph-visualiation
-ggnet2
-interactive

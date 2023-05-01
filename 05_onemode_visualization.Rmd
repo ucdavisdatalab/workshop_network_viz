@@ -53,14 +53,13 @@ detach("package:igraph", unload = TRUE)
 To get started with visualization, let's remind ourselves of our visualization goals and guiding questions. With our one-mode network, we want to know: 
 
 1. What is the structure of the collaborative research network in the Delta?
-2. Do we see any particular research communities emerge across these collaborations? (community detection + representing node attributes by color)
-3. How have the Delta's research collaborations changed over time? (subgraphs based on edge attribute + multiple plots with fixed coordinates)
+2. How have the Delta's research collaborations changed over time? 
 
 ## Getting started with `ggraph`
 
 To introduce the basics of the `ggraph` package, we're going to focus on our first question: _What is the structure of the collaborative research network in the Delta?_ 
 
-As described in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1.) (network) data, 2.) geometries, in this case edges and nodes, and 3.) aesthetic mappings. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
+As described in the previous section, `ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1.) (network) data, 2.) aesthetic mappings, and 3.) geometries, in this case edges and nodes. As with any ggplot we can add a theme that suits the look of the figure, and 'void' themes are often suited for networks.
 
 ```{r, message = T, fig.align= 'center'}
 ggraph(net1) +
@@ -69,7 +68,7 @@ ggraph(net1) +
     theme_void()
 ```
 
-These are some defaults at play here:  
+Note that there are some defaults at play here:  
 
 * The layout argument is set to = 'auto', which is the 'stress' layout  
 * The default aesthetic mapping for geom_node_point: x, y, which don't need specified  
@@ -77,9 +76,11 @@ These are some defaults at play here:
 
 ### Layouts
 
-First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. Layouts are a _choice_ based on how you would like to present the network. Because networks are depicting actors and relationships in an two-dimensional space (x, y), there is no 'right' way to plot actors in space (unless, of course, you have actual spatial data associated with your nodes). In which case, you could use a geospatial network mapping (e.g. [flight route maps](https://news.delta.com/route-map-us-canada)). For scenarios without geospatial coordinates, many network theorists have developed layout algorithms which define rules for calculating the x and y coordinates of the nodes. Many layout algorithms aim to represent networks so that strongly connected nodes are plotted in close proximity to one another, representing a 'core' and a 'periphery'.  
+First, let's talk about layouts. Networks are typically laid out based on the algorithm you (or the package default) chooses. Layouts are a _choice_ based on how you would like to present the network. Because networks are depicting actors and relationships in an two-dimensional space (x, y), there is no 'right' way to plot actors in space (unless, of course, you have actual spatial data associated with your nodes, in which case you could use a geospatial network mapping (e.g. [flight route maps](https://news.delta.com/route-map-us-canada))). 
 
-There is an overview of `ggraph`'s different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph vignette](https://cran.r-project.org/web/packages/ggraph/vignettes/Layouts.html) and [documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. The layout is selected with the 'layout' argument within the ggraph function. Below we present our network with a few different layouts.  
+For scenarios without geospatial coordinates, network theorists have developed layout algorithms which define rules for calculating the x and y coordinates of the nodes. Many layout algorithms aim to represent networks so that strongly connected nodes are plotted in close proximity to one another, representing a 'core' and a 'periphery'.  
+
+There is an overview of `ggraph`'s different layouts presented in this [blog post ](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/), and descriptions of some of them in the [ggraph vignette](https://cran.r-project.org/web/packages/ggraph/vignettes/Layouts.html) and [documentation](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf), under the `layout_tbl_graph_...` functions. The layout is selected with the 'layout' argument within the `ggraph` function. Below we present our network with a few different layouts.  
 
 ```{r, out.width= c("50%", "50%"), fig.show="hold", echo = F}
 ggraph(net1, layout = 'stress', bbox = 5) +
@@ -113,7 +114,7 @@ ggraph(net1, layout = 'circle') +
 
 Note that there is a whole world of plotting networks using [different conceptualizations of nodes](https://cran.r-project.org/web/packages/ggraph/vignettes/Nodes.html) and [edges](https://cran.r-project.org/web/packages/ggraph/vignettes/Edges.html). These conceptualizations of nodes and edges may be dependent on certain layout algorithms. For example, if working with a 'tree' based layout, which creates more of a hierarchical structure like a dendrogram, edges as lines may not be suited. Instead, you can specify different edges (e.g. diagonals).  
 
-```{r, echo = T,  out.width = "50%", fig.align='center'}
+```{r, echo = T,  out.width = "50%", fig.align='center', echo = F}
 ggraph(net1, layout = 'tree') +
     geom_edge_diagonal() +
     theme_void() +
@@ -144,10 +145,10 @@ ggraph(net1, layout = 'fr') +
 
 Now that we've chosen a layout, let's start adding some aesthetic features. This process will look very much like aesthetic mapping in `ggplot2`: we can assign aesthetics like color, size, shape, etc. to both our edge and node geometries. 
 
-**Size by degree**: One common approach for network visualization is to size nodes by their degree centrality. While more central nodes are already places at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point. To size by degree, we will want to create a degree variable as a node attribute using the `degree` function, and assign that attribute to our network data.  
+**Size by degree**: One common approach for network visualization is to size nodes by their degree centrality. While more central nodes are already placed at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point. To size by degree, we will want to create a degree variable as a node attribute using the `degree` function, and assign that attribute to our network data.  
 
 ```{r}
-net1 %v% 'degree' <- degree(net1)
+net1 %v% 'degree' <- sna::degree(net1)
 ```
 
 Hint: if you get `Error in degree(net1) : Not a graph object`, double check that you have detached the `igraph` package!  
@@ -209,7 +210,7 @@ ggraph(net1, layout = 'fr') +
   labs(title = "Delta Science Collaborative Research Network") +
   theme(legend.position = "none")
 ```
-Notice that with the 'fr' layout (and any other layout algorithm), the coordinates change a bit every time. This is because each time we create a visualization the algorithm is re-run, and there is variation in the exact calculation. You can set your seed (every time before you plot) to keep it consistent)
+Notice that with the 'fr' layout (and any other layout algorithm), the coordinates change a bit every time. This is because each time we create a visualization the algorithm is re-run, and there is variation in the exact calculation. You can set your seed (every time before you plot) to keep it consistent.
 
 ### Node labels 
 
@@ -237,7 +238,7 @@ ggraph(net1, layout = 'fr') +
 Okay, a bit overwhelming. Instead, let's be selective based on degree. Let's say we want to take the top 5-degree nodes and label them.
 
 ```{r}
-# Use extract the network's degree values based on the order of degrees
+# Extract the network's degree values based on the order of degrees
 degs <- (net1 %v% 'degree')[order(net1 %v% 'degree')]
 # Then identify the top 5 unique degree values
 topdegs <- unique(rev(degs))[1:5]
@@ -332,10 +333,10 @@ Now we can see our network without isolates, and quickly use our new `netplot_fu
 ```{r, fig.align= 'center'}
 netplot_function(net1_noiso)
 ```
-
+<!----
 ## Community detection
 
-Now, let's combine some network statistics for visualization to take a deeper look at the network structure and address our second guiding question: _Do we see any particular research communities emerge across these collaborations?_. Often researchers are curious about whether or not there is some pattern within the network. Though the majority of the nodes are connected in one relatively dense component, are some organizations linking with others on a more regular basis? Is there a grouping trend in our network that we can't see from the network figure on its own? To answer this, we might want to use some community detection approaches.
+Now, let's combine some network statistics with visualization to take a deeper look at the network structure and address our second guiding question: _Do we see any particular research communities emerge across these collaborations?_ Often researchers are curious about whether or not there is some pattern within the network. Though the majority of the nodes are connected in one relatively dense component, are some organizations linking with others on a more regular basis? Is there a grouping trend in our network that we can't see from the network figure on its own? To answer this, we might want to use some community detection approaches.
 
 ### Algorithms for community detection      
 
@@ -347,7 +348,7 @@ Broadly, community detection is an approach that employs a wide range of distanc
 ?igraph::cluster_fast_greedy()
 ```
 
-In the `sna` package there is the equivalence cluster (`equiv.cluster`) function, which identifies distances based on structural equivalence. The resource above, Hoffman et al. 2018, define it as follows: 'Structural equivalence is an important concept from the blockmodeling literature. It is defined where two nodes play the exact same role in a network in terms of their edges, and would be considered interchangeable (Doreian et al., 2005).'  
+In the `sna` package there is the equivalence cluster (`equiv.cluster`) function, which identifies distances based on structural equivalence. The resource above, Hoffman et al. 2018, define it as follows: 'Structural equivalence is an important concept from the blockmodeling literature. It is defined where two nodes play the exact same role in a network in terms of their edges, and would be considered interchangeable.'  
 
 ```{r, eval = F}
 ?sna::equiv.clust()
@@ -361,12 +362,6 @@ Equivalence clustering is a clustering method which groups nodes based on distan
 ec <- equiv.clust(net1_noiso)
 plot(ec)
 ```
-<!---
-We can look at the different 'heights' of the nodes within the dendrogram, and see how many different levels there are.  
-```{r}
-length(unique(ec$cluster$height))
-```
----> 
 
 Now that we have these clusters, we can turn to another method, blockmodelling, which will evaluate the density of node groupings (or 'blocks') estimated by the equivalence clusters. We can specify how may blocks we want (`k`), or specify a height at which to split the classes (`h`).  We will pick a rather arbitrary number for blocks, k = 5. 
 
@@ -424,7 +419,6 @@ data.frame('block' =
   arrange(block)
 ```
 
-<!--- additional resource: (see [Slide 92](https://pauloserodio.com/eui2019/day2.pdf)).--->
 
 ```{r, warning = T, fig.align= 'center'}
 iso_net <- ggraph(net1_noiso, layout = 'fr') +
@@ -451,14 +445,17 @@ iso_net +
 ```
 
 To conclude this section we can revisit the second guiding question: _Do we see any particular research communities emerge across these collaborations?_ We've used the `blockmodel` function, paired with more conditional assignments of network attributes to identify some possible research clusters. Among our five 'blocks' we see high density among three of them: blocks 2, 3, and 4. Block 2 includes three of the most central nodes -- CDFW, USBR, USFWS -- suggesting that these three wild-life and land use agencies at the state and federal levels repeatedly collaborate together in the Delta. Block 3 includes a wider variety of state agencies that are closely clustered. And block 4 has only three federal agencies, USDA, EPA, and NOAA, who much like block 2 seem to be consistently collaborating on science projects. Block 5 includes only USGS, the network's most central node, pointing to the challenge of clustering highly central nodes given that they span so many connections. The remainder of the organizations are grouped into Block 1, a low-density mass that have no clear trend towards clustering.  
+---->
 
 ## Longitudinal networks  
 
-Now that we've worked with nodes attributes, lets turn to think more deeply about edges with the third guiding question: _How have the Delta's research collaborations changed over time?_. So far we've been looking at all of the research collaborations in the DST database, which range from 1950 to more or less present day. But remember that our data have edge attributes based on when the collaborative project occurred, binned into 4 time periods: Before 1980, 1980-1994, 1995-2009, and 2010-2024 (including ongoing projects). See the edge attributes summarized at the bottom of the network object. To visualize how our networks change over time we are going to be 'inducing subgraphs', which is a network phrase for taking slices of our network. Networks can be induced based on certain nodes, which we will experiment with when we look at two mode networks. But for this question we will be making subgraphs based on edge attributes. 
+Lets now turn to think more deeply about edges with the second guiding question: _How have the Delta's research collaborations changed over time?_ So far we've been looking at all of the research collaborations in the DST database, which range from 1950 to more or less present day. But remember that our data have edge attributes based on when the collaborative project occurred, binned into 4 time periods: Before 1980, 1980-1994, 1995-2009, and 2010-2024 (including ongoing projects). 
 
 ```{r}
 net1
 ```
+
+To visualize how our networks change over time we are going to be 'inducing subgraphs', which is a network phrase for taking slices of our network. Networks can be induced based on certain nodes, which we will experiment with when we look at two mode networks. But for this question we will be making subgraphs based on edge attributes. 
 
 ### Inducing subgraphs by edge attribute  
 
@@ -601,8 +598,11 @@ netplot_function(coord_t3) + labs(title = "Collaborative network: 1995-2009") +
 netplot_function(coord_t4) + labs(title = "Collaborative network: 2010-2024") +
   xlim(c(-9,7)) + ylim(c(-10,6))
 ```
-^^ DO I WANT TO TRY TO MAGICK THIS ---> MAKE IT INTO A JPEG
+
+<!---- _How have the Delta's research collaborations changed over time?_
+^^ DO I WANT TO TRY TO MAGICK THIS  MAKE IT INTO A JPEG
 _How have the Delta's research collaborations changed over time?_  
 [DRAFTING]
 * Can see who has been most active over different years.  
 * See a widening of periphery -- more actors, less collaborative
+---->

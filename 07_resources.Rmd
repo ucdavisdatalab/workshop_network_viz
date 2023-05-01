@@ -1,17 +1,14 @@
 # Additional resources
 
-## igraph visualiation
+* Network visualization online tutorials
+  * Kateto
+* Interactive plotting packages
+  * D3
+  * ggplotly wrapper
 
-## ggnet2
-
-## interactive
-
-Interactive plots DRAFTING
 ```{r, eval = F}
 p1 <- subplot_viz_fixed(fixed_coord, net1) + 
   labs(title = "Collaborative network: 1950-2022") +
   theme(text= element_text(size=10, family="Times")) 
 plotly::ggplotly(p1)
 ```
-
-D3

@@ -26,7 +26,7 @@ For this workshop we will use the [`ggraph` package](https://cran.r-project.org/
 knitr::include_graphics("img/winds2020.jpeg")
 ```
 
-`ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. aesthetic mappings, and 3. geometries, in this case edges and nodes. Where this differs from more traditional ggplotting approaches using tabular data (e.g. data frames), network objects have built-in mapping coordinates for nodes and its. Specifically, there are x and y variables for the node data. We can combine the `ggraph()` function with a geometry specific to networks, `geom_node_point()`, to see this default setting.
+`ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. aesthetic mappings, and 3. geometries, in this case edges and nodes. We can combine the `ggraph()` function with a geometry specific to networks, `geom_node_point()`, to see the nodes. Where this differs from more traditional ggplotting approaches using tabular data (e.g. data frames), network objects have built-in mapping coordinates, so we don't need to specify a mapping.
 
 ```{r, message = T, fig.align='center'}
 library(ggraph)
@@ -34,7 +34,7 @@ ggraph(net1) +
     geom_node_point()
 ```
 
-Here we see that the node point geometry uses a default layout based on the 'stress' algorithm (more in the following section), plotting the node points as we see above. To connect these point, we can use a 'edge link' geometry, `geom_edge_link()`, which uses the network object's built in x, y, xend, and yend variables for the edge data.
+Here we see that the node point geometry uses a default layout based on the 'stress' algorithm (more in the following section), plotting the node points as we see above. To connect these points, we can use a 'edge link' geometry, `geom_edge_link()`, which uses the network object's built in x, y, xend, and yend variables for the edge data. 
 
 ```{r, message = T, fig.align='center'}
 ggraph(net1) +
@@ -61,8 +61,9 @@ plot(g1)
 
 The [`ggnet2` function](https://briatte.github.io/ggnet/) is also dynamic, but despite being housed as part of the `GGally` extension of the ggplot2 series it seems to function more like a base R plot. For this function, `igraph` and `network` objects look the same. 
 
-```{r, out.width='49%', fig.align='center'}
+```{r, out.width=c('49%', '49%'), fig.show="hold"}
 GGally::ggnet2(net1)
+GGally::ggnet2(g1)
 ```
 
 ### `ggnetwork::ggnetwork()`
@@ -70,10 +71,13 @@ GGally::ggnet2(net1)
 Very similar to `ggraph` and also an extension of the ggplot family is the [`ggnetwork` function](https://cran.r-project.org/web/packages/ggnetwork/vignettes/ggnetwork.html). This function integrates directly with `ggplot2` and specifies the default coordinates of `ggraph`, but otherwise operates quite similarly. For this function, `igraph` and `network` objects look the same.  
 
 
-```{r, out.width='50%', fig.align='center'}
+```{r, out.width=c('49%', '49%'), fig.show="hold"}
 library(ggplot2)
 library(ggnetwork)
 ggplot(net1, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_nodes() +
+  geom_edges()
+ggplot(g1, aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_nodes() +
   geom_edges()
 ```

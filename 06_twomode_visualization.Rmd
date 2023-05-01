@@ -5,7 +5,7 @@ knitr::opts_chunk$set(warning = F, message = F)
 ```
 
 ```{r, warning = F, message = F, echo = F}
-library(igraph)
+#library(igraph)
 library(network)
 library(ggraph)
 library(sna)
@@ -31,8 +31,7 @@ net2 <- network(x = edges_2mode,
 Next we're going to shift to the two-mode network. That is, a network consisting of two distinctly different types of nodes, where ties are possible between (but not within) each node type. For our data, our two modes are research organizations and projects, where researchers are linked to projects based on their involvement, but in this case there is no link between projects or between researchers. With our two-mode network, we want to know: 
 
 1. Across the Delta science projects, which have the largest number of collaborators?    
-2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? (subgraphs based on edge attribute)    
-3. Are most-active members typically leaders or contributors? (make subgraphs based on edge attribute + make multiple plots with fixed coordinates)
+2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding?   
 
 We will be using approaches that are _similar_ to one-mode networks, but there are some features that we will want to rethink given that there are differences given what we can calculate and what we want to communicate.  
 
@@ -68,7 +67,7 @@ Analytical approaches for two-mode networks are slightly different from one-mode
 
 With one-mode networks, we used `sna::degree()` function to calculate the number of connections per node, and we can apply this same function to our two-mode network, `net2`, then run through the functions we've made so far to create a plot: `label_top_degree()` and `netplot_function()`. 
 ```{r}
-net2 %v% 'degree' <- degree(net2)
+net2 %v% 'degree' <- sna::degree(net2)
 net2 %v% 'labels' <- label_top_degree(net2, 5)
 netplot_function(net2)
 ```
@@ -89,7 +88,7 @@ ggraph(net2, layout = 'fr') +
                       shape = factor(mode),
                       color = factor(mode))) +
   theme_void() +
-  scale_color_viridis_d() +
+  scale_color_manual(values = clrs[c(7,11)]) +
   geom_node_text(aes(label = labels),
                    size = 3, 
                    color="black") +
@@ -132,7 +131,7 @@ length(degree_norm_bip$lower) == length(unique(edges_2mode$org_id))
 length(degree_norm_bip$higher) == length(unique(edges_2mode$project_id))
 ```
 
-Now, we want to sign this bipartite degree in accordance with that order. BUT, note that this function orders degree based on numeric order of id, so we want to make sure this matches with the order of nodes in our network.  
+Now, we want to assign this bipartite degree in accordance with that order. BUT, note that this function orders degree based on numeric order of id, so we want to make sure this matches with the order of nodes in our network.  
 ```{r}
 nd_output <- c(degree_norm_bip$lower, degree_norm_bip$higher)
 table(net2 %v% 'vertex.names' == as.numeric(names(nd_output)))
@@ -146,7 +145,7 @@ nd_output_sorted <- nd_output_df[match((net2 %v% 'vertex.names'),
                                         nd_output_df $id),]
 ```
 
-Looks good, so now let's assign this new degree measure to our network. [NOTE: IS THIS DOING WHAT I EXPECT]
+Looks good, so now let's assign this new degree measure to our network. [NOTE: IS THIS DOING WHAT I EXPECT?]
 ```{r}
 net2 %v% 'degree_norm_bip' <- nd_output
 
@@ -158,17 +157,18 @@ summary((net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1])
 
 Now, let's assign labels but let's pull out the labels for each mode specifically: 
 ```{r}
-topdeg_mode0 <- data.frame("deg" = 
-                             (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0]) %>% 
-  top_n(3)
-topdeg_mode1 <- data.frame("deg" = 
-                             (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1]) %>% 
-  top_n(3)
+degs_mode0 <- (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 0]
+degs_mode0 <- degs_mode0[order(degs_mode0)]
+topdegs_mode0 <- unique(rev(degs_mode0))[1:2]
+
+degs_mode1 <- (net2 %v% 'degree_norm_bip')[net2 %v% 'mode' == 1]
+degs_mode1 <- degs_mode1[order(degs_mode1)]
+topdegs_mode1 <- unique(rev(degs_mode1))[1:2]
 
 
-net2 %v% 'labels_bip' <- ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode0$deg & 
+net2 %v% 'labels_bip' <- ifelse((net2 %v% 'degree_norm_bip') %in% topdegs_mode0 & 
                                   net2 %v% 'mode' == 0, net2 %v% 'name', 
-                         ifelse((net2 %v% 'degree_norm_bip') %in% topdeg_mode1$deg & 
+                         ifelse((net2 %v% 'degree_norm_bip') %in% topdegs_mode1 & 
                                   net2 %v% 'mode' == 1, net2 %v% 'name', ''))
 ```
 Now we can size by our new node attribute, 'degree_norm_bip' and label the nodes by 'labels_bip'.  
@@ -181,7 +181,7 @@ ggraph(net2, layout = 'fr') +
                       shape = factor(net2 %v% 'mode'),
                       color = factor(net2 %v% 'mode'))) +
   theme_void() +
-  scale_color_viridis_d() +
+  scale_color_manual(values = clrs[c(7,11)]) +
   geom_node_text(aes(label = net2 %v% 'labels_bip'),
                    size = 2, 
                    color="black") +
@@ -204,10 +204,10 @@ ggraph(net2, layout = 'bipartite') +
                       color = factor(net2 %v% 'mode')),
                   alpha = .75) +
   theme_void() +
-  scale_color_viridis_d() +
+  scale_color_manual(values = clrs[c(7,11)]) +
   geom_node_text(aes(label = net2 %v% 'labels_bip'),
                    size = 2, 
-                   color="black") +
+                   color="black", max.overlaps = Inf) +
     labs(size = "Degree", color = "Mode", shape = "Mode")
 ```
 
@@ -220,21 +220,28 @@ ggraph(net2, layout = 'bipartite') +
                       color = factor(net2 %v% 'mode')),
                   alpha = .75) +
   theme_void() +
-  scale_color_viridis_d() +
+  scale_color_manual(values = clrs[c(7,11)]) +
   geom_node_text(aes(label = net2 %v% 'labels_bip'),
                    size = 2, 
-                   color="black") +
+                   color="black", repel = T, max.overlaps = Inf) +
     labs(color = "Mode", shape = "Mode") + 
   guides(colour = "legend", shape = "legend", size = "none")
 ```
 
-
+<!----
 ## Leaders versus contributors?  
+### Facet edges
 
-We can return to the idea of subnetworks.
-
-SHOULD MAKE THIS A BINARY INSTEAD OF INDUCING AND JUST FACET BUT SHOW THE LIMITATIONS
-
+```{r, eval = F}
+ggraph(net2, layout = 'fr') +
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree), color = clrs[4],
+                         alpha = .7) +
+         theme_void() +
+         theme(legend.position = "none") +
+           labs(title = "Delta Science Collaborative Research Network") +
+  facet_edges(~before_1980)
+```
 ### Induce subgraphs by edge  
 ```{r}
 # Induce subgraphs based on those edges
@@ -274,8 +281,11 @@ Now we have subgraphs
 ```{r}
 net2_l
 ```
+--->
 
 ## Climate projects
+
+Lets now turn to think more about nodes with the second guiding question: _How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? _ Where we previously induced subgraphs based on edge attributes, we now want to compare subgraphs based on node attributes. We have scientific and management themes attributes to different projects, and we can identify the nodes for which those attributes are true.
 
 ```{r}
 climate <- which(net2 %v% 'sci_Weatherandclimate' == T)
@@ -283,14 +293,18 @@ landuse <- which(net2 %v% 'sci_Landuseandhumanactivities' == T)
 govnc <- which(net2 %v% 'mgmt_Governance' == T)
 flood <- which(net2 %v% 'mgmt_Floodriskandlandusemanagement' == T)
 
-# this is harder for bipartite
-net2_cli <- network::get.inducedSubgraph(net2, 
-                                       v = climate)
+head(climate)
 ```
 
+However, we only have this attribute for nodes in the project mode, which means that the induced network will have zero edges -- it is not possible for projects to have ties to one another, but if we create a network using nodes only with that attribute, we only can identify projects.  
+
 ```{r}
+net2_cli <- network::get.inducedSubgraph(net2, 
+                                       v = climate)
 net2_cli
 ```
+
+So we also need to identify the organization alters related to the relevant projects. 
 
 ```{r}
 climate_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in% 
@@ -303,12 +317,18 @@ flood_alter_ids <- edges_2mode$org_id[edges_2mode$project_id %in%
                      (net2 %v% 'vertex.names')[flood]]
 ```
 
+This approach gets us nearly there. We have their actual ids, but when we induce a network we want to use their numeric representation in the network object, so we have to further extract that.
+
 ```{r}
 climate_alters <- which(net2 %v% 'vertex.names' %in% climate_alter_ids)
 landuse_alters <- which(net2 %v% 'vertex.names' %in% landuse_alter_ids)
 govnc_alters <- which(net2 %v% 'vertex.names' %in% govnc_alter_ids)
 flood_alters <- which(net2 %v% 'vertex.names' %in% flood_alter_ids)
+```
 
+Now we have the ego's location in the network, which we can set to our v argument, and their alter's location in the network, which we can set to our alter argument. 
+
+```{r}
 net2_cli <- network::get.inducedSubgraph(net2, 
                                        v = climate,
                                        alters = climate_alters)
@@ -323,14 +343,49 @@ net2_flood <- network::get.inducedSubgraph(net2,
                                        alters = flood_alters)
 ```
 
-
+Next, let's assign the appropriate high-degree labels to each of these. To make this a bit easier on ourselves, let's create a function first, using the steps we learned above. 
 
 ```{r}
-net2_cli <- assign_bipartite_deg_labels(net2_cli, 3)
-net2_landuse <- assign_bipartite_deg_labels(net2_landuse, 3)
-net2_govnc <- assign_bipartite_deg_labels(net2_govnc, 3)
-net2_flood <- assign_bipartite_deg_labels(net2_flood, 3)
+assign_bipartite_deg_labels <- function(netname, n){
+  degree_norm_bip <- bipartite::ND(as.matrix(netname))
+  nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
+  nd_output_df <- data.frame('degreeN' = nd_output,
+                             'id' = names(nd_output))
+  nd_output_sorted <- nd_output_df[match((netname %v% 'vertex.names'), 
+                                          nd_output_df $id),]
+  
+  netname %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+  
+  degs_mode0 <- (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 0]
+  degs_mode0 <- degs_mode0[order(degs_mode0)]
+  topdegs_mode0 <- unique(rev(degs_mode0))[1:n]
+  
+  degs_mode1 <- (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 1]
+  degs_mode1 <- degs_mode1[order(degs_mode1)]
+  topdegs_mode1 <- unique(rev(degs_mode1))[1:n]
+
+  netname %v% 'labels_bip' <- ifelse((netname %v% 'degree_norm_bip') %in%
+                                       topdegs_mode0 & 
+                                       netname %v% 'mode' == 0, 
+                                     netname %v% 'name',
+                              ifelse((netname %v% 'degree_norm_bip') %in% 
+                                       topdegs_mode1 & 
+                                       netname %v% 'mode' == 1, 
+                                     netname %v% 'name', ''))
+  return(netname)
+}
 ```
+
+
+Now we can apply this function to each of our subnetworks. 
+```{r}
+net2_cli <- assign_bipartite_deg_labels(net2_cli, 2)
+net2_landuse <- assign_bipartite_deg_labels(net2_landuse, 2)
+net2_govnc <- assign_bipartite_deg_labels(net2_govnc, 2)
+net2_flood <- assign_bipartite_deg_labels(net2_flood, 2)
+```
+
+Last, we want to plot them. Again however, it can streamline our process to use our previous code and turn it into a function to apply to all of our subnetworks.
 
 ```{r}
 plot_bipartite_fx <- function(netname){
@@ -341,20 +396,20 @@ plot_bipartite_fx <- function(netname){
                       color = factor(netname %v% 'mode')),
                   alpha = .75) +
   theme_void() +
-  scale_color_viridis_d() +
-  geom_node_text(aes(label = netname %v% 'labels_org'),
+  scale_color_manual(values = clrs[c(7,11)]) +
+  geom_node_text(aes(label = netname %v% 'labels_bip'),
                    size = 2, 
                    color="black") +
     labs(color = "Mode", shape = "Mode") + 
-  guides(colour = "legend", shape = "legend", size = "none")
+    guides(colour = "legend", shape = "legend", size = "none")
   return(p)
 }
 ```
 
-```{r}
-plot_bipartite_fx(net2_cli)
-plot_bipartite_fx(net2_landuse)
-plot_bipartite_fx(net2_govnc)
-plot_bipartite_fx(net2_flood)
+```{r, out.width = c("50%", "50%"), fig.show="hold"}
+plot_bipartite_fx(net2_cli) + labs(title = "Scientific theme: Climate")
+plot_bipartite_fx(net2_landuse) + labs(title = "Scientific theme: Land use")
+plot_bipartite_fx(net2_govnc) + labs(title = "Management theme: Governance")
+plot_bipartite_fx(net2_flood) + labs(title = "Management theme: Flooding")
 ```
 

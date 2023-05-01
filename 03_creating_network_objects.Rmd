@@ -6,7 +6,7 @@ Now that we have our edge lists and node lists, we want to create our network ob
 knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
-First, let's read in our two network packages, as well as a couple other packages that we'll need for this workshop.
+So, let's read in our two network packages, as well as a couple other packages that we'll need for this workshop.
 
 ```{r, results = F, message=F, warning = F}
 library(igraph)
@@ -81,12 +81,6 @@ g2 <- set_edge_attr(g2, 'contribution', value = edges_2mode$contribution)
 ```
 </details>
 <br>
-
-Still, we can take a look. Much like the one-mode graph, we see the number of nodes (now 435) and edges (680) summarized at top and our list of node attributes and edges attributes.  
-
-```{r}
-g2
-```
 
 The syntax for manipulating igraphs is demonstrated below. We use the `V()` and `E()` functions to call on either vertices or edges of our igraph, respective. hen can use the `$` symbol to subset from those elements of the network.  
 
