@@ -101,19 +101,5 @@ head(nodes_1mode[1:2])
 ```
 
 
-## Guiding questions  
-
-As with any visualization, we need to have an idea of [what stories we want to tell](https://ucdavisdatalab.github.io/workshop_data_viz_principles/before-you-viz-make-a-plan.html) / what questions we want to answer. With networks, there are limits to how much you can 'explore' through visualization alone, and so throughout these plotting exercises having guiding questions can keep us focused on what is important as we navigate the wide array of visualization options.  
-
-### One-mode visualization:  
-
-1. What is the structure of the collaborative research network in the Delta?
-2. How have the Delta's research collaborations changed over time? 
-
-### Two-mode visualization:  
-
-1. Across the Delta science projects, what organizations have been most active?  
-2. How do organizations' activity differ across different scientific and management themes: climate, land use, governance, and flooding? 
-
 
 

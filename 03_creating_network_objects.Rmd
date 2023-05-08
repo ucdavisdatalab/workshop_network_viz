@@ -1,12 +1,14 @@
 # Creating network objects in R
 
-Now that we have our edge lists and node lists, we want to create our network objects. There are two popular network packages (and consequently, network object types) in R. `igraph` generates a list object of class "igraph" and `network` generates an list object of class "network". We are going to be working primarily with `network` objects, but I'd like to start by making both because you are likely to run into both of them along the way, and both are compatible with the `ggraph` package that we will be using. 
+Now that we have our edge lists and node lists, we want to create our first network object. We are going to start by making a one-mode network.  
+
+There are two popular network packages (and consequently, network object types) in R. `igraph` generates a list object of class "igraph" and `network` generates an list object of class "network". We are going to be working primarily with `network` objects, but I'd like to start by making both because you are likely to run into both of them along the way, and both are compatible with the `ggraph` package that we will be using. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = F, message = F, fig.align = 'center')
 ```
 
-So, let's read in our two network packages, as well as a couple other packages that we'll need for this workshop.
+So, let's read in our two network packages.
 
 ```{r, results = F, message=F, warning = F}
 library(igraph)
@@ -15,9 +17,7 @@ library(network)
 
 
 ```{r, echo = F}
-edges_2mode <- read.csv('data/edgelist_twomode.csv')
 edges_1mode <- read.csv('data/edgelist_onemode_projected.csv')
-nodes_2mode <- read.csv('data/nodelist_twomode.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 ```
 
@@ -25,7 +25,7 @@ nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
 First, let's make an `igraph` object. `igraph` generally seems to have more documentation/Stack Overflow resources than other network packages, so it might be tempting to start here. We can load in the `igraph` package and use the `graph_from_data_frame()` function to create our graph. Note that there are dozens of `graph_from...` functions. Many of them sound (and are) intuitive. When dealing with edge and node lists, I prefer `graph_from_data_frame()` over `graph_from_edgelist()` because the former allows us to include the node list as an argument, whereas the latter does not.
 
-We want to start with creating both our one and two-mode networks. For our one-mode networks we want to use the `edges_1mode` and `nodes_1mode` objects. 
+For our one-mode networks we want to use the `edges_1mode` and `nodes_1mode` objects. 
 
 ```{r}
 g1 <- graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
@@ -36,51 +36,6 @@ We can take a look at a summary of the igraph object below. We see the number of
 ```{r}
 summary(g1)
 ```
-
-Two-mode networks are a bit harder to create in `igraph`. Generally this package has very little two-mode functionality. There is one function for this, `make_bipartite_graph()`, but it requires different inputs than the standard edge list or matrix, and node lists. Instead, this function requires a vector of vertex types, meaning a Boolean of modes (0-1), and a vector of the edges in the graph. 
-
-```{r, eval= F}
-?make_bipartite_graph()
-```
-
-We won't walk through the steps on how to do this, but you can reveal the steps below if you want to know more.  
-
-<details>
-<summary>**Reveal:** How to make a two-mode network from edge list and node list in igraph</summary>
-```{r}
-# edges need to be a as a vector where each pair is a connection, 
-# so we can vectorize the edge list (e.g. convert the connection between: 
-# id 49590 and id 50122 be just paired together as our first two values 
-# in the vector, and so on
-edges_2mode_v <- as.vector(matrix(rbind(edges_2mode$org_id,
-                                        edges_2mode$project_id),ncol=1))
-# But edges ALSO need to be numbered in a way that is compatible with the nodelist
-nodes_2mode$id_numeric <- 1:nrow(nodes_2mode)
-
-# So now we can reassign the edge list
-library(dplyr)
-library(magrittr)
-edges_2mode <- left_join(edges_2mode, select(nodes_2mode, id, id_numeric), 
-                         by = c('org_id' = 'id')) %>% 
-  rename('org_id_numeric' = 'id_numeric') %>% 
-  left_join(select(nodes_2mode, id, id_numeric), 
-                         by = c('project_id' = 'id')) %>% 
-  rename('project_id_numeric' = 'id_numeric')
-
-# And re-make this vector
-edges_2mode_v <- as.vector(matrix(rbind(edges_2mode$org_id_numeric,
-                                        edges_2mode$project_id_numeric),ncol=1))
-
-# Now we can make the two mode network in igraph
-g2 <- make_bipartite_graph(nodes_2mode$mode, edges_2mode_v, directed = FALSE)
-# And we have to manually assign attributes
-g2 <- set_vertex_attr(g2, "id", value = nodes_2mode$id)
-g2 <- set_vertex_attr(g2, "n_years", value = nodes_2mode$n_years)
-g2 <- set_edge_attr(g2, 'leadership', value = edges_2mode$leadership)
-g2 <- set_edge_attr(g2, 'contribution', value = edges_2mode$contribution)
-```
-</details>
-<br>
 
 The syntax for manipulating igraphs is demonstrated below. We use the `V()` and `E()` functions to call on either vertices or edges of our igraph, respective. hen can use the `$` symbol to subset from those elements of the network.  
 
@@ -97,14 +52,13 @@ head(E(g1)$Y1995_2009)
 
 ## `network`
 
-Personally, I find that the `igraph` package has more limited statistical functionality than `network` package (and its associated `statnet` suite of packes), so I prefer `network` objects. We initialize a network object with the `network` function (`network` really needs to get more creative in its naming approaches). Just like with `igraph`, for our one-mode network we will use our projected edges and mode one nodes. For our two-mode network we can use our full edge and node lists.
+Personally, I find that the `igraph` package has more limited statistical functionality than `network` package (and its associated `statnet` suite of packes), so I prefer `network` objects. We initialize a network object with the `network` function (`network` really needs to get more creative in its naming approaches). Just like with `igraph`, for our one-mode network we will use our projected edges and mode one nodes. 
 
 Note: You'll often see folks converting igraphs to network objects using the `intergraph` package. 
 
 ```{r}
 library(intergraph)
 net1_convert <- asNetwork(g1)
-net1_convert
 ```
 
 This conversion function can be very useful, but be sure to double check your work. Right now, with a relatively simple network (undirected and unweighted) the conversion works fine, but in other cases the default settings may require some attention. Because of this, personally I like to generate network objects directly from my edge and node lists.  
@@ -116,33 +70,52 @@ net1 <- network(x = edges_1mode,
                vertices = nodes_1mode,
                bipartite = F,  
                directed = F)
-
-net2 <- network(x = edges_2mode, 
-               vertices = nodes_2mode,
-               bipartite = T,  
-               directed = F)
 ```
 
 When we print out a network object we get a different-looking summary, but it generally carries the same information: 
+
 ```{r}
 net1
 ```
 
+The syntax for manipulating `network` objects is demonstrated below. First, we can use `network`'s series of `get.` functions to index components of the network. For node attributes, you can use `get.vertex.attribute`:
+
 ```{r}
-net2
+head(get.vertex.attribute(net1, 'name'))
 ```
 
-The syntax for manipulating `network` objects is demonstrated below. We use the `%v%` and `%e%` operators to call on either vertices or edges of our network, and then name the attribute in quotation marks 
+For edge attributes, you can use `get.edge.attribute`:
 
 ```{r}
-tail(net2 %v% 'n_years')
+head(get.edge.attribute(net1, 'before_1980'))
+```
+
+You can also use special operators, `%v%` and `%e%`,  call on either vertices or edges of our network and then name the attribute in quotation marks 
+
+```{r}
+head(net1 %v% 'name')
 ```
 
 ```{r}
 head(net1 %e% 'Y1995_2009')
 ```
 
-To save yourself trouble in the long run, it may be best to consider your network type, what kinds of analyses and visualization you'd like to do, and select a network package to stick to for that. Because there are differences in how these objects interact with various network analytical functions and  visualization tools, and how they are indexed (`V()$` vs `%v%`), it is worthwhile to stay consistent.  
 
+### Preparing to work with `network`  
+
+For the remainder of this tutorial are going to stick to working with the `network` package, even though the functions we will use for visualization are compatible with both objects. I propose using network objects because they are compatible with more advanced statistical analysis provided through the `statnet` suite of packages. 
+
+Because we will be using exclusively `network` objects, we want to detach `igraph` before we continue further. This is because there are several commonly-used network functions in both `igraph` and `sna` that mask one another. For instance:
+
+```{r, eval = F}
+sna::degree()
+igraph::degree()
+```
+
+The `igraph` degree function will work only on `igraph` objects and `sna` `degree` function will work only on `network` objects. To avoid confusion and masking in R, we are going to detach the `igraph` package and work only with `network` objects and compatible packages like `sna`.  
+
+```{r}
+detach("package:igraph", unload = TRUE)
+```
 
 

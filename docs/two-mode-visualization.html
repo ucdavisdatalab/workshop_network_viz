@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en-us" xml:lang="en-us">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Two-mode visualization | Network Visualization</title>
+  <meta name="description" content="5 Two-mode visualization | Network Visualization" />
+  <meta name="generator" content="bookdown 0.33 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Two-mode visualization | Network Visualization" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="ucdavisdatalab/workshop_network_viz" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Two-mode visualization | Network Visualization" />
+  
+  
+  
+
+<meta name="author" content="Liza Wood" />
+
+
+<meta name="date" content="2023-05-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="one-mode-visualization.html"/>
+<link rel="next" href="additional-resources.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/vis-9.1.0/vis-network.min.css" rel="stylesheet" />
+<script src="libs/vis-9.1.0/vis-network.min.js"></script>
+<script src="libs/visNetwork-binding-2.1.2/visNetwork.js"></script>
+<script src="libs/d3-4.5.0/d3.min.js"></script>
+<script src="libs/forceNetwork-binding-0.4/forceNetwork.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="https://datalab.ucdavis.edu/">
+  <img src="https://datalab.ucdavis.edu/wp-content/uploads/2019/07/datalab-logo-full-color-rgb-1.png" style="height: 100%; width: 100%; object-fit: contain" />
+</a></li>
+<li><a href="./" style="font-size: 18px">Network visualization</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Overview</a>
+<ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#description"><i class="fa fa-check"></i><b>0.1</b> Description</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#learning-goals"><i class="fa fa-check"></i><b>0.2</b> Learning goals</a></li>
+<li class="chapter" data-level="0.3" data-path="index.html"><a href="index.html#prerequisites"><i class="fa fa-check"></i><b>0.3</b> Prerequisites</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="introduction.html"><a href="introduction.html#what-are-network-data"><i class="fa fa-check"></i><b>1.1</b> What are network data?</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="introduction.html"><a href="introduction.html#features-of-a-network"><i class="fa fa-check"></i><b>1.1.1</b> Features of a network</a></li>
+<li class="chapter" data-level="1.1.2" data-path="introduction.html"><a href="introduction.html#network-statistics"><i class="fa fa-check"></i><b>1.1.2</b> Network statistics</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="introduction.html"><a href="introduction.html#storing-network-data"><i class="fa fa-check"></i><b>1.2</b> Storing network data</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="data.html"><a href="data.html"><i class="fa fa-check"></i><b>2</b> Data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data.html"><a href="data.html#delta-science-tracker"><i class="fa fa-check"></i><b>2.1</b> Delta Science Tracker</a></li>
+<li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#data-descriptions"><i class="fa fa-check"></i><b>2.2</b> Data descriptions</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html"><i class="fa fa-check"></i><b>3</b> Creating network objects in R</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#igraph"><i class="fa fa-check"></i><b>3.1</b> <code>igraph</code></a></li>
+<li class="chapter" data-level="3.2" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#network"><i class="fa fa-check"></i><b>3.2</b> <code>network</code></a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="creating-network-objects-in-r.html"><a href="creating-network-objects-in-r.html#preparing-to-work-with-network"><i class="fa fa-check"></i><b>3.2.1</b> Preparing to work with <code>network</code></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html"><i class="fa fa-check"></i><b>4</b> One-mode visualization</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#introduction-1"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#guiding-questions"><i class="fa fa-check"></i><b>4.2</b> Guiding questions</a></li>
+<li class="chapter" data-level="4.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#getting-started-with-ggraph"><i class="fa fa-check"></i><b>4.3</b> Getting started with <code>ggraph</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#layouts"><i class="fa fa-check"></i><b>4.3.1</b> Layouts</a></li>
+<li class="chapter" data-level="4.3.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#aesthetics-features"><i class="fa fa-check"></i><b>4.3.2</b> Aesthetics features</a></li>
+<li class="chapter" data-level="4.3.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#node-labels"><i class="fa fa-check"></i><b>4.3.3</b> Node labels</a></li>
+<li class="chapter" data-level="4.3.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#network-plotting-function"><i class="fa fa-check"></i><b>4.3.4</b> Network plotting function</a></li>
+<li class="chapter" data-level="4.3.5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#removing-isolates"><i class="fa fa-check"></i><b>4.3.5</b> Removing isolates</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#longitudinal-networks"><i class="fa fa-check"></i><b>4.4</b> Longitudinal networks</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#faceting-edges"><i class="fa fa-check"></i><b>4.4.1</b> Faceting edges</a></li>
+<li class="chapter" data-level="4.4.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#inducing-subgraphs-by-edge-attribute"><i class="fa fa-check"></i><b>4.4.2</b> Inducing subgraphs by edge attribute</a></li>
+<li class="chapter" data-level="4.4.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#fixing-coordinates"><i class="fa fa-check"></i><b>4.4.3</b> Fixing coordinates</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#supplemental-material-community-detection"><i class="fa fa-check"></i><b>4.5</b> Supplemental Material: Community detection</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#algorithms-for-community-detection"><i class="fa fa-check"></i><b>4.5.1</b> Algorithms for community detection</a></li>
+<li class="chapter" data-level="4.5.2" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#equivalence-clusters-block-models"><i class="fa fa-check"></i><b>4.5.2</b> Equivalence clusters &amp; block models</a></li>
+<li class="chapter" data-level="4.5.3" data-path="one-mode-visualization.html"><a href="one-mode-visualization.html#plotting-block-membership"><i class="fa fa-check"></i><b>4.5.3</b> Plotting block membership</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html"><i class="fa fa-check"></i><b>5</b> Two-mode visualization</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#making-two-mode-networks"><i class="fa fa-check"></i><b>5.1</b> Making two-mode networks:</a></li>
+<li class="chapter" data-level="5.2" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#guiding-questions-1"><i class="fa fa-check"></i><b>5.2</b> Guiding questions:</a></li>
+<li class="chapter" data-level="5.3" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#representing-two-mode-networks"><i class="fa fa-check"></i><b>5.3</b> Representing two-mode networks</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#the-one-mode-approach"><i class="fa fa-check"></i><b>5.3.1</b> The one-mode approach</a></li>
+<li class="chapter" data-level="5.3.2" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#assign-top-labels-based-on-project-mode"><i class="fa fa-check"></i><b>5.3.2</b> Assign top labels based on project mode</a></li>
+<li class="chapter" data-level="5.3.3" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#bipartite-layout"><i class="fa fa-check"></i><b>5.3.3</b> Bipartite layout</a></li>
+<li class="chapter" data-level="5.3.4" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#functions"><i class="fa fa-check"></i><b>5.3.4</b> Functions</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#themed-projects"><i class="fa fa-check"></i><b>5.4</b> Themed projects</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="two-mode-visualization.html"><a href="two-mode-visualization.html#inducing-bipartite-network-by-nodes"><i class="fa fa-check"></i><b>5.4.1</b> Inducing bipartite network by nodes</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="additional-resources.html"><a href="additional-resources.html"><i class="fa fa-check"></i><b>6</b> Additional resources</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="additional-resources.html"><a href="additional-resources.html#interactive-networks"><i class="fa fa-check"></i><b>6.1</b> Interactive networks</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="additional-resources.html"><a href="additional-resources.html#visnetwork"><i class="fa fa-check"></i><b>6.1.1</b> <code>visNetwork</code></a></li>
+<li class="chapter" data-level="6.1.2" data-path="additional-resources.html"><a href="additional-resources.html#networkd3"><i class="fa fa-check"></i><b>6.1.2</b> <code>networkD3</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="additional-resources.html"><a href="additional-resources.html#useful-tutorials"><i class="fa fa-check"></i><b>6.2</b> Useful tutorials</a></li>
+<li class="chapter" data-level="6.3" data-path="additional-resources.html"><a href="additional-resources.html#other-plotting-packages"><i class="fa fa-check"></i><b>6.3</b> Other plotting packages</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="additional-resources.html"><a href="additional-resources.html#plot"><i class="fa fa-check"></i><b>6.3.1</b> <code>plot()</code></a></li>
+<li class="chapter" data-level="6.3.2" data-path="additional-resources.html"><a href="additional-resources.html#ggallyggnet2"><i class="fa fa-check"></i><b>6.3.2</b> <code>GGally::ggnet2()</code></a></li>
+<li class="chapter" data-level="6.3.3" data-path="additional-resources.html"><a href="additional-resources.html#ggnetworkggnetwork"><i class="fa fa-check"></i><b>6.3.3</b> <code>ggnetwork::ggnetwork()</code></a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">
+  <img alt="CC BY-SA 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg" style="float: right; padding-right: 10px;" />
+</a>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Visualization</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="two-mode-visualization" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> Two-mode visualization<a href="two-mode-visualization.html#two-mode-visualization" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="making-two-mode-networks" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Making two-mode networks:<a href="two-mode-visualization.html#making-two-mode-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this section we are transitioning to working with two-mode networks. That is, a network consisting of two distinctly different types of nodes, where ties are possible between (but not within) each node type. For our data, our two modes are research organizations and projects, where researchers are linked to projects based on their involvement, but in this case there is no link between projects or between researchers.</p>
+<p>We started off the workshop by creating one mode networks in <code>igraph</code> and <code>network</code>. The process for creating two-mode, or bipartite, networks is similar, though with some additional complications.</p>
+<p>Let’s make sure we have our two mode edge and node lists read in.</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="two-mode-visualization.html#cb125-1" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/edgelist_twomode.csv&#39;</span>)</span>
+<span id="cb125-2"><a href="two-mode-visualization.html#cb125-2" aria-hidden="true" tabindex="-1"></a>nodes_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;data/nodelist_twomode.csv&#39;</span>)</span></code></pre></div>
+<p>First, let’s discuss <code>igraph</code>, where two-mode networks are a bit harder to create. Generally this package has very little two-mode functionality. There is a function for creating bipartite igraphs, <code>make_bipartite_graph()</code>, but it requires different inputs than the standard edge list or matrix, and node lists. Instead, this function requires a vector of vertex types, meaning a Boolean of modes (0-1), and a vector of the edges in the graph.</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="two-mode-visualization.html#cb126-1" aria-hidden="true" tabindex="-1"></a>?igraph<span class="sc">::</span><span class="fu">make_bipartite_graph</span>()</span></code></pre></div>
+<p>We won’t walk through the steps on how to do this, but you can reveal the steps below if you want to know more.</p>
+<details>
+<summary>
+<strong>Bonus code:</strong> How to make a two-mode network from edge list and node list in igraph
+</summary>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="two-mode-visualization.html#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="co"># edges need to be a as a vector where each pair is a connection, </span></span>
+<span id="cb127-2"><a href="two-mode-visualization.html#cb127-2" aria-hidden="true" tabindex="-1"></a><span class="co"># so we can vectorize the edge list (e.g. convert the connection between: </span></span>
+<span id="cb127-3"><a href="two-mode-visualization.html#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="co"># id 49590 and id 50122 be just paired together as our first two values </span></span>
+<span id="cb127-4"><a href="two-mode-visualization.html#cb127-4" aria-hidden="true" tabindex="-1"></a><span class="co"># in the vector, and so on</span></span>
+<span id="cb127-5"><a href="two-mode-visualization.html#cb127-5" aria-hidden="true" tabindex="-1"></a>edges_2mode_v <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">matrix</span>(<span class="fu">rbind</span>(edges_2mode<span class="sc">$</span>org_id,</span>
+<span id="cb127-6"><a href="two-mode-visualization.html#cb127-6" aria-hidden="true" tabindex="-1"></a>                                        edges_2mode<span class="sc">$</span>project_id),<span class="at">ncol=</span><span class="dv">1</span>))</span>
+<span id="cb127-7"><a href="two-mode-visualization.html#cb127-7" aria-hidden="true" tabindex="-1"></a><span class="co"># But edges ALSO need to be numbered in a way that is compatible with the nodelist</span></span>
+<span id="cb127-8"><a href="two-mode-visualization.html#cb127-8" aria-hidden="true" tabindex="-1"></a>nodes_2mode<span class="sc">$</span>id_numeric <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(nodes_2mode)</span>
+<span id="cb127-9"><a href="two-mode-visualization.html#cb127-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-10"><a href="two-mode-visualization.html#cb127-10" aria-hidden="true" tabindex="-1"></a><span class="co"># So now we can reassign the edge list</span></span>
+<span id="cb127-11"><a href="two-mode-visualization.html#cb127-11" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">left_join</span>(edges_2mode, <span class="fu">select</span>(nodes_2mode, id, id_numeric), </span>
+<span id="cb127-12"><a href="two-mode-visualization.html#cb127-12" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;org_id&#39;</span> <span class="ot">=</span> <span class="st">&#39;id&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb127-13"><a href="two-mode-visualization.html#cb127-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&#39;org_id_numeric&#39;</span> <span class="ot">=</span> <span class="st">&#39;id_numeric&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb127-14"><a href="two-mode-visualization.html#cb127-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(nodes_2mode, id, id_numeric), </span>
+<span id="cb127-15"><a href="two-mode-visualization.html#cb127-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&#39;project_id&#39;</span> <span class="ot">=</span> <span class="st">&#39;id&#39;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb127-16"><a href="two-mode-visualization.html#cb127-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&#39;project_id_numeric&#39;</span> <span class="ot">=</span> <span class="st">&#39;id_numeric&#39;</span>)</span>
+<span id="cb127-17"><a href="two-mode-visualization.html#cb127-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-18"><a href="two-mode-visualization.html#cb127-18" aria-hidden="true" tabindex="-1"></a><span class="co"># And re-make this vector</span></span>
+<span id="cb127-19"><a href="two-mode-visualization.html#cb127-19" aria-hidden="true" tabindex="-1"></a>edges_2mode_v <span class="ot">&lt;-</span> <span class="fu">as.vector</span>(<span class="fu">matrix</span>(<span class="fu">rbind</span>(edges_2mode<span class="sc">$</span>org_id_numeric,</span>
+<span id="cb127-20"><a href="two-mode-visualization.html#cb127-20" aria-hidden="true" tabindex="-1"></a>                                        edges_2mode<span class="sc">$</span>project_id_numeric),<span class="at">ncol=</span><span class="dv">1</span>))</span>
+<span id="cb127-21"><a href="two-mode-visualization.html#cb127-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb127-22"><a href="two-mode-visualization.html#cb127-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we can make the two mode network in igraph</span></span>
+<span id="cb127-23"><a href="two-mode-visualization.html#cb127-23" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">make_bipartite_graph</span>(nodes_2mode<span class="sc">$</span>mode, edges_2mode_v, <span class="at">directed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb127-24"><a href="two-mode-visualization.html#cb127-24" aria-hidden="true" tabindex="-1"></a><span class="co"># And we have to manually assign attributes</span></span>
+<span id="cb127-25"><a href="two-mode-visualization.html#cb127-25" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">set_vertex_attr</span>(g2, <span class="st">&quot;id&quot;</span>, <span class="at">value =</span> nodes_2mode<span class="sc">$</span>id)</span>
+<span id="cb127-26"><a href="two-mode-visualization.html#cb127-26" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">set_vertex_attr</span>(g2, <span class="st">&quot;n_years&quot;</span>, <span class="at">value =</span> nodes_2mode<span class="sc">$</span>n_years)</span>
+<span id="cb127-27"><a href="two-mode-visualization.html#cb127-27" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">set_edge_attr</span>(g2, <span class="st">&#39;leadership&#39;</span>, <span class="at">value =</span> edges_2mode<span class="sc">$</span>leadership)</span>
+<span id="cb127-28"><a href="two-mode-visualization.html#cb127-28" aria-hidden="true" tabindex="-1"></a>g2 <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">set_edge_attr</span>(g2, <span class="st">&#39;contribution&#39;</span>, <span class="at">value =</span> edges_2mode<span class="sc">$</span>contribution)</span></code></pre></div>
+</details>
+<p><br></p>
+<p>In the <code>network</code> package, we can create a bipartite network just like we did with the one-mode network, though now we want to set the bipartite argument to equal TRUE.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="two-mode-visualization.html#cb128-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="ot">&lt;-</span> <span class="fu">network</span>(<span class="at">x =</span> edges_2mode, </span>
+<span id="cb128-2"><a href="two-mode-visualization.html#cb128-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">vertices =</span> nodes_2mode,</span>
+<span id="cb128-3"><a href="two-mode-visualization.html#cb128-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">bipartite =</span> T,  </span>
+<span id="cb128-4"><a href="two-mode-visualization.html#cb128-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">directed =</span> F)</span></code></pre></div>
+<p>Let’s take a look at the network:</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="two-mode-visualization.html#cb129-1" aria-hidden="true" tabindex="-1"></a>net2</span></code></pre></div>
+<pre><code>##  Network attributes:
+##   vertices = 435 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 138 
+##   total edges= 680 
+##     missing edges= 0 
+##     non-missing edges= 680 
+## 
+##  Vertex attribute names: 
+##     enddate funding_org funds id_numeric mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name url vertex.names 
+## 
+##  Edge attribute names: 
+##     contribution leadership org_id_numeric project_id_numeric</code></pre>
+</div>
+<div id="guiding-questions-1" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Guiding questions:<a href="two-mode-visualization.html#guiding-questions-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>As we shift to working with a two-mode network, let’s again set ourselves up with some questions to guide us. With our two-mode network, we want to know:</p>
+<ol style="list-style-type: decimal">
+<li>Which Delta science projects have the largest number of collaborators, and who are those collaborators?<br />
+</li>
+<li>How do organizations’ activity differ across projects with different scientific and management themes: climate, land use, governance, and flooding?</li>
+</ol>
+<p>We will be using approaches that are <em>similar</em> to one-mode networks, but there are some features that we will want to rethink given that there are differences given what we can calculate and what we want to communicate.</p>
+</div>
+<div id="representing-two-mode-networks" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Representing two-mode networks<a href="two-mode-visualization.html#representing-two-mode-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Analytical approaches for two-mode networks are slightly different from one-mode networks given that there are unique structural limitations of two-mode networks. As we’ve discussed already, in two-mode networks there cannot be connections between nodes of the same mode. Because of this, many approaches for summarizing and visualizing one-mode networks are not directly transferable. We’ll start with the one-mode visualization approach that we’ve started with, then build on these to improve our representation of the two-mode features.</p>
+<div id="the-one-mode-approach" class="section level3 hasAnchor" number="5.3.1">
+<h3><span class="header-section-number">5.3.1</span> The one-mode approach<a href="two-mode-visualization.html#the-one-mode-approach" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>With one-mode networks, we used <code>sna::degree()</code> function to calculate the number of connections per node, and we can apply this same function to our two-mode network, <code>net2</code>, then run through the functions we’ve made so far to create a plot: <code>label_top_degree()</code> and <code>netplot_function()</code>.</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="two-mode-visualization.html#cb131-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span> <span class="ot">&lt;-</span> sna<span class="sc">::</span><span class="fu">degree</span>(net2)</span>
+<span id="cb131-2"><a href="two-mode-visualization.html#cb131-2" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels&#39;</span> <span class="ot">&lt;-</span> <span class="fu">label_top_degree</span>(net2, <span class="dv">5</span>)</span>
+<span id="cb131-3"><a href="two-mode-visualization.html#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="fu">netplot_function</span>(net2) <span class="sc">+</span></span>
+<span id="cb131-4"><a href="two-mode-visualization.html#cb131-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Organization &amp; project bipartite research network&quot;</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>This is a fine start, but here we aren’t communicating anything about to two-modality of the data. Particularly when we think about our guiding question, which is about projects rather than organizations, we aren’t seeing much. Without any further specification, it just looks like a one-mode network with some central nodes. So, we want to integrate in an important node attribute of our network, mode, telling is which of those points are organizations (mode 1) and which are projects (mode 0).</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="two-mode-visualization.html#cb132-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span></span></code></pre></div>
+<pre><code>##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
+## [149] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [186] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [223] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [260] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [297] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [334] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+## [408] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</code></pre>
+<p>To account for mode in our visualization, we could start by adding an aesthetic feature to our visualization, changing the shape and color to be determined by mode.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="two-mode-visualization.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
+<span id="cb134-2"><a href="two-mode-visualization.html#cb134-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb134-3"><a href="two-mode-visualization.html#cb134-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree,</span>
+<span id="cb134-4"><a href="two-mode-visualization.html#cb134-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(mode),</span>
+<span id="cb134-5"><a href="two-mode-visualization.html#cb134-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(mode)),</span>
+<span id="cb134-6"><a href="two-mode-visualization.html#cb134-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb134-7"><a href="two-mode-visualization.html#cb134-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb134-8"><a href="two-mode-visualization.html#cb134-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> clrs[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span>)]) <span class="sc">+</span></span>
+<span id="cb134-9"><a href="two-mode-visualization.html#cb134-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> labels),</span>
+<span id="cb134-10"><a href="two-mode-visualization.html#cb134-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb134-11"><a href="two-mode-visualization.html#cb134-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb134-12"><a href="two-mode-visualization.html#cb134-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">repel =</span> T, <span class="at">max.overlaps =</span> <span class="cn">Inf</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>This network has more edges than our one-mode network, so to clean this up a little let’s make our edges thinner and more transparent. Let’s also tidy up the legend label a little.</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="two-mode-visualization.html#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
+<span id="cb135-2"><a href="two-mode-visualization.html#cb135-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb135-3"><a href="two-mode-visualization.html#cb135-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree,</span>
+<span id="cb135-4"><a href="two-mode-visualization.html#cb135-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(mode),</span>
+<span id="cb135-5"><a href="two-mode-visualization.html#cb135-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(mode)),</span>
+<span id="cb135-6"><a href="two-mode-visualization.html#cb135-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb135-7"><a href="two-mode-visualization.html#cb135-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb135-8"><a href="two-mode-visualization.html#cb135-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> clrs[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span>)]) <span class="sc">+</span></span>
+<span id="cb135-9"><a href="two-mode-visualization.html#cb135-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> labels),</span>
+<span id="cb135-10"><a href="two-mode-visualization.html#cb135-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb135-11"><a href="two-mode-visualization.html#cb135-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>,</span>
+<span id="cb135-12"><a href="two-mode-visualization.html#cb135-12" aria-hidden="true" tabindex="-1"></a>                   <span class="at">repel =</span> T, <span class="at">max.overlaps =</span> <span class="cn">Inf</span>) <span class="sc">+</span></span>
+<span id="cb135-13"><a href="two-mode-visualization.html#cb135-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>So now we can see our modes, but still there are a few things that are somewhat misrepresented when we use this approach:</p>
+<ol style="list-style-type: decimal">
+<li><p>Degree size is skewed by the limitations of the mode. Meaning: due to the nature of how two-mode networks are structured, it is likely that one mode will be more represented than the other. For instance in this case, organizations can participate in multiple projects across time, but projects are limited to the participants involved in the one time span on the project. Because of this, we see that organizations are all highest-degree, and don’t know much about the projects that are highly collaborative.</p></li>
+<li><p>The layout of the network hides that within-mode connections are not possible. By using one of the more classical layout algorithms that try to limit distance and group similar nodes, it is hard to notice that no two green triangles are connected to one another, nor are there any connections between the circles.
+So let’s address each of these points.</p></li>
+</ol>
+<!---
+### Normalized degree in two-mode networks  
+
+One way to adjust and compare degree between modes is to calculate normalized degree _for each mode_. We can do this using the `bipartite` package:
+
+
+
+
+```r
+#install.packages('bipartite')
+library(bipartite)
+?bipartite::ND
+```
+
+This function, designed to think of bipartite (two-mode) data as species on different trophic levels, takes a matrix and uses that to calculate normalized degree for each mode.
+
+```r
+degree_norm_bip <- bipartite::ND(as.matrix(net2), normalised = T)
+```
+
+The output has two measures of degree, one for rows (in this case called 'lower' because the package was designed to think about lower and higher trophic levels) and one for columns ('higher'). Check that this matches up, and take a look at the summary of the degree distribution. 
+
+
+```r
+# 'lower' is for for the rows, so in our case, organizations
+length(degree_norm_bip$lower) == length(unique(edges_2mode$org_id))
+```
+
+```
+## [1] TRUE
+```
+
+
+```r
+summary(degree_norm_bip$lower)
+```
+
+```
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.003367 0.003367 0.003367 0.016591 0.010101 0.232323
+```
+
+
+```r
+# 'higher' is for for the columns, so in our case, projects
+length(degree_norm_bip$higher) == length(unique(edges_2mode$project_id))
+```
+
+```
+## [1] TRUE
+```
+
+
+```r
+summary(degree_norm_bip$higher)
+```
+
+```
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## 0.007246 0.007246 0.014493 0.016591 0.021739 0.086957
+```
+What we can see from the summaries is that even though organizations have a higher maximum degree, these calculations are normalized and have the same mean value. 
+
+Now, we want to assign this bipartite degree in accordance with that order. BUT, note that this function orders degree based on numeric order of id, so we want to make sure this matches with the order of nodes in our network.  
+
+```r
+nd_output <- c(degree_norm_bip$lower, degree_norm_bip$higher)
+table(net2 %v% 'vertex.names' == as.numeric(names(nd_output)))
+```
+
+```
+## 
+## TRUE 
+##  435
+```
+
+
+
+Looks good, so now let's assign this new degree measure to our network. 
+
+
+```r
+net2 %v% 'degree_norm_bip' <- nd_output
+```
+--->
+</div>
+<div id="assign-top-labels-based-on-project-mode" class="section level3 hasAnchor" number="5.3.2">
+<h3><span class="header-section-number">5.3.2</span> Assign top labels based on project mode<a href="two-mode-visualization.html#assign-top-labels-based-on-project-mode" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Instead of assigning labels based on overall degree, we want to calculate the top degrees for <em>just</em> the projects, then the identify the organization nodes who are associated with those top projects. We can use the same skeleton of the code as before, but tweak it to address our question.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="two-mode-visualization.html#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># projects are mode 0, so these are interesting to our question</span></span>
+<span id="cb136-2"><a href="two-mode-visualization.html#cb136-2" aria-hidden="true" tabindex="-1"></a>degs_mode0 <span class="ot">&lt;-</span> (net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>)[net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb136-3"><a href="two-mode-visualization.html#cb136-3" aria-hidden="true" tabindex="-1"></a>degs_mode0 <span class="ot">&lt;-</span> degs_mode0[<span class="fu">order</span>(degs_mode0, <span class="at">decreasing =</span> T)]</span>
+<span id="cb136-4"><a href="two-mode-visualization.html#cb136-4" aria-hidden="true" tabindex="-1"></a>topdegs_mode0 <span class="ot">&lt;-</span> <span class="fu">unique</span>(degs_mode0)[<span class="dv">1</span>]</span>
+<span id="cb136-5"><a href="two-mode-visualization.html#cb136-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-6"><a href="two-mode-visualization.html#cb136-6" aria-hidden="true" tabindex="-1"></a><span class="co"># identify the most popular projects with labels</span></span>
+<span id="cb136-7"><a href="two-mode-visualization.html#cb136-7" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%in%</span> topdegs_mode0 <span class="sc">&amp;</span> </span>
+<span id="cb136-8"><a href="two-mode-visualization.html#cb136-8" aria-hidden="true" tabindex="-1"></a>                                  net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>, net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="cn">NA</span>)</span></code></pre></div>
+<p>Now it is these labels that we can use to identify organization linkages</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="two-mode-visualization.html#cb137-1" aria-hidden="true" tabindex="-1"></a>(net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)[<span class="sc">!</span><span class="fu">is.na</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)]</span></code></pre></div>
+<pre><code>## [1] &quot;National Water Use Science Project [NWUSP]&quot;</code></pre>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="two-mode-visualization.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a vector of the top projects</span></span>
+<span id="cb139-2"><a href="two-mode-visualization.html#cb139-2" aria-hidden="true" tabindex="-1"></a>top_projs <span class="ot">&lt;-</span> (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[<span class="sc">!</span><span class="fu">is.na</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)]</span>
+<span id="cb139-3"><a href="two-mode-visualization.html#cb139-3" aria-hidden="true" tabindex="-1"></a><span class="co"># identify the organizations associated with top projects using the edge list</span></span>
+<span id="cb139-4"><a href="two-mode-visualization.html#cb139-4" aria-hidden="true" tabindex="-1"></a>related_orgs <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> top_projs]</span>
+<span id="cb139-5"><a href="two-mode-visualization.html#cb139-5" aria-hidden="true" tabindex="-1"></a><span class="co"># rename the labels based on whether or not a node is in the related orgs</span></span>
+<span id="cb139-6"><a href="two-mode-visualization.html#cb139-6" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>) <span class="sc">%in%</span> related_orgs <span class="sc">&amp;</span> </span>
+<span id="cb139-7"><a href="two-mode-visualization.html#cb139-7" aria-hidden="true" tabindex="-1"></a>                                  net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">1</span>, net2 <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, </span>
+<span id="cb139-8"><a href="two-mode-visualization.html#cb139-8" aria-hidden="true" tabindex="-1"></a>                                net2 <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)</span></code></pre></div>
+<p>Now we can label the nodes by ‘labels_bip’.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="two-mode-visualization.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
+<span id="cb140-2"><a href="two-mode-visualization.html#cb140-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb140-3"><a href="two-mode-visualization.html#cb140-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree,</span>
+<span id="cb140-4"><a href="two-mode-visualization.html#cb140-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(mode),</span>
+<span id="cb140-5"><a href="two-mode-visualization.html#cb140-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(mode)),</span>
+<span id="cb140-6"><a href="two-mode-visualization.html#cb140-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb140-7"><a href="two-mode-visualization.html#cb140-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb140-8"><a href="two-mode-visualization.html#cb140-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> clrs[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span>)]) <span class="sc">+</span></span>
+<span id="cb140-9"><a href="two-mode-visualization.html#cb140-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> labels_bip),</span>
+<span id="cb140-10"><a href="two-mode-visualization.html#cb140-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb140-11"><a href="two-mode-visualization.html#cb140-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>, </span>
+<span id="cb140-12"><a href="two-mode-visualization.html#cb140-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel =</span> T, <span class="at">max.overlaps =</span> <span class="cn">Inf</span>) <span class="sc">+</span></span>
+<span id="cb140-13"><a href="two-mode-visualization.html#cb140-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+</div>
+<div id="bipartite-layout" class="section level3 hasAnchor" number="5.3.3">
+<h3><span class="header-section-number">5.3.3</span> Bipartite layout<a href="two-mode-visualization.html#bipartite-layout" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Next, I want to reconsider layouts that help demonstrate the structural limitations between modes: that there can be no connections between projects or between collaborators. The ‘bipartite’ layout minimizes edge crossing and lines up modes next to one another. However, this layout requires a T/F ‘type’ variable to define the mode, so we can create that using our mode variable.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="two-mode-visualization.html#cb141-1" aria-hidden="true" tabindex="-1"></a>net2 <span class="sc">%v%</span> <span class="st">&#39;type&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>, T, F)</span></code></pre></div>
+<p>Now we can specify the layout to bipartite:</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="two-mode-visualization.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net2, <span class="at">layout =</span> <span class="st">&#39;bipartite&#39;</span>) <span class="sc">+</span></span>
+<span id="cb142-2"><a href="two-mode-visualization.html#cb142-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb142-3"><a href="two-mode-visualization.html#cb142-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree,</span>
+<span id="cb142-4"><a href="two-mode-visualization.html#cb142-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">shape =</span> <span class="fu">factor</span>(mode),</span>
+<span id="cb142-5"><a href="two-mode-visualization.html#cb142-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> <span class="fu">factor</span>(mode)),</span>
+<span id="cb142-6"><a href="two-mode-visualization.html#cb142-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb142-7"><a href="two-mode-visualization.html#cb142-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb142-8"><a href="two-mode-visualization.html#cb142-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> clrs[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span>)]) <span class="sc">+</span></span>
+<span id="cb142-9"><a href="two-mode-visualization.html#cb142-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> labels_bip),</span>
+<span id="cb142-10"><a href="two-mode-visualization.html#cb142-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb142-11"><a href="two-mode-visualization.html#cb142-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span><span class="st">&quot;black&quot;</span>, </span>
+<span id="cb142-12"><a href="two-mode-visualization.html#cb142-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel =</span> T, <span class="at">max.overlaps =</span> <span class="cn">Inf</span>) <span class="sc">+</span></span>
+<span id="cb142-13"><a href="two-mode-visualization.html#cb142-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<!--- guides(colour = "legend", shape = "legend", size = "none") ---></p>
+<p>So, <em>which Delta science projects have the largest number of collaborators, and who are those collaborators?</em> We plot only the project with the largest number of collaborators: <a href="https://sciencetracker.deltacouncil.ca.gov/activities/national-water-use-science-project-nwusp">National Water Use Science Project</a>. This project heads up the USGS “Water Census”, and has been running since 1950 with 11 different actors involved, largely federal agencies. Some of those agencies, like USFS, are among the most active in the network, but others like USDA are more peripheral.</p>
+</div>
+<div id="functions" class="section level3 hasAnchor" number="5.3.4">
+<h3><span class="header-section-number">5.3.4</span> Functions<a href="two-mode-visualization.html#functions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>What we’ve set up so far feels like a solid foundation for a bipartite plotting function, so as before, let’s bundle this up into a function to use more later by just replacing the name of the network, net2, with a generic ‘netname’.</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="two-mode-visualization.html#cb143-1" aria-hidden="true" tabindex="-1"></a>plot_bipartite_fx <span class="ot">&lt;-</span> <span class="cf">function</span>(netname){</span>
+<span id="cb143-2"><a href="two-mode-visualization.html#cb143-2" aria-hidden="true" tabindex="-1"></a>   p <span class="ot">&lt;-</span> <span class="fu">ggraph</span>(netname, <span class="at">layout =</span> <span class="st">&#39;bipartite&#39;</span>) <span class="sc">+</span></span>
+<span id="cb143-3"><a href="two-mode-visualization.html#cb143-3" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_edge_link</span>(<span class="at">width =</span> <span class="fl">0.5</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">color =</span> <span class="st">&quot;gray70&quot;</span>) <span class="sc">+</span></span>
+<span id="cb143-4"><a href="two-mode-visualization.html#cb143-4" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> degree,</span>
+<span id="cb143-5"><a href="two-mode-visualization.html#cb143-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">shape =</span> <span class="fu">factor</span>(mode),</span>
+<span id="cb143-6"><a href="two-mode-visualization.html#cb143-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">color =</span> <span class="fu">factor</span>(mode)),</span>
+<span id="cb143-7"><a href="two-mode-visualization.html#cb143-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">alpha =</span> .<span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb143-8"><a href="two-mode-visualization.html#cb143-8" aria-hidden="true" tabindex="-1"></a>     <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb143-9"><a href="two-mode-visualization.html#cb143-9" aria-hidden="true" tabindex="-1"></a>     <span class="fu">scale_color_manual</span>(<span class="at">values =</span> clrs[<span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">11</span>)]) <span class="sc">+</span></span>
+<span id="cb143-10"><a href="two-mode-visualization.html#cb143-10" aria-hidden="true" tabindex="-1"></a>     <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> labels_bip),</span>
+<span id="cb143-11"><a href="two-mode-visualization.html#cb143-11" aria-hidden="true" tabindex="-1"></a>                      <span class="at">size =</span> <span class="dv">3</span>, </span>
+<span id="cb143-12"><a href="two-mode-visualization.html#cb143-12" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color=</span><span class="st">&quot;black&quot;</span>, </span>
+<span id="cb143-13"><a href="two-mode-visualization.html#cb143-13" aria-hidden="true" tabindex="-1"></a>                    <span class="at">repel =</span> T, <span class="at">max.overlaps =</span> <span class="cn">Inf</span>) <span class="sc">+</span></span>
+<span id="cb143-14"><a href="two-mode-visualization.html#cb143-14" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">size =</span> <span class="st">&quot;Degree&quot;</span>, <span class="at">color =</span> <span class="st">&quot;Mode&quot;</span>, <span class="at">shape =</span> <span class="st">&quot;Mode&quot;</span>)</span>
+<span id="cb143-15"><a href="two-mode-visualization.html#cb143-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(p)</span>
+<span id="cb143-16"><a href="two-mode-visualization.html#cb143-16" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>We can also set ourselves up by making another function to assign labels for the top projects and their associated organizations:</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="two-mode-visualization.html#cb144-1" aria-hidden="true" tabindex="-1"></a>assign_bipartite_labels <span class="ot">&lt;-</span> <span class="cf">function</span>(netname, n){</span>
+<span id="cb144-2"><a href="two-mode-visualization.html#cb144-2" aria-hidden="true" tabindex="-1"></a>  degs_mode0 <span class="ot">&lt;-</span> (netname <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>)[netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>]</span>
+<span id="cb144-3"><a href="two-mode-visualization.html#cb144-3" aria-hidden="true" tabindex="-1"></a>  degs_mode0 <span class="ot">&lt;-</span> degs_mode0[<span class="fu">order</span>(degs_mode0, <span class="at">decreasing =</span> T)]</span>
+<span id="cb144-4"><a href="two-mode-visualization.html#cb144-4" aria-hidden="true" tabindex="-1"></a>  topdegs_mode0 <span class="ot">&lt;-</span> <span class="fu">unique</span>(degs_mode0)[<span class="dv">1</span><span class="sc">:</span>n]</span>
+<span id="cb144-5"><a href="two-mode-visualization.html#cb144-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb144-6"><a href="two-mode-visualization.html#cb144-6" aria-hidden="true" tabindex="-1"></a>  netname <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((netname <span class="sc">%v%</span> <span class="st">&#39;degree&#39;</span>) <span class="sc">%in%</span> topdegs_mode0 <span class="sc">&amp;</span> </span>
+<span id="cb144-7"><a href="two-mode-visualization.html#cb144-7" aria-hidden="true" tabindex="-1"></a>                                  netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">0</span>, netname <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, <span class="cn">NA</span>)</span>
+<span id="cb144-8"><a href="two-mode-visualization.html#cb144-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb144-9"><a href="two-mode-visualization.html#cb144-9" aria-hidden="true" tabindex="-1"></a>  top_projs <span class="ot">&lt;-</span> (netname <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[<span class="sc">!</span><span class="fu">is.na</span>(netname <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)]</span>
+<span id="cb144-10"><a href="two-mode-visualization.html#cb144-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb144-11"><a href="two-mode-visualization.html#cb144-11" aria-hidden="true" tabindex="-1"></a>  related_orgs <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> top_projs]</span>
+<span id="cb144-12"><a href="two-mode-visualization.html#cb144-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb144-13"><a href="two-mode-visualization.html#cb144-13" aria-hidden="true" tabindex="-1"></a>  labels <span class="ot">&lt;-</span> <span class="fu">ifelse</span>((netname <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>) <span class="sc">%in%</span> related_orgs <span class="sc">&amp;</span> </span>
+<span id="cb144-14"><a href="two-mode-visualization.html#cb144-14" aria-hidden="true" tabindex="-1"></a>                       netname <span class="sc">%v%</span> <span class="st">&#39;mode&#39;</span> <span class="sc">==</span> <span class="dv">1</span>, netname <span class="sc">%v%</span> <span class="st">&#39;name&#39;</span>, </span>
+<span id="cb144-15"><a href="two-mode-visualization.html#cb144-15" aria-hidden="true" tabindex="-1"></a>                       netname <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span>)</span>
+<span id="cb144-16"><a href="two-mode-visualization.html#cb144-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(labels)</span>
+<span id="cb144-17"><a href="two-mode-visualization.html#cb144-17" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+</div>
+<div id="themed-projects" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Themed projects<a href="two-mode-visualization.html#themed-projects" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Lets now turn to think more about nodes with the second guiding question: <em>How do organizations’ activity differ across projects with different scientific and management themes: climate, land use, governance, and flooding?</em> Where we previously induced subgraphs based on edge attributes, we now want to compare subgraphs based on node attributes. Let’s get to it.</p>
+<div id="inducing-bipartite-network-by-nodes" class="section level3 hasAnchor" number="5.4.1">
+<h3><span class="header-section-number">5.4.1</span> Inducing bipartite network by nodes<a href="two-mode-visualization.html#inducing-bipartite-network-by-nodes" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We have scientific and management themes attributes to different projects, and we can identify the nodes for which those attributes are true.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="two-mode-visualization.html#cb145-1" aria-hidden="true" tabindex="-1"></a>climate <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;sci_Weatherandclimate&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb145-2"><a href="two-mode-visualization.html#cb145-2" aria-hidden="true" tabindex="-1"></a>landuse <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;sci_Landuseandhumanactivities&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb145-3"><a href="two-mode-visualization.html#cb145-3" aria-hidden="true" tabindex="-1"></a>govnc <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mgmt_Governance&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb145-4"><a href="two-mode-visualization.html#cb145-4" aria-hidden="true" tabindex="-1"></a>flood <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;mgmt_Floodriskandlandusemanagement&#39;</span> <span class="sc">==</span> T)</span>
+<span id="cb145-5"><a href="two-mode-visualization.html#cb145-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(climate)</span></code></pre></div>
+<pre><code>## [1] 155 189 365 390 391 397</code></pre>
+<p>However, we only have this theme attribute for nodes in the project mode, which means that the induced network will have zero edges – it is not possible for projects to have ties to one another.</p>
+<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="two-mode-visualization.html#cb147-1" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="ot">&lt;-</span> <span class="fu">get.inducedSubgraph</span>(net2, <span class="at">v =</span> climate)</span>
+<span id="cb147-2"><a href="two-mode-visualization.html#cb147-2" aria-hidden="true" tabindex="-1"></a>net2_cli</span></code></pre></div>
+<pre><code>##  Network attributes:
+##   vertices = 9 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 0 
+##   total edges= 0 
+##     missing edges= 0 
+##     non-missing edges= 0 
+## 
+##  Vertex attribute names: 
+##     degree degree_norm_bip enddate funding_org funds id_numeric labels labels_bip mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name type url vertex.names 
+## 
+## No edge attributes</code></pre>
+<p>So we also need to identify the organization alters related to the relevant projects.</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="two-mode-visualization.html#cb149-1" aria-hidden="true" tabindex="-1"></a>climate_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb149-2"><a href="two-mode-visualization.html#cb149-2" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[climate]]</span>
+<span id="cb149-3"><a href="two-mode-visualization.html#cb149-3" aria-hidden="true" tabindex="-1"></a>landuse_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb149-4"><a href="two-mode-visualization.html#cb149-4" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[landuse]]</span>
+<span id="cb149-5"><a href="two-mode-visualization.html#cb149-5" aria-hidden="true" tabindex="-1"></a>govnc_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb149-6"><a href="two-mode-visualization.html#cb149-6" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[govnc]]</span>
+<span id="cb149-7"><a href="two-mode-visualization.html#cb149-7" aria-hidden="true" tabindex="-1"></a>flood_alter_ids <span class="ot">&lt;-</span> edges_2mode<span class="sc">$</span>org_id[edges_2mode<span class="sc">$</span>project_id <span class="sc">%in%</span> </span>
+<span id="cb149-8"><a href="two-mode-visualization.html#cb149-8" aria-hidden="true" tabindex="-1"></a>                     (net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span>)[flood]]</span></code></pre></div>
+<p>This approach gets us nearly there. We have their actual ids, but when we induce a network we want to use their numeric representation in the network object, so we have to further extract that.</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="two-mode-visualization.html#cb150-1" aria-hidden="true" tabindex="-1"></a>climate_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> climate_alter_ids)</span>
+<span id="cb150-2"><a href="two-mode-visualization.html#cb150-2" aria-hidden="true" tabindex="-1"></a>landuse_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> landuse_alter_ids)</span>
+<span id="cb150-3"><a href="two-mode-visualization.html#cb150-3" aria-hidden="true" tabindex="-1"></a>govnc_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> govnc_alter_ids)</span>
+<span id="cb150-4"><a href="two-mode-visualization.html#cb150-4" aria-hidden="true" tabindex="-1"></a>flood_alters <span class="ot">&lt;-</span> <span class="fu">which</span>(net2 <span class="sc">%v%</span> <span class="st">&#39;vertex.names&#39;</span> <span class="sc">%in%</span> flood_alter_ids)</span></code></pre></div>
+<p>Now we have the ego’s location in the network, which we can set to our v argument, and their alter’s location in the network, which we can set to our alter argument.</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="two-mode-visualization.html#cb151-1" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb151-2"><a href="two-mode-visualization.html#cb151-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> climate,</span>
+<span id="cb151-3"><a href="two-mode-visualization.html#cb151-3" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> climate_alters)</span>
+<span id="cb151-4"><a href="two-mode-visualization.html#cb151-4" aria-hidden="true" tabindex="-1"></a>net2_landuse <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb151-5"><a href="two-mode-visualization.html#cb151-5" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> landuse,</span>
+<span id="cb151-6"><a href="two-mode-visualization.html#cb151-6" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> landuse_alters)</span>
+<span id="cb151-7"><a href="two-mode-visualization.html#cb151-7" aria-hidden="true" tabindex="-1"></a>net2_govnc <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb151-8"><a href="two-mode-visualization.html#cb151-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> govnc,</span>
+<span id="cb151-9"><a href="two-mode-visualization.html#cb151-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> govnc_alters)</span>
+<span id="cb151-10"><a href="two-mode-visualization.html#cb151-10" aria-hidden="true" tabindex="-1"></a>net2_flood <span class="ot">&lt;-</span> network<span class="sc">::</span><span class="fu">get.inducedSubgraph</span>(net2, </span>
+<span id="cb151-11"><a href="two-mode-visualization.html#cb151-11" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">v =</span> flood,</span>
+<span id="cb151-12"><a href="two-mode-visualization.html#cb151-12" aria-hidden="true" tabindex="-1"></a>                                       <span class="at">alters =</span> flood_alters)</span></code></pre></div>
+<p>We get a warning: ‘I hope you know what you’re doing…’. Me too. Assuming we do, let’s take a look:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="two-mode-visualization.html#cb152-1" aria-hidden="true" tabindex="-1"></a>net2_flood</span></code></pre></div>
+<pre><code>##  Network attributes:
+##   vertices = 83 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 39 
+##   total edges= 114 
+##     missing edges= 0 
+##     non-missing edges= 114 
+## 
+##  Vertex attribute names: 
+##     degree degree_norm_bip enddate funding_org funds id_numeric labels labels_bip mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name type url vertex.names 
+## 
+##  Edge attribute names: 
+##     contribution leadership org_id_numeric project_id_numeric</code></pre>
+<p>Look’s alright. So now let’s assign the appropriate labels to each of these subgraphs.</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="two-mode-visualization.html#cb154-1" aria-hidden="true" tabindex="-1"></a>net2_cli <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_labels</span>(net2_cli, <span class="dv">1</span>)</span>
+<span id="cb154-2"><a href="two-mode-visualization.html#cb154-2" aria-hidden="true" tabindex="-1"></a>net2_landuse <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_labels</span>(net2_landuse, <span class="dv">1</span>)</span>
+<span id="cb154-3"><a href="two-mode-visualization.html#cb154-3" aria-hidden="true" tabindex="-1"></a>net2_govnc <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_labels</span>(net2_govnc, <span class="dv">1</span>)</span>
+<span id="cb154-4"><a href="two-mode-visualization.html#cb154-4" aria-hidden="true" tabindex="-1"></a>net2_flood <span class="sc">%v%</span> <span class="st">&#39;labels_bip&#39;</span> <span class="ot">&lt;-</span> <span class="fu">assign_bipartite_labels</span>(net2_flood, <span class="dv">1</span>)</span></code></pre></div>
+<p>Last, we want to plot them!</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="two-mode-visualization.html#cb155-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_cli) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Scientific theme: Climate&quot;</span>)</span>
+<span id="cb155-2"><a href="two-mode-visualization.html#cb155-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_landuse) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Scientific theme: Land use&quot;</span>)</span>
+<span id="cb155-3"><a href="two-mode-visualization.html#cb155-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_govnc) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Management theme: Governance&quot;</span>)</span>
+<span id="cb155-4"><a href="two-mode-visualization.html#cb155-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_bipartite_fx</span>(net2_flood) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Management theme: Flooding&quot;</span>)</span></code></pre></div>
+<p><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-37-1.png" width="50%" /><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-37-2.png" width="50%" /><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-37-3.png" width="50%" /><img src="05_twomode_visualization_files/figure-html/unnamed-chunk-37-4.png" width="50%" />
+<em>How do organizations’ activity differ across projects with different scientific and management themes: climate, land use, governance, and flooding?</em></p>
+<!----
+## Leaders versus contributors?  
+### Facet edges
+
+
+```r
+ggraph(net2, layout = 'fr') +
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree), color = clrs[4],
+                         alpha = .7) +
+         theme_void() +
+         theme(legend.position = "none") +
+           labs(title = "Delta Science Collaborative Research Network") +
+  facet_edges(~before_1980)
+```
+### Induce subgraphs by edge  
+
+```r
+# Induce subgraphs based on those edges
+net2_l <- network::get.inducedSubgraph(net2, 
+                                       eid = which(net2 %e% 'leadership' == T))
+net2_c <- network::get.inducedSubgraph(net2, 
+                                       eid = which(net2 %e% 'contribution' == T))
+```
+
+
+```r
+assign_bipartite_deg_labels <- function(netname, n){
+  degree_norm_bip <- bipartite::ND(as.matrix(netname))
+  nd_output <- c(degree_norm_bip$higher, degree_norm_bip$lower)
+  nd_output_df <- data.frame('degreeN' = nd_output,
+                             'id' = names(nd_output))
+  nd_output_sorted <- nd_output_df[match((netname %v% 'vertex.names'), 
+                                          nd_output_df $id),]
+  
+  netname %v% 'degree_norm_bip' <- nd_output_sorted$degreeN
+  
+  topdeg_mode0 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' == 0]) %>%
+    top_n(n)
+  topdeg_mode1 <- data.frame("deg" = 
+              (netname %v% 'degree_norm_bip')[netname %v% 'mode' ==   1]) %>% 
+    top_n(n)
+
+  netname %v% 'labels_org' <- ifelse((netname %v% 'degree_norm_bip') %in%
+                                       topdeg_mode1$deg & 
+                                       netname %v% 'mode' == 1, 
+                                     netname %v% 'name', '')
+  return(netname)
+}
+```
+
+Now we have subgraphs
+
+```r
+net2_l
+```
+
+```
+##  Network attributes:
+##   vertices = 368 
+##   directed = FALSE 
+##   hyper = FALSE 
+##   loops = FALSE 
+##   multiple = FALSE 
+##   bipartite = 71 
+##   total edges= 297 
+##     missing edges= 0 
+##     non-missing edges= 297 
+## 
+##  Vertex attribute names: 
+##     degree degree_norm_bip enddate funding_org funds id_numeric labels labels_bip mgmt_Environmentalconditions mgmt_Floodriskandlandusemanagement mgmt_Governance mgmt_Habitatmanagement mgmt_Invasivenonnativespeciesmanagement mgmt_Nativespeciesmanagement mgmt_Waterquality mgmt_Watersupplymanagement mode n_years name sci_Amphibiansandreptiles sci_Aquaticvegetation sci_Biologicalresourceuse sci_Channelizedhabitats sci_Environmentalconditions sci_Fish sci_Floodplain sci_Foodwebs sci_Habitatchanges sci_Hydrologicchanges sci_Hydrologyandhydrodynamics sci_Invasivenonnativespecies sci_Invertebrates sci_Landuseandhumanactivities sci_Mammals sci_Nutrientsenergyandfoodweb sci_Riparianhabitats sci_Sediment sci_Species sci_Terrestrialhabitats sci_Tidalwetlands sci_Waterquality sci_Weatherandclimate startdate trunc_name type url vertex.names 
+## 
+##  Edge attribute names: 
+##     contribution leadership org_id_numeric project_id_numeric
+```
+--->
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="one-mode-visualization.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="additional-resources.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/edit/master/05_twomode_visualization.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/ucdavisdatalab/workshop_network_viz/blob/master/05_twomode_visualization.Rmd",
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -1,13 +1,11 @@
-# Plotting packages
+# Additional resources
 
-```{r setup, include=FALSE}
+```{r, setup, include=FALSE}
 knitr::opts_chunk$set(warning = F, message = F)
-library(igraph)
-library(network)
 ```
 
-
-```{r, echo = F}
+```{r, echo = F, warning = F}
+library(network)
 edges_1mode <- read.csv('data/edgelist_onemode_projected.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
@@ -18,33 +16,46 @@ net1 <- network(x = edges_1mode,
 g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
 ```
 
-## `ggraph`  
+## Interactive networks 
 
-For this workshop we will use the [`ggraph` package](https://cran.r-project.org/web/packages/ggraph/ggraph.pdf) (and function) for network visualization, created by Thomas Lin Pedersen, who also happens to make 'generative' artwork in R. 
-
-```{r echo=FALSE, out.width= '75%', fig.show="hold", fig.align='center'}
-knitr::include_graphics("img/winds2020.jpeg")
+### `visNetwork`  
+```{r}
+#install.packages('visNetwork')
+library(visNetwork) 
+edges_visnet <- edges_1mode
+colnames(edges_visnet)[c(1,2)] <- c('from', 'to')
+nodes_visnet <- nodes_1mode
+colnames(nodes_visnet)[2] <- 'label'
+visNetwork(nodes_visnet, edges_visnet, width="100%", height="400px")
 ```
 
-`ggraph` uses the same approach as the `ggplot2` grammar of graphics. This means is has three core components: 1. (network) data, 2. aesthetic mappings, and 3. geometries, in this case edges and nodes. We can combine the `ggraph()` function with a geometry specific to networks, `geom_node_point()`, to see the nodes. Where this differs from more traditional ggplotting approaches using tabular data (e.g. data frames), network objects have built-in mapping coordinates, so we don't need to specify a mapping.
+### `networkD3`  
 
-```{r, message = T, fig.align='center'}
-library(ggraph)
-ggraph(net1) +
-    geom_node_point()
+```{r}
+#install.packages('networkD3')
+library(networkD3)
+nodesd3 <- nodes_1mode[1]
+nodesd3$zero_id <- 0:(nrow(nodesd3)-1)
+edgesd3 <- edges_1mode
+
+edgesd3 <- dplyr::left_join(edgesd3, nodesd3, by = c('from_org_id' = 'id'))
+colnames(edgesd3)[7] <- 'from_zero_id'
+edgesd3 <- dplyr::left_join(edgesd3, nodesd3, by = c('to_org_id' = 'id'))
+colnames(edgesd3)[8] <- 'to_zero_id'
+nodesd3$name <- nodes_1mode$name
+forceNetwork(Links = edgesd3, Nodes = nodesd3, 
+             Source="from_zero_id", Target="to_zero_id",
+             NodeID = "name", Group = 1, linkWidth = 1,
+             linkColour = "#afafaf", fontSize=12, zoom=T, 
+             opacity = 0.8, charge=-300, 
+             width = 600, height = 400)
 ```
 
-Here we see that the node point geometry uses a default layout based on the 'stress' algorithm (more in the following section), plotting the node points as we see above. To connect these points, we can use a 'edge link' geometry, `geom_edge_link()`, which uses the network object's built in x, y, xend, and yend variables for the edge data. 
 
-```{r, message = T, fig.align='center'}
-ggraph(net1) +
-    geom_node_point() +
-    geom_edge_link()
-```
-
-This will be the foundation what we build on, starting in the next section. 
-
-## Other packages and functions  
+## Useful tutorials 
+  * [Katya Ognyanova's Network Visualization tutorials]((https://kateto.net/network-visualization)) from PolNet have always been a great starting point for features across several packages
+  
+## Other plotting packages
 
 There are several plotting packages out there, some of them work with different network objects and requiring different knowledge. Excellent overviews of some of them are provided in this [post by Katya Ognyanova](https://kateto.net/network-visualization). I won't need to repeat these, but it is worth seeing the basic representation and understanding how `igraph` vs. `network` objects look differently in them, by default. 
 
@@ -82,3 +93,4 @@ ggplot(g1, aes(x = x, y = y, xend = xend, yend = yend)) +
   geom_edges()
 ```
 
+  
