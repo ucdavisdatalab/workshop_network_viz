@@ -266,7 +266,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="creating-network-objects-in-r.html#cb15-1" aria-hidden="true" tabindex="-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">graph_from_data_frame</span>(edges_1mode, <span class="at">vertices =</span> nodes_1mode, <span class="at">directed =</span> F)</span></code></pre></div>
 <p>We can take a look at a summary of the igraph object below. We see the number of nodes (139) and edges (475) summarized at top and our list of node attributes (followed by (v/[datatype])) and edges attributes (followed by (e/[datatype])).</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="creating-network-objects-in-r.html#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(g1)</span></code></pre></div>
-<pre><code>## IGRAPH 9c14403 UN-- 139 475 -- 
+<pre><code>## IGRAPH c5f3a6a UN-- 139 475 -- 
 ## + attr: name (v/c), url (v/c), mode (v/n), Y1995_2009 (e/l), Y2010_2024
 ## | (e/l), before_1980 (e/l), Y1980_1994 (e/l)</code></pre>
 <p>The syntax for manipulating igraphs is demonstrated below. We use the <code>V()</code> and <code>E()</code> functions to call on either vertices or edges of our igraph, respective. hen can use the <code>$</code> symbol to subset from those elements of the network.</p>
