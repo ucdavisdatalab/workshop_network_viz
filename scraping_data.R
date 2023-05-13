@@ -319,6 +319,55 @@ nl_onemode <- select(nl_onemode, id, name, url, mode)
 nl_twomode <- filter(nl, id %in% el_twomode$org_id |
                          id %in% el_twomode$project_id)
 
+# Assign attributes
+#nl_onemode <- read.csv("data/nodelist_onemode.csv")
+nl_onemode$org_type <- NA
+
+growers <- c("Agricultural Coalitions: Landowners membership fees",
+             "California Rice Commission", "Ducks Unlimited")
+nl_onemode$org_type <- ifelse(nl_onemode$name %in% growers,
+                              "NGO", NA)
+
+unis_p <- c("University|Laboratory|UC\\s\\w|PRISM Climate Group")
+unis <- c("Caltech", "Texas A&M", "UCLA", "UCSB", "UCSC",
+          "UCSD", "CSU", "CWU", "DRI", "LBNL", "MLML", 
+          "SFEI", "SFSU", "SCCWRP", 
+          "Southwest Climate Adaptation Science Center", 
+          "The Institute for Bird Populations", "UBC", "UW", 
+          "Virginia Institute of Marine Science")
+nl_onemode$org_type <- ifelse(str_detect(nl_onemode$name, unis_p) |
+                                nl_onemode$name %in% unis, 
+                              "University / Institute", nl_onemode$org_type)
+
+incs <- c("Anchor QEA", "Bachand and Associates", "DigitalGlobe",
+          "EcoMetric Consulting", "RMA", "Land IQ")
+incs_p <- "Inc\\.|Cramer"
+nl_onemode$org_type <- ifelse(str_detect(nl_onemode$name, incs_p) |
+                                nl_onemode$name %in% incs ,
+                              "Consultant", nl_onemode$org_type)
+
+org <- c("Audubon Canyon Ranch", "Central Valley Joint Venture",
+         "Conservation Farms and Ranches", "Fishery Foundation of California",
+         "MarineTraffic", "National Audubon Society", "NatureServe",
+         "Pacific Flyway Council", "Point Blue Conservation Science",
+         "San Francisco Bay Bird Observatory",
+         "San Joaquin County Resource Conservation District",
+         "Solano Land Trust", "SWC", "Suisun Resource Conservation District",
+         "The Nature Conservancy", "UNAVCO", "WSWC",
+         "Westside San Joaquin River Watershed Coalition", "ICWP")
+nl_onemode$org_type <- ifelse(nl_onemode$name %in% org,
+                              "NGO", nl_onemode$org_type)
+
+gov_fed <- c("BLM", "BTS", "DoD", "DOE", "DOE-BER", "DoT", "NASS", "NAIP", "NASA", "NMFS", "NOAA", "NPS", "NSF", "USACE", "USBR", "USDA", "USEPA", "USFS", "USGS", "National Wetlands Inventory - Many Supporting Organizations", "BIA", "U.S. Census Bureau", "EIA", "USFWS", "Goddard Space Flight Center", "European Space Agency")
+nl_onemode$org_type <- ifelse(nl_onemode$name %in% gov_fed,
+                              "Federal Government", nl_onemode$org_type)
+
+gov_state <- c("CALCC", "CalEPA", "CALFIRE", "CalFish", "California State Board of Equalization", "California State Coastal Conservancy", "California Water Board - Central Valley Region", "Caltrans", "CAMT", "CCWD", "CDFA", "CDFW", "CDPH", "CEC", "Central Valley RWQCB", "Delta Conservancy", "Delta Stewardship Council", "Delta Stewardship Council - Delta Science Program", "DFG", "CNRA", "CSLC", "CVFPB", "DOC", "DPR", "DWR", "OEHHA", "PARKS", "RMP", "SJCDWQC", "SWRCB", "Sacramento-San Joaquin Delta Conservancy", "East Bay Municipal Utilities District", "FESSRO", "Metropolitan Water District of Southern California", "PSMFC", "Port of Stockton Board of Commissioners", "Regional San",
+               "BCDC", "San Joaquin Valley Drainage Authority", "SMC",
+               "Woodland-Davis Clean Water Agency", "Yuba River Management Team")
+nl_onemode$org_type <- ifelse(nl_onemode$name %in% gov_state,
+                              "State & Local Government", nl_onemode$org_type)
+
 # Write data ----
 write.csv(nl_twomode, "data/nodelist_twomode.csv", row.names = F)
 write.csv(nl_onemode, "data/nodelist_onemode.csv", row.names = F)
