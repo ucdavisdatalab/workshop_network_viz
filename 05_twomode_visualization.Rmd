@@ -21,11 +21,11 @@ clrs <- c("#440154FF", "#482173FF", "#433E85FF", "#38598CFF",
 netplot_function <- function(netname){
   p <- ggraph(netname, layout = 'fr') +
          geom_edge_link(color = "gray80") +
-         geom_node_point(aes(size = degree), color = clrs[4],
-                         alpha = .7) +
+         geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+         scale_color_viridis_d() +
          theme_void() +
-         theme(legend.position = "none") +
-           labs(title = "Delta Science Collaborative Research Network") +
+         labs(title = "Delta Science Collaborative Research Network") +
+         guides(colour = "legend", size = "none") +
          geom_node_text(aes(label = labels),
                           size = 3,
                           repel = T)
