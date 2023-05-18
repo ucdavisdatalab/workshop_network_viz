@@ -495,7 +495,7 @@ net1_t3 %v% 'labels' <- label_top_degree(net1_t3, n = 5)
 net1_t4 %v% 'labels' <- label_top_degree(net1_t4, n = 5)
 ```
 
-Now that we've updated our attributes, let's plot our subgraphs. We can use the `netplot_function` that we wrote in the Section 5.5 and layer on a title.
+Now that we've updated our attributes, let's plot our subgraphs. We can use the `netplot_function` that we wrote in the previous section and layer on a title.
 
 ```{r, out.width = c("50%", "50%"), fig.show="hold"}
 netplot_function(net1_t1) + labs(title = "Collaborative network: Pre 1980")
@@ -590,28 +590,27 @@ knitr::include_graphics("data/animation/network.gif")
 # creates a temporary folder
 library(magick)
 library(here)
-
 netplot_function(coord_t1) + labs(title = "Collaborative network: Pre 1980") +
   xlim(c(xmin,xmax)) + ylim(c(ymin,ymax))
-ggsave(filename = file.path(here("data/animation/01.png")))
+ggsave(filename = file.path(here("workshops_creator/workshop_network_viz/data/animation/01.png")))
 netplot_function(coord_t2) + labs(title = "Collaborative network: 1980-1994") +
   xlim(c(xmin,xmax)) + ylim(c(ymin,ymax))
-ggsave(filename = file.path(here("data/animation/02.png")))
+ggsave(filename = file.path(here("workshops_creator/workshop_network_viz/data/animation/02.png")))
 netplot_function(coord_t3) + labs(title = "Collaborative network: 1995-2009") +
   xlim(c(xmin,xmax)) + ylim(c(ymin,ymax))
-ggsave(filename = file.path(here("data/animation/03.png")))
+ggsave(filename = file.path(here("workshops_creator/workshop_network_viz/data/animation/03.png")))
 netplot_function(coord_t4) + labs(title = "Collaborative network: 2010-2024") +
   xlim(c(xmin,xmax)) + ylim(c(ymin,ymax))
-ggsave(filename = file.path(here("data/animation/04.png")))
+ggsave(filename = file.path(here("workshops_creator/workshop_network_viz/data/animation/04.png")))
 
-imgs <- list.files(here("data/animation"), full.names = T)
+imgs <- list.files(here("workshops_creator/workshop_network_viz/data/animation"), full.names = T)
 img_list <- lapply(imgs, image_read)
 
 img_joined <- image_join(img_list)
 
 img_animated <- image_animate(img_joined, fps = .5)
 image_write(image = img_animated,
-            path = here("data/animation/network.gif"))
+            path = here("workshops_creator/workshop_network_viz/data/animation/network.gif"))
 ```
 </details>
 <br>
