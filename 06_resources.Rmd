@@ -6,6 +6,10 @@ knitr::opts_chunk$set(warning = F, message = F)
 
 ```{r, echo = F, warning = F}
 library(network)
+library(sna)
+library(ggraph)
+library(magrittr)
+library(dplyr)
 edges_1mode <- read.csv('data/edgelist_onemode_projected.csv')
 nodes_1mode <- read.csv('data/nodelist_onemode.csv')
 
@@ -14,6 +18,43 @@ net1 <- network(x = edges_1mode,
                bipartite = F,  
                directed = F)
 g1 <- igraph::graph_from_data_frame(edges_1mode, vertices = nodes_1mode, directed = F)
+
+net1 %v% 'degree' <- degree(net1)
+
+# Extract the network's degree values based on the order of degrees
+degs <- (net1 %v% 'degree')[order(net1 %v% 'degree', decreasing = T)]
+# Then identify the top 5 unique degree values
+topdegs <- unique(degs)[1:5]
+# Then create a network variable named labels and add the name only if a
+# node has the number of degrees in the 'top degrees'
+net1 %v% 'labels' <- ifelse((net1 %v% 'degree') %in% topdegs, 
+                           net1 %v% 'name', NA)
+
+noiso <- (1:network.size(net1))[-isolates(net1)]
+net1_noiso <- get.inducedSubgraph(net1, v = noiso)
+
+netplot_function <- function(netname){
+  p <- ggraph(netname, layout = 'fr') +
+         geom_edge_link(color = "gray80") +
+         geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+         scale_color_viridis_d() +
+         theme_void() +
+         labs(title = "Delta Science Collaborative Research Network") +
+         guides(colour = "legend", size = "none") +
+         geom_node_text(aes(label = labels),
+                          size = 3,
+                          repel = T)
+  return(p)
+}
+
+label_top_degree <- function(netname, n){
+  degs <- (netname %v% 'degree')[order(netname %v% 'degree', decreasing = T)]
+  topdegs <- unique(degs)[1:n]
+  labels <- ifelse((netname %v% 'degree') %in% topdegs, 
+                           netname %v% 'name', '')
+  return(labels)
+}
+
 ```
 
 ## Community detection

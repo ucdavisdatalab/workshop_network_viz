@@ -368,6 +368,9 @@ gov_state <- c("CALCC", "CalEPA", "CALFIRE", "CalFish", "California State Board 
 nl_onemode$org_type <- ifelse(nl_onemode$name %in% gov_state,
                               "State & Local Government", nl_onemode$org_type)
 
+nl_twomode <- read.csv("data/nodelist_twomode.csv")
+nl_twomode <- left_join(nl_twomode, nl_onemode)
+
 #el_twomode <- read.csv("data/edgelist_twomode.csv")
 el_twomode$collaborative_role <- ifelse(el_twomode$leadership == T, "Leader", "Contributor")
 

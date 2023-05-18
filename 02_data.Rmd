@@ -95,7 +95,7 @@ el_proj <- igraph::get.data.frame(g)
 
 **Node list for one-mode network**: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page. 
 
-```{r}
+```{r, eval = F}
 nodes_1mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_onemode.csv')
 head(nodes_1mode[c(1:2,5)])
 ```
