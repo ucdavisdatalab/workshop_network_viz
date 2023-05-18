@@ -158,7 +158,7 @@ As we build out the basics of the `ggraph` package, we're going to focus on our 
 **Size by degree**: One common approach for network visualization is to size nodes by their degree centrality. While more central nodes are already placed at the center of our layout's algorithm, it can be helpful to also increase their size to communicate this point by adding a data feature. To size by degree, we will want to create a degree variable as a node attribute using the `degree` function, and assign that attribute to our network data.  
 
 ```{r}
-net1 %v% 'degree' <- degree(net1)
+net1 %v% 'degree' <- sna::degree(net1)
 ```
 
 Hint: if you get `Error in degree(net1) : Not a graph object`, double check that you have detached the `igraph` package!  
@@ -192,7 +192,7 @@ Notice how layer order matters (as as with `ggplot2`), and so by having edges la
 ```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   theme_void()
 ```
 
@@ -201,7 +201,7 @@ We might also want to select a color-blind friendly palette to color our nodes, 
 ```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void()
 ```
@@ -223,11 +223,11 @@ We can also make thematic alterations such as adding a title label to the plot a
 ```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network") +
-  guides(colour = "legend", size = "none")
+  labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none")
 ```
 
 Notice that with the 'fr' layout (and any other layout algorithm), the coordinates change a bit every time. This is because each time we create a visualization the algorithm is re-run, and there is variation in the exact calculation. You can set your seed (every time before you plot) to keep it consistent.
@@ -244,11 +244,11 @@ Let's add this as a text geometry.
 ```{r, fig.align= 'center'}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network") +
-  guides(colour = "legend", size = "none") +
+  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none")
   geom_node_text(aes(label = name),
                 size = 3, 
                 color="black")
@@ -278,11 +278,11 @@ We can use this labels attribute to make our figure more easily readable.
 ```{r, fig.align= 'center', warning = F}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network") +
-  guides(colour = "legend", size = "none") +
+  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none")
   geom_node_text(aes(label = labels),
                    size = 3)
 ```
@@ -292,11 +292,11 @@ Almost. Let's include a repel = T argument to make sure the text doesn't overlap
 ```{r, fig.align= 'center', warning = F}
 ggraph(net1, layout = 'fr') +
   geom_edge_link(color = "gray80") +
-  geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+  geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network") +
-  guides(colour = "legend", size = "none") +
+  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none")
   geom_node_text(aes(label = labels),
                    size = 3,
                    repel = T)
@@ -327,11 +327,11 @@ Now that we've got that down as a base, I want to define this network visualizat
 netplot_function <- function(netname){
   p <- ggraph(netname, layout = 'fr') +
          geom_edge_link(color = "gray80") +
-         geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
+         geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
          scale_color_viridis_d() +
          theme_void() +
-         labs(title = "Delta Science Collaborative Research Network") +
-         guides(colour = "legend", size = "none") +
+         labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
+         guides(colour = "legend", size = "none", alpha = "none")
          geom_node_text(aes(label = labels),
                           size = 3,
                           repel = T)
@@ -410,7 +410,7 @@ net1_long <- network(x = edges_1mode_long,
 # aesthetics that don' carry over
 ggraph(net1_long, layout = 'fr') +
          geom_edge_link(color = "gray80") +
-         geom_node_point(aes(color = org_type, alpha = .7)) +
+         geom_node_point(aes(color = org_type, alpha = .9)) +
          theme_void() +
          facet_edges(~timeframe)
 ```
