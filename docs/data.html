@@ -270,15 +270,15 @@ Figure 2.1: Miles Hermann
 <p><strong>Two-mode edge list:</strong> The DSC data was originally compiled as two-mode network data, describing how organizations/researchers are connected to research projects. In these data, our first mode, <code>org_id</code>, is the organization(s) (agencies, universities, etc) that are working on projects in the Delta. And our second mode, <code>project_id</code>, are the Delta science research projects themselves. This two-mode edge list has 680 rows, whereby 138 organizations are connected with one or more of 297 projects. In these data, organizations often take part in more than one project, and projects often have more than one organizations associated with it. We also have edge attributes, which represent the kind of role an organization has in the project: contributor or leader.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a>edges_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_twomode.csv&#39;</span>)</span>
 <span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(edges_2mode)</span></code></pre></div>
-<pre><code>## [1] 680   5</code></pre>
+<pre><code>## [1] 680   3</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(edges_2mode)</span></code></pre></div>
-<pre><code>##   org_id project_id contribution leadership collaborative_role
-## 1  49590      50122         TRUE      FALSE        Contributor
-## 2  49592      49780         TRUE      FALSE        Contributor
-## 3  49592      49865         TRUE      FALSE        Contributor
-## 4  49594      49860         TRUE      FALSE        Contributor
-## 5  49598      50091         TRUE      FALSE        Contributor
-## 6  49600      50170         TRUE      FALSE        Contributor</code></pre>
+<pre><code>##   org_id project_id collaborative_role
+## 1  49590      50122        Contributor
+## 2  49592      49780        Contributor
+## 3  49592      49865        Contributor
+## 4  49594      49860        Contributor
+## 5  49598      50091        Contributor
+## 6  49600      50170        Contributor</code></pre>
 <p><strong>Node list for two-mode network</strong>: We also have a list of all the nodes (organizations and projects), each of which has different attributes. We have more node attributes for project nodes than we do for organization nodes, so many of the attributes for organizations are empty. For projects, we have funding data, the dates of the project, as well as a series of categorical tags related to what kinds of scientific and management themes the project addresses. A sample of those are displayed below:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="data.html#cb5-1" aria-hidden="true" tabindex="-1"></a>nodes_2mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_twomode.csv&#39;</span>)</span>
 <span id="cb5-2"><a href="data.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes_2mode[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">16</span>,<span class="dv">31</span>,<span class="dv">39</span>)])</span></code></pre></div>
@@ -346,6 +346,20 @@ Figure 2.1: Miles Hermann
 <p><strong>Node list for one-mode network</strong>: We reduced our two-mode node list down to only a list of our organization nodes, which is what we project in our one-mode network. For organizations, we have very few attributes, only their id, name, and link to their DST page.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data.html#cb12-1" aria-hidden="true" tabindex="-1"></a>nodes_1mode <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_onemode.csv&#39;</span>)</span>
 <span id="cb12-2"><a href="data.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(nodes_1mode[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">5</span>)])</span></code></pre></div>
+<pre><code>##      id                                                name
+## 1 49590 Agricultural Coalitions: Landowners membership fees
+## 2 49592                                          Anchor QEA
+## 3 49593                                Audubon Canyon Ranch
+## 4 49594                              Bachand and Associates
+## 5 49598                                                 BTS
+## 6 49600                                             CalFish
+##                   org_type
+## 1                      NGO
+## 2               Consultant
+## 3                      NGO
+## 4               Consultant
+## 5       Federal Government
+## 6 State &amp; Local Government</code></pre>
 
 </div>
 </div>

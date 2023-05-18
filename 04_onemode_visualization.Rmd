@@ -247,8 +247,8 @@ ggraph(net1, layout = 'fr') +
   geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-  guides(colour = "legend", size = "none", alpha = "none")
+  labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none") +
   geom_node_text(aes(label = name),
                 size = 3, 
                 color="black")
@@ -281,8 +281,8 @@ ggraph(net1, layout = 'fr') +
   geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-  guides(colour = "legend", size = "none", alpha = "none")
+  labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none") +
   geom_node_text(aes(label = labels),
                    size = 3)
 ```
@@ -295,8 +295,8 @@ ggraph(net1, layout = 'fr') +
   geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
   scale_color_viridis_d() +
   theme_void() +
-  labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-  guides(colour = "legend", size = "none", alpha = "none")
+  labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+  guides(colour = "legend", size = "none", alpha = "none") + 
   geom_node_text(aes(label = labels),
                    size = 3,
                    repel = T)
@@ -330,8 +330,8 @@ netplot_function <- function(netname){
          geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
          scale_color_viridis_d() +
          theme_void() +
-         labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-         guides(colour = "legend", size = "none", alpha = "none")
+         labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+         guides(colour = "legend", size = "none", alpha = "none") +
          geom_node_text(aes(label = labels),
                           size = 3,
                           repel = T)

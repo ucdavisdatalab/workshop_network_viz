@@ -24,8 +24,8 @@ netplot_function <- function(netname){
          geom_node_point(aes(size = degree, color = org_type, alpha = .9)) +
          scale_color_viridis_d() +
          theme_void() +
-         labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-         guides(colour = "legend", size = "none", alpha = "none")
+         labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+         guides(colour = "legend", size = "none", alpha = "none") + 
          geom_node_text(aes(label = labels),
                           size = 3,
                           repel = T)
@@ -49,8 +49,8 @@ We started off the workshop by creating one mode networks in `igraph` and `netwo
 
 Let's make sure we have our two mode edge and node lists read in.  
 ```{r}
-edges_2mode <- read.csv('data/edgelist_twomode.csv')
-nodes_2mode <- read.csv('data/nodelist_twomode.csv')
+edges_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/edgelist_twomode.csv')
+nodes_2mode <- read.csv('https://raw.githubusercontent.com/ucdavisdatalab/workshop_network_viz/main/data/nodelist_twomode.csv')
 ```
 
 First, let's discuss `igraph`, where two-mode networks are a bit harder to create. Generally this package has very little two-mode functionality. There is a function for creating bipartite igraphs, `make_bipartite_graph()`, but it requires different inputs than the standard edge list or matrix, and node lists. Instead, this function requires a vector of vertex types, meaning a Boolean of modes (0-1), and a vector of the edges in the graph. 

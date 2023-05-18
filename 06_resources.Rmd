@@ -39,8 +39,8 @@ netplot_function <- function(netname){
          geom_node_point(aes(size = degree, color = org_type, alpha = .7)) +
          scale_color_viridis_d() +
          theme_void() +
-         labs(title = "Delta Science Collaborative Research Network", "Org. Type") +
-         guides(colour = "legend", size = "none", alpha = "legend")
+         labs(title = "Delta Science Collaborative Research Network", color = "Org. Type") +
+         guides(colour = "legend", size = "none", alpha = "legend") +
          geom_node_text(aes(label = labels),
                           size = 3,
                           repel = T)
