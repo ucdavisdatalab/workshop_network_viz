@@ -338,13 +338,13 @@ Figure 1.2: Thomas Lin Pedersen generative art with ggraph
 <p>You can also set a <strong>manual layout</strong>. Because layouts are just x and y coordinates of points defined by a certain algorithm, you can extract those coordinates using the <code>create_layout()</code> function from <code>ggraph</code>, and fix and/or manipulate those coordinates, if need be. We will deal with this more in the longitudinal networks section.</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="one-mode-visualization.html#cb44-1" aria-hidden="true" tabindex="-1"></a>fixed_coord <span class="ot">&lt;-</span> <span class="fu">create_layout</span>(net1, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>)</span>
 <span id="cb44-2"><a href="one-mode-visualization.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fixed_coord[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,<span class="dv">5</span>)])</span></code></pre></div>
-<pre><code>##           x         y                                                name
-## 1 -3.091398  7.094684 Agricultural Coalitions: Landowners membership fees
-## 2  2.025173 -1.211093                                          Anchor QEA
-## 3 -6.365205 -8.370372                                Audubon Canyon Ranch
-## 4  1.712870  3.934326                              Bachand and Associates
-## 5 -8.476439 -2.997710                                                 BTS
-## 6 -6.796274  3.394639                                             CalFish</code></pre>
+<pre><code>##           x          y                                                name
+## 1 -0.780825 -12.196508 Agricultural Coalitions: Landowners membership fees
+## 2  0.283362  -1.502918                                          Anchor QEA
+## 3 -9.259313  -1.386423                                Audubon Canyon Ranch
+## 4 -0.479436  -6.638829                              Bachand and Associates
+## 5 -7.925990  -6.349293                                                 BTS
+## 6 -6.080371   6.022894                                             CalFish</code></pre>
 <p>For our one-mode networks, we are going to use the ‘fr’ layout, which is the Fruchterman and Reingold (force-directed algorithm). This is a choice that helps place higher-degree nodes in the center, and low-degree and isolate nodes on the periphery.</p>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="one-mode-visualization.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggraph</span>(net1, <span class="at">layout =</span> <span class="st">&#39;fr&#39;</span>) <span class="sc">+</span></span>
 <span id="cb46-2"><a href="one-mode-visualization.html#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_node_point</span>() <span class="sc">+</span></span>
