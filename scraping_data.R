@@ -373,6 +373,8 @@ nl_twomode <- left_join(nl_twomode, nl_onemode)
 
 #el_twomode <- read.csv("data/edgelist_twomode.csv")
 el_twomode$collaborative_role <- ifelse(el_twomode$leadership == T, "Leader", "Contributor")
+el_twomode <- dplyr::select(el_twomode, -contribution, -leadership)
+
 
 # Write data ----
 write.csv(nl_twomode, "data/nodelist_twomode.csv", row.names = F)
