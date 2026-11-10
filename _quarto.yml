@@ -1,0 +1,70 @@
+project:
+  type: book
+  render:  # only render index.qmd and .qmd files in chapters/
+    - "index.qmd"
+    - "chapters/*.qmd"
+  execute-dir: project  # working directory is always root of project
+  output-dir: "_build/"
+
+book:
+  # Metadata (fill this in):
+  author:
+    - "Liza Wood"
+  title: "Network Visualization"
+  description: "Reader for the Network Visualization workshop."
+  repo-url: "https://github.com/ucdavisdatalab/workshop_network_viz"
+  site-url: "https://ucdavisdatalab.github.io/workshop_network_viz"
+  chapters:
+    - "index.qmd"
+    - "chapters/01_introduction.qmd"
+    - "chapters/02_data.qmd"
+    - "chapters/03_creating_network_objects.qmd"
+    - "chapters/04_onemode_visualization.qmd"
+    - "chapters/05_twomode_visualization.qmd"
+    - "chapters/06_resources.qmd"
+  appendices:
+    - "chapters/references.qmd"
+    - "chapters/assessment.qmd"
+
+  # Formatting (be careful about changing these):
+  date: now
+  repo-actions: [issue, source]
+  open-graph: true
+  twitter-card: true
+  favicon: "/images/logos/datalab-logo_square_150x150.png"
+  image: "/images/logos/datalab-logo_opengraph_1200x630.png"
+  image-alt: "The logo of the UC Davis DataLab."
+  sidebar:
+    logo: "/images/logos/datalab-logo-full-color-rgb.png"
+    logo-alt: "The logo of the UC Davis DataLab."
+    logo-href: "https://datalab.ucdavis.edu/"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    include-in-header:
+      - text: |
+          <style>
+          .callout.callout-style-default .callout-body {
+            padding: 0 1.5rem 0;
+          }
+          .cell-output-stdout {
+            overflow-y: scroll;
+            max-height: 30rem;
+            margin-bottom: 0.75rem;
+          }
+          #quarto-sidebar a.text-start {
+            margin-top: 1rem;
+            font-weight: bold;
+          }
+          </style>
+  # Uncomment to also generate a PDF:
+  # pdf: default
+
+# Uncomment to use BibTeX or BibLaTeX references:
+# bibliography: references.bib
+
+# Cache computations from each chapter:
+execute:
+  freeze: auto
