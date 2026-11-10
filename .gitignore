@@ -1,9 +1,41 @@
-# General
+# Project-specific
+_build/*
+
+# DataLab project directory structure
+# data/* is not ignored here: this reader's chapters load the CSVs in data/.
+outputs/*
+
+
+# Data science software files --------------------
+
+# Pixi environments
+.pixi/*
+!.pixi/config.toml
+
+# Python
+__pycache__/
+*.py[cod]
+.python-version
+.ipynb_checkpoints
+
+# R
+*.rds
+.RData
+.Rhistory
+
+# Quarto/Bookdown files
+_main.rds
+docs/*.md
+.Rproj.user
+/.quarto/
+**/*.quarto_ipynb
+
+
+# Operating system files --------------------
+
 .DS_Store
 .AppleDouble
 .LSOverride
-#.RData
-.Rhistory
 
 # Thumbnails
 ._*
@@ -23,8 +55,3 @@
 Network Trash Folder
 Temporary Items
 .apdisk
-
-# Bookdown intermediate files
-_main*
-docs/*.md
-.Rproj.user
